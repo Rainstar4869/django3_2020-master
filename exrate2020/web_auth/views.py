@@ -126,7 +126,11 @@ class SetNewPasswordView(View):
             if not PasswordResetTokenGenerator().check_token(user, token):
                 return redirect('web_login' + '?message=' + 'Not a valid reset password link')
 
-            return render(request, "authentication/set-newpasword.html")
+            context_ = {
+                "username": user.username,
+                "app": "Lionhu"
+            }
+            return render(request, "authentication/set-newpasword.html", context_)
 
         except DjangoUnicodeDecodeError as identifier:
             pass
