@@ -1,0 +1,26 @@
+
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block title %}
+    Nichei Services
+{% endblock %}
+{% block headerscript %}
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+
+            <canvas id="myChart" width="160" height="160"></canvas>
+        </div>
+        <div class="col-md-4"></div>
+    </div>
+{% endblock %}
+
+{% block afterscript %}
+    <script src="{% static 'js/statics.js' %}"></script>
+{% endblock %}
