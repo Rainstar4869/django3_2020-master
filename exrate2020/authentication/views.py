@@ -15,6 +15,7 @@ from django.urls import reverse
 import jwt
 from django.conf import settings
 
+
 class LoginAPIView(generics.GenericAPIView):
     serializer_class = LoginSerializer
 
@@ -58,6 +59,7 @@ class VerifyEmail(views.APIView):
             user = User.objects.get(id=payload['user_id'])
             if not user.is_verified:
                 user.is_verified = True
+                user.is_active = True
                 user.save()
             return Response({'email': 'Successfully activated'}, status=status.HTTP_200_OK)
         except jwt.ExpiredSignatureError as identifier:
