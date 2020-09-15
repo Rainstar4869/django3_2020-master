@@ -24,7 +24,7 @@ from upload.views import image_upload
 
 urlpatterns = [
     path("", TemplateView.as_view(template_name="index.html"), name="top"),
-    # path("upload/", image_upload, name="upload"),
+    path("upload/", image_upload, name="upload"),
     path('admin/', admin.site.urls),
     path("apiauth/", include("authentication.urls")),
     path("webauth/", include("web_auth.urls")),
