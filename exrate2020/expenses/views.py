@@ -1,6 +1,8 @@
+import csv
+
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from .serializers import ExpenseSerializer
@@ -9,6 +11,21 @@ from rest_framework import permissions
 from .permissions import IsOwner
 import datetime
 import json
+
+
+def export_csv(request):
+    response = HttpResponse(content_type='text/csv')
+    response["Content-Disposition"] = "attachment;filename=Expenses" + str(datetime.datetime.now()) + '.csv'
+
+    writer = csv.writer(response)
+    writer.writerow(["Amount", "Description", "Category", "Date"])
+
+    expenses = Expense.objects.filter(owner=request.user)
+
+    for expense in expenses:
+        writer.writerow([expense.amount, expense.description, expense.category, expense.date])
+
+    return response
 
 
 @login_required(login_url='/webauth/login/')

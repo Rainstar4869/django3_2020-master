@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from rest_framework.views import APIView
 import datetime
@@ -8,7 +9,6 @@ from rest_framework.response import Response
 
 
 # Create your views here.
-
 
 class ExpenseSummaryStats(APIView):
 
