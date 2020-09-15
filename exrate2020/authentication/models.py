@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager, PermissionsMixin)
-
+from imagekit.processors import ResizeToFill
+from imagekit.models import ImageSpecField
 # Create your models here.
 from rest_framework_simplejwt.tokens import RefreshToken
 
@@ -28,13 +29,23 @@ class UserManager(BaseUserManager):
         return user
 
 
+def user_avatar_path(instance, filename):
+    return "avatar/user_{0}/{1}".format(instance.id, filename)
+
+
 class User(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(max_length=255, unique=True, db_index=True, default=None)
     email = models.EmailField(max_length=255, unique=True, db_index=True)
     is_verified = models.BooleanField(default=False)
     is_active = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
-    avatar = models.ImageField(null=True)
+    avatar = models.ImageField(null=True, upload_to=user_avatar_path)
+    thumb_avatar = ImageSpecField(  # 注意：ImageSpecField 不会生成数据库表的字段
+        source='avatar',
+        processors=[ResizeToFill(256, 256)],  # 处理成一寸照片的大小
+        format='JPEG',  # 处理后的图片格式
+        options={'quality': 95}  # 处理后的图片质量
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -54,3 +65,15 @@ class User(AbstractBaseUser, PermissionsMixin):
             'refresh': str(refresh),
             'access': str(refresh.access_token)
         }
+
+    def avatar_url(self):
+        if self.avatar and hasattr(self.avatar, 'url'):
+            return self.avatar.url
+        else:
+            return '/mediafiles/default/user.jpg'
+
+    def thumb_avatar_url(self):
+        if self.thumb_avatar and hasattr(self.thumb_avatar, 'url'):
+            return self.thumb_avatar.url
+        else:
+            return '/media/default/thumb_user.jpg'
