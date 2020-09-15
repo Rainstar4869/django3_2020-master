@@ -194,7 +194,7 @@ MESSAGE_TAGS = {
 
 # importing logger settings
 try:
-    from .logger_settings import *
+    from .logger_settings import LOGGING
 except Exception as e:
     # in case of any error, pass silently.
     pass
