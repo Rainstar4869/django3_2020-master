@@ -4,9 +4,8 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from .models import User
 
 
-
 class AccountAdmin(BaseUserAdmin):
-    list_display = ('email', 'username',  'is_staff',  'is_superuser')
+    list_display = ('email', 'username', 'is_staff', 'is_superuser')
     list_filter = ('is_superuser',)
 
     fieldsets = (

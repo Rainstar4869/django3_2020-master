@@ -6,6 +6,7 @@ from . import views
 urlpatterns = [
     path('top/', views.index, name="expenses_top"),
     path('export_csv/', views.export_csv, name="export_expense_csv"),
+    path('export_xls/', views.export_xls, name="export_expense_xls"),
     path('add_expense/', views.add_expense, name="add_expense"),
     path('', views.ExpenseListAPIView.as_view(), name="expenses"),
     path('search-expenses', csrf_exempt(views.search_expenses),

@@ -1,5 +1,5 @@
 import csv
-
+import xlwt
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.http import JsonResponse, HttpResponse
@@ -11,6 +11,9 @@ from rest_framework import permissions
 from .permissions import IsOwner
 import datetime
 import json
+import logging
+
+logger = logging.getLogger("error_logger")
 
 
 def export_csv(request):
@@ -25,6 +28,34 @@ def export_csv(request):
     for expense in expenses:
         writer.writerow([expense.amount, expense.description, expense.category, expense.date])
 
+    return response
+
+
+def export_xls(request):
+    response = HttpResponse(content_type='application/ms-excel')
+    response["Content-Disposition"] = "attachment;filename=Expenses" + str(datetime.datetime.now()) + '.xls'
+
+    workbook = xlwt.Workbook(encoding='utf-8')
+    worksheet = workbook.add_sheet("Expense")
+    row_num = 0
+    font_style = xlwt.XFStyle()
+    font_style.font.bold = True
+
+    columns = ["Amount", "Description", "Category", "Date"]
+
+    for col_num in range(len(columns)):
+        worksheet.write(row_num, col_num, columns[col_num], font_style)
+
+    font_style = xlwt.XFStyle()
+
+    rows = Expense.objects.filter(owner=request.user).values_list("amount", "description", "category", "date")
+
+    for row in rows:
+        row_num += 1
+        for col_num in range(len(row)):
+            worksheet.write(row_num, col_num, str(row[col_num]), font_style)
+
+    workbook.save(response)
     return response
 
 
@@ -70,6 +101,9 @@ def expense_category_summary(request):
 @login_required(login_url='/webauth/login/')
 def index(request):
     # categories = Category.objects.all()
+    # print("hello django???")
+    logger.error("hello django???")
+
     expenses = Expense.objects.filter(owner=request.user)
     paginator = Paginator(expenses, 5)
     page_number = request.GET.get('page')

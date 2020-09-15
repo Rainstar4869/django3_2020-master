@@ -191,3 +191,10 @@ DEFAULT_FROM_EMAIL = 'crs@nichiei.services'
 MESSAGE_TAGS = {
     messages.ERROR: "danger"
 }
+
+# importing logger settings
+try:
+    from .logger_settings import *
+except Exception as e:
+    # in case of any error, pass silently.
+    pass
