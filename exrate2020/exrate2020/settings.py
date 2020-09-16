@@ -48,17 +48,20 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
     'rest_framework',
+    'channels',
     "authentication",
     "expenses",
     "income",
     "userstats",
     "upload",
+    "chat",
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
 
 MIDDLEWARE = [
+    'django.middleware.cache.UpdateCacheMiddleware',    # This must be first on the list
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -67,6 +70,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.cache.FetchFromCacheMiddleware', # This must be last
 ]
 
 ROOT_URLCONF = 'exrate2020.urls'
@@ -97,7 +101,27 @@ AUTHENTICATION_BACKENDS = [
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
 WSGI_APPLICATION = 'exrate2020.wsgi.application'
-
+ASGI_APPLICATION = "exrate2020.routings.application"
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            'hosts': [('redis', 6379)],
+        },
+    }
+}
+CACHES = {
+    "default": {
+        # "BACKEND": "django_redis.cache.RedisCache",
+        "BACKEND": "redis_cache.RedisCache",
+        "LOCATION": "redis://redis:6379/0",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            "SERIALIZER": "django_redis.serializers.json.JSONSerializer",
+        }
+    }
+}
+SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 

@@ -61,6 +61,33 @@ services:
       - postgres
     restart: always
 
+  redis:
+    container_name: redis
+    restart: always
+    tty: true
+    build:
+      context: ./system/redis
+    environment:
+      TZ: Asia/Tokyo
+    ports:
+      - 6379:6379
+    volumes:
+      - ./system/redis/redis_data:/var/redis
+      - ./system/redis/conf/6379.conf:/usr/local/etc/redis/redis.conf
+    command: redis-server --appendonly yes
+
+  redis-commander:
+      container_name: redis_commander
+      image: rediscommander/redis-commander:latest
+      environment:
+        - REDIS_HOSTS=local:redis:6379
+        - HTTP_USER=root
+        - HTTP_PASSWORD=Hisshghu3500
+      ports:
+        - 8081:8081
+      depends_on:
+        - redis
+
 volumes:
   static_volume:
   media_volume:

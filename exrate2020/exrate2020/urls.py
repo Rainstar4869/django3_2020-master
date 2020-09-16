@@ -32,6 +32,8 @@ urlpatterns = [
     path('expenses/', include('expenses.urls')),
     path('incomes/', include('income.urls')),
     path('userstats/', include('userstats.urls')),
+
+    path('chat/', include('chat.urls')),
 ]
 
 if bool(settings.DEBUG):
