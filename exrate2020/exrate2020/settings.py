@@ -61,7 +61,7 @@ CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
 
 MIDDLEWARE = [
-    'django.middleware.cache.UpdateCacheMiddleware',    # This must be first on the list
+    'django.middleware.cache.UpdateCacheMiddleware',  # This must be first on the list
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -70,7 +70,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django.middleware.cache.FetchFromCacheMiddleware', # This must be last
+    'django.middleware.cache.FetchFromCacheMiddleware',  # This must be last
 ]
 
 ROOT_URLCONF = 'exrate2020.urls'
