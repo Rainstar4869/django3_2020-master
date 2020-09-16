@@ -1,3 +1,4 @@
 .idea/
 /system/postgres/pgdata/
 /system/pgadmin4/
+/exrate2020/logs/
