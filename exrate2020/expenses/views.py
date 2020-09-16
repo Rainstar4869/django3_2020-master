@@ -104,15 +104,16 @@ def index(request):
     # print("hello django???")
     logger.error("hello django???")
 
+    page_number = request.GET.get('page', 1)
+    per_page = request.GET.get('per_page', 10)
     expenses = Expense.objects.filter(owner=request.user)
-    paginator = Paginator(expenses, 5)
-    page_number = request.GET.get('page')
+    paginator = Paginator(expenses, per_page)
     page_obj = Paginator.get_page(paginator, page_number)
     # currency = UserPreference.objects.get(user=request.user).currency
     context = {
         'expenses': expenses,
         'page_obj': page_obj,
-        # 'currency': currency
+        "per_page": per_page
     }
     return render(request, 'expenses/index.html', context)
 
