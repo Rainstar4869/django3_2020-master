@@ -1,10 +1,12 @@
-import Vue from 'vue'
-import App from './App.vue'
+
+import './styles/style.css';
+import Vue from 'vue';
+import App from './App.vue';
 import router from "./routes";
-import store from "./stores"
+import store from "./stores";
 // import "bootstrap/dist/css/bootstrap.min.css";
 
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
 
 // router.beforeEach((to,from,next)=>{
 //   if(to.matched.some(record => record.meta.requiresLogin)){
