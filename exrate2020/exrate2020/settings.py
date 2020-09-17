@@ -55,7 +55,6 @@ INSTALLED_APPS = [
     "income",
     "userstats",
     "upload",
-    "chat",
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True
