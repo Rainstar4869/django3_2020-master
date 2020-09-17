@@ -14,6 +14,9 @@ from django.core.mail import EmailMessage
 from django.contrib import auth
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 import threading
+import logging
+
+logger = logging.getLogger("error_logger")
 
 
 # Create your views here.
@@ -219,8 +222,11 @@ class LoginView(View):
             if user:
                 if user.is_active:
                     auth.login(request, user)
+
+                    request.session["accessToken"] ="Bearer " + user.tokens()["access"]
                     messages.success(request, 'Welcome, ' + user.username + ' you are now logged in')
-                    return redirect('top')
+                    return redirect("top")
+                    return render(request, 'index.html', {"accessToken": "Bearer " + user.tokens()["access"]})
                 messages.error(
                     request, 'Account is not active,please check your email')
                 return render(request, 'authentication/login.html')

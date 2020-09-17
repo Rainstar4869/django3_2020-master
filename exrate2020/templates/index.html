@@ -3,8 +3,8 @@
 {% load static %}
 
 
-{% block title %}
-    Nichei Services
+{% block accessToken %}
+    <meta name="accessToken" content="{{ request.session.accessToken }}" />
 {% endblock %}
 {% block headerscript %}
 
@@ -16,11 +16,15 @@
         <div class="col-md-4">
 
             <canvas id="myChart" width="160" height="160"></canvas>
+
+                <h1>Request Session</h1>
+
         </div>
         <div class="col-md-4"></div>
     </div>
+    <script src="{% static 'js/statics.js' %}"></script>
 {% endblock %}
 
-{% block afterscript %}
-    <script src="{% static 'js/statics.js' %}"></script>
+{% block footer_end %}
+{#    hello footer end#}
 {% endblock %}
