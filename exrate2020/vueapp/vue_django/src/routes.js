@@ -1,9 +1,9 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 
-import Posts from "./views/Posts";
-import Login from "./views/Login";
-import Logout from "./views/Logout";
+import Posts from "./views/Posts.vue";
+import Login from "./views/Login.vue";
+import Logout from "./views/Logout.vue";
 
 Vue.use(VueRouter);
 

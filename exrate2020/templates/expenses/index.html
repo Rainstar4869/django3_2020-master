@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
-
+{% load render_bundle from webpack_loader%}
 
 
 {% block content %}
@@ -131,11 +131,30 @@
             </div>
             {% endif %}
         </div>
+        <div class="row">
+            <div class="col-md-12">
+                <h1>Before Vue</h1>
+                     {% verbatim %}
+    <div id="app">
+    Why?
+    </div>
+    {% endverbatim %}
+
+
+
+                <h1>After Vue</h1>
+            </div>
+        </div>
     </div>
 
     <script src="{% static 'js/searchExpenses.js' %}"></script>
 
 
 
-
 {% endblock content %}
+
+
+{% block footer_header %}
+	{% render_bundle 'main' %}
+	{% render_bundle 'vendor' %}
+{% endblock %}

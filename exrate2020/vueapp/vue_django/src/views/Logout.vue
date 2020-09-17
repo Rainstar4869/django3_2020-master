@@ -26,7 +26,7 @@
 
 <script>
     // import { getAPI } from '../axios-api'
-import Navbar    from "../components/Navbar";
+import Navbar    from "../components/Navbar.vue";
 export default {
   name: 'Login',
     data () {

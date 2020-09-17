@@ -20,7 +20,7 @@ RUN apk update \
 RUN pip install --upgrade pip
 RUN pip install flake8
 COPY . .
-RUN flake8 --ignore=E501,E231,E302,F401,F841,E127 .
+RUN flake8 --ignore=E501,E231,E302,F401,F841,E127 --exclude=node_modules/* .
 
 # install dependencies
 COPY ./requirements.txt .

@@ -1,5 +1,6 @@
 <template>
   <div class="posts">
+      <h1>Hello Vue</h1>
     <Navbar></Navbar>
       <div class="album py-5 bg-light">
           <div class="container">
@@ -28,7 +29,7 @@
 
 <script>
 
-import Navbar    from "../components/Navbar";
+import Navbar    from "../components/Navbar.vue";
 import { getAPI} from "../axios-api";
 import {mapState} from "vuex"
 
@@ -42,6 +43,9 @@ export default {
       Navbar
   },
     created () {
+      console.log("hello Vue");
+
+
         getAPI.get("/expenses/",{
             headers:{Authorization: "Bearer "+this.$store.state.auth.accessToken}
         }).then(response=>{
