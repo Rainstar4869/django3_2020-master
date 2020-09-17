@@ -2,3 +2,10 @@
 /system/postgres/pgdata/
 /system/pgadmin4/
 /exrate2020/logs/
+/exrate2020/node_modules/
+exrate2020/.DS_Store
+exrate2020/chat/__pycache__/
+exrate2020/chat/migrations/__pycache__/
+exrate2020/staticfiles/js/bundles/
+system/postgres/init.d/
+system/redis/redis_data/
