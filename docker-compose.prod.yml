@@ -3,6 +3,8 @@ version: '3.7'
 services:
   nginx:
     build: ./system/nginx
+    hostname: nginx
+    container_name: nginx
     volumes:
       - ./exrate2020/staticfiles:/home/app/web/staticfiles
       - ./exrate2020/mediafiles:/home/app/web/mediafiles
@@ -28,6 +30,8 @@ services:
       - ./.env.prod
     depends_on:
       - postgres
+      - redis
+      - rabbitmq
 
   postgres:
     hostname: postgres
@@ -100,6 +104,17 @@ services:
     tty: true
     command: ["npm", "run", "serve"]
 
+  rabbitmq:
+    container_name: rabbitmq
+    image:  rabbitmq:3.7.3-management
+    hostname: rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: celery
+      RABBITMQ_DEFAULT_PASS: password123
+      RABBITMQ_DEFAULT_VHOST: my_vhost
+    ports:
+      - 5672:5672
+      - 15672:15672
 
 volumes:
   static_volume:

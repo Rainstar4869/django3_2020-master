@@ -1,9 +1,14 @@
+from allauth.account.signals import user_logged_in
 from django.db import models
 from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager, PermissionsMixin)
+from django.dispatch import receiver
 from imagekit.processors import ResizeToFill
 from imagekit.models import ImageSpecField
 # Create your models here.
 from rest_framework_simplejwt.tokens import RefreshToken
+import logging
+
+logger = logging.getLogger("error_logger")
 
 
 class UserManager(BaseUserManager):
@@ -77,3 +82,10 @@ class User(AbstractBaseUser, PermissionsMixin):
             return self.thumb_avatar.url
         else:
             return '/media/default/thumb_user.jpg'
+
+
+# @receiver(user_logged_in)  # Decorator of receiving signal while user going to logged in
+# def post_login(sender, user, request, response, **kwargs):
+#     logger.error("after user login")
+#     response.set_cookie('team', 'india')  # This will set cookie
+#     return response

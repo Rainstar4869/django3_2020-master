@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     "income",
     "userstats",
     "upload",
+    "testcelery"
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True
@@ -178,6 +179,18 @@ WEBPACK_LOADER = {
         # 'IGNORE': ['.+\.hot-update.js', '.+\.map']
     }
 }
+
+BROKER_TRANSPORT_OPTIONS = {
+    'visibility_timeout': 3600
+}
+# CELERY_ACCEPT_CONTENT = ['application/json']
+# CELERY_TASK_SERIALIZER = ['json']
+CELERY_RESULT_SERIALIZER = 'json'
+# CELERY_RESULT_BACKEND = 'django-db'
+# CELERY_CACHE_BACKEND = 'django-cache'
+CELERY_TIMEZONE = 'Asia/Tokyo'
+DJANGO_CELERY_BEAT_TZ_AWARE = False
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'

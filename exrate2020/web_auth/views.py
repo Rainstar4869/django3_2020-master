@@ -1,3 +1,4 @@
+from django.dispatch import receiver
 from django.shortcuts import render, redirect
 from django.views import View
 from django.http import JsonResponse
@@ -15,11 +16,18 @@ from django.contrib import auth
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 import threading
 import logging
+from django.contrib.auth.signals import user_logged_in
 
 logger = logging.getLogger("error_logger")
 
 
 # Create your views here.
+
+@receiver(user_logged_in)  # Decorator of receiving signal while user going to logged in
+def on_login(sender, user, request, **kwargs):
+    logger.error("after user login")
+    request.session["fav_color"] = "blue"
+
 
 class EmailThread(threading.Thread):
     def __init__(self, email):
@@ -222,8 +230,8 @@ class LoginView(View):
             if user:
                 if user.is_active:
                     auth.login(request, user)
-
-                    request.session["accessToken"] ="Bearer " + user.tokens()["access"]
+                    # request.set_cookie("is_login", True)
+                    # request.set_cookie("accessToken", "Bearer " + user.tokens()["access"])
                     messages.success(request, 'Welcome, ' + user.username + ' you are now logged in')
                     return redirect("top")
                     return render(request, 'index.html', {"accessToken": "Bearer " + user.tokens()["access"]})

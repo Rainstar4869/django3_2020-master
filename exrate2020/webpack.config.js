@@ -21,6 +21,7 @@ const CopyPatterns=[
 module.exports ={
   entry:{
     main:['babel-polyfill', './vueapp/vue_django/src/main.js'],
+    auth:['babel-polyfill', './vueapp/vue_django/src/auth.js'],
   },
   devtool: '#eval-source-map',
   output: {
@@ -123,7 +124,10 @@ module.exports ={
     new ManifestPlugin(),
       new CopyWebpackPlugin({patterns:CopyPatterns}),
     new MiniCssExtractPlugin({ filename: 'css/style.[chunkhash].css' }),
-  	new BundleTracker({filename: './webpack-stats.json'}),
+  	new BundleTracker({
+      path: __dirname,
+      filename: './assets/webpack-stats.json',
+    }),
     new CleanWebpackPlugin(),
 
   ],
