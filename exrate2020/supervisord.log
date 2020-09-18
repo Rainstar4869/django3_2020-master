@@ -103,3 +103,23 @@
 2020-09-18 09:16:54,646 INFO success: myapp entered RUNNING state, process has stayed up for > than 3 seconds (startsecs)
 2020-09-18 09:17:01,986 INFO success: flower entered RUNNING state, process has stayed up for > than 10 seconds (startsecs)
 2020-09-18 09:17:01,987 INFO success: worker entered RUNNING state, process has stayed up for > than 10 seconds (startsecs)
+2020-09-18 09:44:02,800 INFO supervisord started with pid 1
+2020-09-18 09:44:03,803 INFO spawned: 'flower' with pid 7
+2020-09-18 09:44:03,805 INFO spawned: 'myapp' with pid 8
+2020-09-18 09:44:03,807 INFO spawned: 'worker' with pid 9
+2020-09-18 09:44:07,314 INFO success: myapp entered RUNNING state, process has stayed up for > than 3 seconds (startsecs)
+2020-09-18 09:44:14,344 INFO success: flower entered RUNNING state, process has stayed up for > than 10 seconds (startsecs)
+2020-09-18 09:44:14,345 INFO success: worker entered RUNNING state, process has stayed up for > than 10 seconds (startsecs)
+2020-09-18 09:47:45,038 WARN received SIGTERM indicating exit request
+2020-09-18 09:47:45,039 INFO waiting for flower, myapp, worker to die
+2020-09-18 09:47:46,812 INFO stopped: worker (exit status 0)
+2020-09-18 09:47:46,813 INFO reaped unknown pid 117 (exit status 1)
+2020-09-18 09:47:48,034 INFO stopped: myapp (exit status 0)
+2020-09-18 09:47:48,254 INFO stopped: flower (exit status 0)
+2020-09-18 09:47:48,856 INFO supervisord started with pid 1
+2020-09-18 09:47:49,860 INFO spawned: 'flower' with pid 7
+2020-09-18 09:47:49,863 INFO spawned: 'myapp' with pid 8
+2020-09-18 09:47:49,867 INFO spawned: 'worker' with pid 9
+2020-09-18 09:47:53,457 INFO success: myapp entered RUNNING state, process has stayed up for > than 3 seconds (startsecs)
+2020-09-18 09:48:00,843 INFO success: flower entered RUNNING state, process has stayed up for > than 10 seconds (startsecs)
+2020-09-18 09:48:00,844 INFO success: worker entered RUNNING state, process has stayed up for > than 10 seconds (startsecs)

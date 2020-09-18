@@ -230,9 +230,6 @@ class LoginView(View):
             if user:
                 if user.is_active:
                     auth.login(request, user)
-                    request.session.set
-                    # request.set_cookie("is_login", True)
-                    # request.set_cookie("accessToken", "Bearer " + user.tokens()["access"])
                     messages.success(request, 'Welcome, ' + user.username + ' you are now logged in')
                     return redirect("top")
                     return render(request, 'index.html', {"accessToken": "Bearer " + user.tokens()["access"]})

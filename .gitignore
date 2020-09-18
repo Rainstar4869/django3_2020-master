@@ -9,3 +9,4 @@ exrate2020/chat/migrations/__pycache__/
 exrate2020/staticfiles/js/bundles/
 system/postgres/init.d/
 system/redis/redis_data/
+exrate2020/supervisord.log
