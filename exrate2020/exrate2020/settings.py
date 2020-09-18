@@ -74,6 +74,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.cache.FetchFromCacheMiddleware',  # This must be last
+    'middlewares.setAccessToken.SimpleMiddleware'
 ]
 
 ROOT_URLCONF = 'exrate2020.urls'
@@ -104,7 +105,7 @@ AUTHENTICATION_BACKENDS = [
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
 WSGI_APPLICATION = 'exrate2020.wsgi.application'
-ASGI_APPLICATION = "exrate2020.routings.application"
+# ASGI_APPLICATION = "exrate2020.routings.application"
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
@@ -188,8 +189,8 @@ BROKER_TRANSPORT_OPTIONS = {
 # CELERY_ACCEPT_CONTENT = ['application/json']
 # CELERY_TASK_SERIALIZER = ['json']
 CELERY_RESULT_SERIALIZER = 'json'
-# CELERY_RESULT_BACKEND = 'django-db'
-# CELERY_CACHE_BACKEND = 'django-cache'
+CELERY_RESULT_BACKEND = 'django-db'
+CELERY_CACHE_BACKEND = 'django-cache'
 CELERY_TIMEZONE = 'Asia/Tokyo'
 DJANGO_CELERY_BEAT_TZ_AWARE = False
 CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'

@@ -2,7 +2,7 @@ from django.http import HttpResponse
 import logging
 
 # Get an instance of a logger
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("error_logger")
 
 
 class SimpleMiddleware:
@@ -17,6 +17,11 @@ class SimpleMiddleware:
 
         logger.warning('---- 1 ----')
         response = self.get_response(request)
+        user = request.user
+        if user.is_authenticated:
+            response.set_cookie('accessToken',  "Bearer " + user.tokens()["access"], 5)
+        else:
+            response.delete_cookie('accessToken')
 
         logger.warning('---- 4 ----')
 
