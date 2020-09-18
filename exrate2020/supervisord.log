@@ -1,0 +1,105 @@
+2020-09-18 08:30:44,670 INFO supervisord started with pid 1
+2020-09-18 08:30:45,674 INFO spawnerr: can't find command '/home/app/web/flower'
+2020-09-18 08:30:45,675 INFO spawnerr: can't find command '/home/app/web/gunicorn'
+2020-09-18 08:30:45,676 INFO spawnerr: can't find command '/home/app/web/celery'
+2020-09-18 08:30:46,680 INFO spawnerr: can't find command '/home/app/web/flower'
+2020-09-18 08:30:46,682 INFO spawnerr: can't find command '/home/app/web/gunicorn'
+2020-09-18 08:30:46,683 INFO spawnerr: can't find command '/home/app/web/celery'
+2020-09-18 08:30:48,688 INFO spawnerr: can't find command '/home/app/web/flower'
+2020-09-18 08:30:48,688 INFO spawnerr: can't find command '/home/app/web/gunicorn'
+2020-09-18 08:30:48,689 INFO spawnerr: can't find command '/home/app/web/celery'
+2020-09-18 08:30:51,694 INFO spawnerr: can't find command '/home/app/web/flower'
+2020-09-18 08:30:51,694 INFO gave up: flower entered FATAL state, too many start retries too quickly
+2020-09-18 08:30:51,695 INFO spawnerr: can't find command '/home/app/web/gunicorn'
+2020-09-18 08:30:51,695 INFO gave up: myapp entered FATAL state, too many start retries too quickly
+2020-09-18 08:30:51,696 INFO spawnerr: can't find command '/home/app/web/celery'
+2020-09-18 08:30:51,697 INFO gave up: worker entered FATAL state, too many start retries too quickly
+2020-09-18 08:31:52,863 WARN received SIGTERM indicating exit request
+2020-09-18 08:31:53,441 INFO supervisord started with pid 1
+2020-09-18 08:31:54,446 INFO spawnerr: can't find command '/home/app/web/flower'
+2020-09-18 08:31:54,448 INFO spawnerr: can't find command '/home/app/web/gunicorn'
+2020-09-18 08:31:54,450 INFO spawnerr: can't find command '/home/app/web/celery'
+2020-09-18 08:31:55,453 INFO spawnerr: can't find command '/home/app/web/flower'
+2020-09-18 08:31:55,455 INFO spawnerr: can't find command '/home/app/web/gunicorn'
+2020-09-18 08:31:55,456 INFO spawnerr: can't find command '/home/app/web/celery'
+2020-09-18 08:31:57,461 INFO spawnerr: can't find command '/home/app/web/flower'
+2020-09-18 08:31:57,463 INFO spawnerr: can't find command '/home/app/web/gunicorn'
+2020-09-18 08:31:57,465 INFO spawnerr: can't find command '/home/app/web/celery'
+2020-09-18 08:32:00,472 INFO spawnerr: can't find command '/home/app/web/flower'
+2020-09-18 08:32:00,473 INFO gave up: flower entered FATAL state, too many start retries too quickly
+2020-09-18 08:32:00,475 INFO spawnerr: can't find command '/home/app/web/gunicorn'
+2020-09-18 08:32:00,475 INFO gave up: myapp entered FATAL state, too many start retries too quickly
+2020-09-18 08:32:00,477 INFO spawnerr: can't find command '/home/app/web/celery'
+2020-09-18 08:32:00,477 INFO gave up: worker entered FATAL state, too many start retries too quickly
+2020-09-18 08:32:42,575 WARN received SIGTERM indicating exit request
+2020-09-18 08:32:43,106 INFO supervisord started with pid 1
+2020-09-18 08:32:44,110 INFO spawnerr: can't find command '/home/app/web/flower'
+2020-09-18 08:32:44,113 INFO spawnerr: can't find command '/home/app/web/gunicorn'
+2020-09-18 08:32:44,114 INFO spawnerr: can't find command '/home/app/web/celery'
+2020-09-18 08:32:45,118 INFO spawnerr: can't find command '/home/app/web/flower'
+2020-09-18 08:32:45,120 INFO spawnerr: can't find command '/home/app/web/gunicorn'
+2020-09-18 08:32:45,121 INFO spawnerr: can't find command '/home/app/web/celery'
+2020-09-18 08:32:47,127 INFO spawnerr: can't find command '/home/app/web/flower'
+2020-09-18 08:32:47,129 INFO spawnerr: can't find command '/home/app/web/gunicorn'
+2020-09-18 08:32:47,130 INFO spawnerr: can't find command '/home/app/web/celery'
+2020-09-18 08:32:50,136 INFO spawnerr: can't find command '/home/app/web/flower'
+2020-09-18 08:32:50,137 INFO gave up: flower entered FATAL state, too many start retries too quickly
+2020-09-18 08:32:50,138 INFO spawnerr: can't find command '/home/app/web/gunicorn'
+2020-09-18 08:32:50,139 INFO gave up: myapp entered FATAL state, too many start retries too quickly
+2020-09-18 08:32:50,140 INFO spawnerr: can't find command '/home/app/web/celery'
+2020-09-18 08:32:50,140 INFO gave up: worker entered FATAL state, too many start retries too quickly
+2020-09-18 08:33:10,178 WARN received SIGTERM indicating exit request
+2020-09-18 08:38:25,971 INFO supervisord started with pid 1
+2020-09-18 08:38:26,975 INFO spawned: 'flower' with pid 7
+2020-09-18 08:38:26,978 INFO spawned: 'myapp' with pid 8
+2020-09-18 08:38:26,981 INFO spawned: 'worker' with pid 9
+2020-09-18 08:38:30,220 INFO success: myapp entered RUNNING state, process has stayed up for > than 3 seconds (startsecs)
+2020-09-18 08:38:37,939 INFO success: flower entered RUNNING state, process has stayed up for > than 10 seconds (startsecs)
+2020-09-18 08:38:37,941 INFO success: worker entered RUNNING state, process has stayed up for > than 10 seconds (startsecs)
+2020-09-18 08:54:14,758 WARN received SIGTERM indicating exit request
+2020-09-18 08:54:14,759 INFO waiting for flower, myapp, worker to die
+2020-09-18 08:54:16,583 INFO stopped: worker (exit status 0)
+2020-09-18 08:54:16,584 INFO reaped unknown pid 117 (exit status 1)
+2020-09-18 08:54:16,908 INFO stopped: myapp (exit status 0)
+2020-09-18 08:54:17,161 INFO stopped: flower (exit status 0)
+2020-09-18 08:58:12,601 INFO supervisord started with pid 1
+2020-09-18 08:58:13,604 INFO spawned: 'myapp' with pid 8
+2020-09-18 08:58:13,607 INFO spawned: 'worker' with pid 9
+2020-09-18 08:58:16,116 INFO exited: worker (exit status 1; not expected)
+2020-09-18 08:58:17,118 INFO success: myapp entered RUNNING state, process has stayed up for > than 3 seconds (startsecs)
+2020-09-18 08:58:17,120 INFO spawned: 'worker' with pid 59
+2020-09-18 08:58:19,195 INFO exited: worker (exit status 1; not expected)
+2020-09-18 08:58:21,201 INFO spawned: 'worker' with pid 107
+2020-09-18 08:58:24,352 INFO exited: worker (exit status 1; not expected)
+2020-09-18 08:58:27,360 INFO spawned: 'worker' with pid 155
+2020-09-18 08:58:29,496 INFO exited: worker (exit status 1; not expected)
+2020-09-18 08:58:30,499 INFO gave up: worker entered FATAL state, too many start retries too quickly
+2020-09-18 09:01:49,714 WARN received SIGTERM indicating exit request
+2020-09-18 09:01:49,715 INFO waiting for myapp to die
+2020-09-18 09:01:50,938 INFO stopped: myapp (exit status 0)
+2020-09-18 09:05:41,351 INFO supervisord started with pid 1
+2020-09-18 09:05:42,353 INFO spawned: 'flower' with pid 8
+2020-09-18 09:05:42,356 INFO spawned: 'myapp' with pid 9
+2020-09-18 09:05:42,358 INFO spawned: 'worker' with pid 10
+2020-09-18 09:05:45,038 INFO exited: flower (exit status 1; not expected)
+2020-09-18 09:05:45,446 INFO success: myapp entered RUNNING state, process has stayed up for > than 3 seconds (startsecs)
+2020-09-18 09:05:46,459 INFO spawned: 'flower' with pid 116
+2020-09-18 09:05:48,642 INFO exited: flower (exit status 1; not expected)
+2020-09-18 09:05:50,647 INFO spawned: 'flower' with pid 165
+2020-09-18 09:05:52,483 INFO success: worker entered RUNNING state, process has stayed up for > than 10 seconds (startsecs)
+2020-09-18 09:05:52,747 INFO exited: flower (exit status 1; not expected)
+2020-09-18 09:05:56,726 INFO spawned: 'flower' with pid 214
+2020-09-18 09:05:58,797 INFO exited: flower (exit status 1; not expected)
+2020-09-18 09:05:59,800 INFO gave up: flower entered FATAL state, too many start retries too quickly
+2020-09-18 09:13:00,142 WARN received SIGTERM indicating exit request
+2020-09-18 09:13:00,144 INFO waiting for myapp, worker to die
+2020-09-18 09:13:01,948 INFO stopped: worker (exit status 0)
+2020-09-18 09:13:01,948 INFO reaped unknown pid 115 (exit status 1)
+2020-09-18 09:13:02,269 INFO stopped: myapp (exit status 0)
+2020-09-18 09:16:50,573 INFO supervisord started with pid 1
+2020-09-18 09:16:51,575 INFO spawned: 'flower' with pid 7
+2020-09-18 09:16:51,579 INFO spawned: 'myapp' with pid 8
+2020-09-18 09:16:51,583 INFO spawned: 'worker' with pid 9
+2020-09-18 09:16:54,646 INFO success: myapp entered RUNNING state, process has stayed up for > than 3 seconds (startsecs)
+2020-09-18 09:17:01,986 INFO success: flower entered RUNNING state, process has stayed up for > than 10 seconds (startsecs)
+2020-09-18 09:17:01,987 INFO success: worker entered RUNNING state, process has stayed up for > than 10 seconds (startsecs)

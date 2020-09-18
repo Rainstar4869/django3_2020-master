@@ -14,4 +14,6 @@ fi
 #python -m pip install --upgrade pip
 #python manage.py collectstatic --no-input --clear
 /usr/local/bin/python -m pip install --upgrade pip
+celery -A exrate2020 worker -l info
+
 exec "$@"

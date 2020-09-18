@@ -12,15 +12,14 @@ WORKDIR /usr/src/app
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
-# install psycopg2 dependencies
-RUN apk update \
-    && apk add postgresql-dev gcc g++ python3-dev musl-dev zlib-dev jpeg-dev libffi-dev
+RUN apk update
+RUN apk add postgresql-dev gcc g++ python3-dev musl-dev zlib-dev jpeg-dev libffi-dev
 
 # lint
 RUN pip install --upgrade pip
-RUN pip install flake8
-COPY . .
-RUN flake8 --ignore=E501,E231,E302,F401,F841,E127 --exclude=node_modules/* .
+#RUN pip install flake8
+#COPY . .
+#RUN flake8 --ignore=E501,E231,E302,F401,F841,E127 --exclude=node_modules/* .
 
 # install dependencies
 COPY ./requirements.txt .
@@ -52,13 +51,15 @@ WORKDIR $APP_HOME
 
 
 # install dependencies
-RUN apk --update  add libpq
+RUN apk --update  add libpq supervisor
 RUN apk add openssl-dev
 RUN apk add gcc g++
 RUN apk add libjpeg
 RUN apk  --no-cache add cairo-dev pango-dev gdk-pixbuf
 
-
+RUN mkdir -p /etc/supervisor/
+COPY /system/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+COPY /system/supervisord.conf /etc/supervisord.conf
 
 COPY --from=builder /usr/src/app/wheels /wheels
 COPY --from=builder /usr/src/app/requirements.txt .
@@ -78,4 +79,6 @@ RUN chown -R app:app $APP_HOME
 USER app
 
 # run entrypoint.prod.sh
-ENTRYPOINT ["/home/app/web/entrypoint.prod.sh"]
+# ENTRYPOINT ["/home/app/web/entrypoint.prod.sh"]
+
+CMD ["/usr/bin/supervisord", "-c","/etc/supervisor/conf.d/supervisord.conf"]

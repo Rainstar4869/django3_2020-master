@@ -19,13 +19,16 @@ services:
     build:
       context: ./exrate2020
       dockerfile: Dockerfile.prod
-    command: gunicorn exrate2020.wsgi:application --bind 0.0.0.0:8000
+#    command: gunicorn exrate2020.wsgi:application --bind 0.0.0.0:8000
     volumes:
       - ./exrate2020/:/home/app/web
       - ./exrate2020/staticfiles:/home/app/web/staticfiles
       - ./exrate2020/mediafiles:/home/app/web/mediafiles
+      - ./exrate2020/logs:/etc/supervisor/logs
     expose:
       - 8000
+    ports:
+      - 5555:5555
     env_file:
       - ./.env.prod
     depends_on:
@@ -116,6 +119,3 @@ services:
       - 5672:5672
       - 15672:15672
 
-volumes:
-  static_volume:
-  media_volume:

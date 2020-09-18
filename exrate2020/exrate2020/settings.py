@@ -34,6 +34,8 @@ AUTH_USER_MODEL = "authentication.User"
 
 INSTALLED_APPS = [
 
+    'channels',
+    "testcelery",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -49,13 +51,13 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
     'rest_framework',
     'webpack_loader',
-    'channels',
     "authentication",
+    'django_celery_results',
+    'django_celery_beat',
     "expenses",
     "income",
     "userstats",
     "upload",
-    "testcelery"
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True
