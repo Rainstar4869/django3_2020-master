@@ -31,6 +31,9 @@ emailField.addEventListener("keyup", (e) => {
     fetch("/webauth/validate-email", {
       body: JSON.stringify({ email: emailVal }),
       method: "POST",
+      headers: {
+			'Authorization': data.token_type + ' ' + data.access_token,
+		}
     })
       .then((res) => res.json())
       .then((data) => {

@@ -1,3 +1,6 @@
+import { getCookie } from './utils.js';
+
+const AccessToken=getCookie("accessToken");
 const searchField = document.querySelector("#searchField");
 
 const tableOutput = document.querySelector(".table-output");
@@ -7,6 +10,9 @@ tableOutput.style.display = "none";
 const noResults = document.querySelector(".no-results");
 const tbody = document.querySelector(".table-body");
 
+
+console.log("inside search page");
+console.log(AccessToken);
 searchField.addEventListener("keyup", (e) => {
   const searchValue = e.target.value;
 

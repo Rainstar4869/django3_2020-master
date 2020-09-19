@@ -1,3 +1,7 @@
+import { getCookie } from './utils.js';
+
+
+
 const renderChart=(labels,data)=>{
 var ctx = document.getElementById('myChart').getContext('2d');
 var myChart = new Chart(ctx, {
@@ -44,7 +48,7 @@ const getChartData=()=>{
     fetch("expenses/category_summary/").then((res)=>res.json())
         .then((results)=>{
            console.log("get data");
-
+            console.log(getCookie("accessToken"));
            const chart_data= results.expense_category_data;
            const [labels,data]=[Object.keys(chart_data),Object.values(chart_data)];
 
@@ -55,4 +59,5 @@ const getChartData=()=>{
         });
 };
 
-document.onload=getChartData()
+document.onload=getChartData();
+
