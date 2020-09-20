@@ -4,7 +4,9 @@ from django.views.decorators.csrf import csrf_exempt
 from . import views
 
 urlpatterns = [
-    path('top/', views.index, name="expenses_top"),
+    # path('top/', views.index, name="expenses_top"),
+    path('top/', views.ExpenseListView, name="expenses_top"),
+
     path('export_csv/', views.export_csv, name="export_expense_csv"),
     path('export_xls/', views.export_xls, name="export_expense_xls"),
     path('export_pdf/', views.export_pdf, name="export_expense_pdf"),

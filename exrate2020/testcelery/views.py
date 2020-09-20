@@ -6,4 +6,4 @@ from .tasks import send_review_email_task
 
 
 def test_celery_mail(name, email, review):
-    send_review_email_task(name, email, review)
+    send_review_email_task.delay(name, email, review)

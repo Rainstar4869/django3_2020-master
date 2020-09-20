@@ -4,6 +4,8 @@ import Vue from 'vue';
 import App from './App.vue';
 import router from "./routes";
 import store from "./stores";
+import {getCookie} from "./utils/common.js";
+
 // import "bootstrap/dist/css/bootstrap.min.css";
 
 Vue.config.productionTip = false;

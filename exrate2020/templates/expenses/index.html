@@ -23,7 +23,9 @@
                 <a href="{% url 'add_expense' %}" class="btn btn-primary">Add Expense</a>
             </div>
         </div>
-
+        <div>
+            {{ posts }}
+        </div>
         <div class="container">
             {% include 'partials/_messages.html' %}
             {% if expenses.count %}
@@ -68,7 +70,7 @@
                         </thead>
 
                         <tbody>
-                        {% for expense in page_obj %}
+                        {% for expense in posts %}
                             <tr>
                                 <td>{{ expense.amount }}</td>
                                 <td>{{ expense.category }}</td>
@@ -134,27 +136,22 @@
         <div class="row">
             <div class="col-md-12">
                 <h1>Before Vue</h1>
-                     {% verbatim %}
-    <div id="app">
-    Why?
-    </div>
-    {% endverbatim %}
-
-
-
+                    <div id="app">
+                        Why?
+                    </div>
                 <h1>After Vue</h1>
             </div>
         </div>
     </div>
 
-    <script src="{% static 'js/searchExpenses.js' %}"></script>
+    <script src="{% static 'js/searchExpenses.js' %}" type="module"></script>
 
+    <script src="{% static 'bundles/main.js' %}"></script>
+    <script src="{% static 'bundles/vendor.js' %}"></script>
 
 
 {% endblock content %}
 
 
 {% block footer_header %}
-	{% render_bundle 'main' %}
-	{% render_bundle 'vendor' %}
 {% endblock %}
