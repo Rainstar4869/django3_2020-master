@@ -6,6 +6,7 @@ from django.db.models import Sum
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render
 from django.template.loader import render_to_string
+from django.utils.decorators import method_decorator
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from django.views.generic import ListView
 from .serializers import ExpenseSerializer
@@ -129,28 +130,29 @@ def expense_category_summary(request):
     }, safe=False)
 
 
-@login_required(login_url='/webauth/login/')
+@method_decorator(login_required(login_url='/webauth/login/'), name="dispatch")
 class ExpenseListView(ListView):
     model = Expense
-    context_object_name = "posts"
-    paginate_by = 4
+    context_object_name = "expenses"
+    paginate_by = 10
+    template_name = "expenses/index.html"
 
 
 # def index(request):
-    # logger.error("hello django???")
-    #
-    # page_number = request.GET.get('page', 1)
-    # per_page = request.GET.get('per_page', 10)
-    # expenses = Expense.objects.filter(owner=request.user)
-    # paginator = Paginator(expenses, per_page)
-    # page_obj = Paginator.get_page(paginator, page_number)
-    # # currency = UserPreference.objects.get(user=request.user).currency
-    # context = {
-    #     'expenses': expenses,
-    #     'page_obj': page_obj,
-    #     "per_page": per_page
-    # }
-    # return render(request, 'expenses/index.html', context)
+# logger.error("hello django???")
+#
+# page_number = request.GET.get('page', 1)
+# per_page = request.GET.get('per_page', 10)
+# expenses = Expense.objects.filter(owner=request.user)
+# paginator = Paginator(expenses, per_page)
+# page_obj = Paginator.get_page(paginator, page_number)
+# # currency = UserPreference.objects.get(user=request.user).currency
+# context = {
+#     'expenses': expenses,
+#     'page_obj': page_obj,
+#     "per_page": per_page
+# }
+# return render(request, 'expenses/index.html', context)
 
 
 def search_expenses(request):
