@@ -1,30 +1,29 @@
+require('./bootstrap');
+
 
 import './styles/style.css';
 import Vue from 'vue';
-import App from './App.vue';
-import router from "./routes";
 import store from "./stores";
-import {getCookie} from "./utils/common.js";
+import Hello from './components/Hello.vue';
+import Searchexpenses from './components/SearchExpenses.vue';
 
-// import "bootstrap/dist/css/bootstrap.min.css";
-
-Vue.config.productionTip = false;
-
-// router.beforeEach((to,from,next)=>{
-//   if(to.matched.some(record => record.meta.requiresLogin)){
-//         console.log("auth/loggedIn");
-//     if(!store.getters["auth/loggedIn"]){
-//       next({name:"login"});
-//     }else{
-//       next();
-//     }
-//   }else{
-//     next();
-//   }
-// });
 
 new Vue({
-  render: h => h(App),
-  router,
+  el: '#app',
   store,
-}).$mount('#app')
+  components:{
+    Hello,
+    Searchexpenses,
+  }
+})
+// const routes = [
+//   { component: ArticleList, path: '/article/', },
+//   { component: AuthorList,  path: '/author/',  },
+//   { component: ArticleItem, path: '/article/:slug/', },
+//   { component: AuthorItem,  path: '/author/:slug/',  },
+// ]
+//
+// const router = new VueRouter({
+//   mode: 'history',
+//   routes: routes,
+// })

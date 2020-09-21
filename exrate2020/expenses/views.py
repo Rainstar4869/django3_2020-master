@@ -134,8 +134,11 @@ def expense_category_summary(request):
 class ExpenseListView(ListView):
     model = Expense
     context_object_name = "expenses"
-    paginate_by = 10
     template_name = "expenses/index.html"
+    paginate_by = 10
+
+    def get_paginate_by(self, queryset):
+        return self.request.GET.get('per_page', self.paginate_by)
 
 
 # def index(request):

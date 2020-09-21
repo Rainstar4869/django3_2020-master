@@ -4,9 +4,9 @@
 
 
 {% block content %}
-    <div class="container mt-4">
+    <div class="container my-lg-5">
         <div class="row">
-            <div class="col-md-10">
+            <div class="col-md-12">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item">
@@ -18,132 +18,85 @@
                     </ol>
                 </nav>
             </div>
-
-            <div class="col-md-2">
-                <a href="{% url 'add_expense' %}" class="btn btn-primary">Add Expense</a>
-            </div>
-        </div>
-        <div>
         </div>
         <div class="container">
             {% include 'partials/_messages.html' %}
             {% if expenses.count %}
-                <div class="row">
+                <div class="row mb-lg-3">
                     <div class="col-md-12">
 
-                <a href="{% url 'export_expense_csv' %}" class="btn btn-secondary">Export CSV</a>
-                <a href="{% url 'export_expense_xls' %}" class="btn btn-primary">Export XLS</a>
-                <a href="{% url 'export_expense_pdf' %}" class="btn btn-primary">Export PDF</a>
+                        <a href="{% url 'export_expense_csv' %}" class="btn btn-secondary">Export CSV</a>
+                        <a href="{% url 'export_expense_xls' %}" class="btn btn-primary">Export XLS</a>
+                        <a href="{% url 'export_expense_pdf' %}" class="btn btn-primary">Export PDF</a>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-12">
-
-                        <div class="dropdown float-right">
-                            <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                               PerPage
-                            </a>
-
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                <a class="dropdown-item" href="?page=1&per_page=10">10</a>
-                                <a class="dropdown-item" href="?page=1&per_page=50">50</a>
-                                <a class="dropdown-item" href="?page=1&per_page=100">100</a>
-                            </div>
-                        </div>
-                        <div class="form-group float-right">
-                            <input type="text" class="form-control" id="searchField" placeholder="Search">
-                        </div>
-                    </div>
+                <div id="app">
+                    <searchexpenses user="lionhu"></searchexpenses>
                 </div>
-                <div class="app-table">
-                    <table class="table table-stripped table-hover">
-                        <thead>
-                        <tr>
-                            <th>Amount</th>
-                            <th>Category</th>
-                            <th>Description</th>
-                            <th>Date</th>
-                            <th></th>
-                        </tr>
-                        </thead>
-
-                        <tbody>
-                        {% for expense in expenses %}
+                <div class="app_table_section">
+                    <div class="app-table">
+                        <table class="table table-stripped table-hover">
+                            <thead>
                             <tr>
-                                <td>{{ expense.amount }}</td>
-                                <td>{{ expense.category }}</td>
-                                <td>{{ expense.description }}</td>
-                                <td>{{ expense.date }}</td>
-
-                                <td>
-                                    {#                                <a href="{% url 'expense-edit' expense.id %}" class="btn btn-secondary btn-sm">Edit</a>#}
-                                </td>
+                                <th>Amount</th>
+                                <th>Category</th>
+                                <th>Description</th>
+                                <th>Date</th>
+                                <th></th>
                             </tr>
+                            </thead>
 
-                        {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
+                            <tbody>
+                            {% for expense in expenses %}
+                                <tr>
+                                    <td>{{ expense.amount }}</td>
+                                    <td>{{ expense.category }}</td>
+                                    <td>{{ expense.description }}</td>
+                                    <td>{{ expense.date }}</td>
 
-                <p class="no-results" style="display: none;">No results </p>
-                <div class="table-output">
-                    <table class="table table-stripped table-hover">
-                        <thead>
-                        <tr>
-                            <th>Amount</th>
-                            <th>Category</th>
-                            <th>Description</th>
-                            <th>Date</th>
-                            <th></th>
-                        </tr>
-                        </thead>
+                                    <td>
+                                        {#                                <a href="{% url 'expense-edit' expense.id %}" class="btn btn-secondary btn-sm">Edit</a>#}
+                                    </td>
+                                </tr>
 
-                        <tbody class="table-body">
-
-
-                        </tbody>
-                    </table>
-                </div>
-
-            <div class="pagination-container">
-            <div class="">
-                Showing page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
-            </div>
-            <ul class="pagination align-right float-right mr-auto">
-                {% if page_obj.has_previous %}
-                    <li {% if page_obj.number == 1 %} class="page-item active" {% endif %}>
-                        <a class="page-link" href="?page=1&per_page={{ per_page }}">&laquo;1</a></li>
-                    <li class="page-item">
-                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}&per_page={{ per_page }}">Previous</a>
-                    </li>
-                {% endif %}
-
-                {% if page_obj.has_next %}
-                    <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}&per_page={{ per_page }}">Next</a>
-                    </li>
-                    <li class="page-item"><a class="page-link"
-                                             href="?page={{ page_obj.paginator.num_pages }}&per_page={{ per_page }}">{{ page_obj.paginator.num_pages }}
-                        &raquo;</a></li>
-                {% endif %}
-
-
-            </ul>
-            </div>
-            {% endif %}
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <h1>Before Vue</h1>
-                    <div id="app">
-                        Why?
+                            {% endfor %}
+                            </tbody>
+                        </table>
                     </div>
-                <h1>After Vue</h1>
-            </div>
+
+                    <div class="pagination-container">
+                        <div class="">
+                            Showing page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+                        </div>
+                        <ul class="pagination align-right float-right mr-auto">
+                            {% if page_obj.has_previous %}
+                                <li {% if page_obj.number == 1 %} class="page-item active" {% endif %}>
+                                    <a class="page-link" href="?page=1&per_page={{ per_page }}">&laquo;1</a></li>
+                                <li class="page-item">
+                                    <a class="page-link"
+                                       href="?page={{ page_obj.previous_page_number }}&per_page={{ per_page }}">Previous</a>
+                                </li>
+                            {% endif %}
+
+                            {% if page_obj.has_next %}
+                                <li class="page-item"><a class="page-link"
+                                                         href="?page={{ page_obj.next_page_number }}&per_page={{ per_page }}">Next</a>
+                                </li>
+                                <li class="page-item"><a class="page-link"
+                                                         href="?page={{ page_obj.paginator.num_pages }}&per_page={{ per_page }}">{{ page_obj.paginator.num_pages }}
+                                    &raquo;</a></li>
+                            {% endif %}
+
+
+                        </ul>
+                    </div>
+                </div>
+
+            {% endif %}
         </div>
     </div>
 
-    <script src="{% static 'js/searchExpenses.js' %}" type="module"></script>
+{#    <script src="{% static 'js/searchExpenses.js' %}" type="module"></script>#}
 
     <script src="{% static 'bundles/main.js' %}"></script>
     <script src="{% static 'bundles/vendor.js' %}"></script>
