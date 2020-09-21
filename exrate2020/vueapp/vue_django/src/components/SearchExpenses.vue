@@ -77,9 +77,6 @@ export default {
       }
     },
     methods:{
-        ready_for_search(){
-          console.log("ready for search");
-        },
         search_db() {
             const appTable = document.querySelector(".app_table_section");
             console.log(appTable);
