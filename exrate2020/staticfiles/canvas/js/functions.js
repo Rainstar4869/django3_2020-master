@@ -155,7 +155,7 @@ var SEMICOLON = SEMICOLON || {};
 			}
 
 			let pluginFnExec = Function( 'return ' + settings.pluginfn )(),
-				jsPath = 'js/', file,
+				jsPath = '/staticfiles/canvas/js/', file,
 				disableAJAX = false;
 
 			if( typeof scwJsPath !== 'undefined' ) {

@@ -55,12 +55,15 @@ class RegistrationView(View):
             'fieldValues': request.POST
         }
 
+        logger.error("register new user: " + str(username))
+
         if not User.objects.filter(username=username).exists():
             if not User.objects.filter(email=email).exists():
                 if len(password) < 6:
                     messages.error(request, 'Password too short')
                     return render(request, 'authentication/register.html', context)
 
+                logger.error("read to register  ")
                 user = User.objects.create_user(username=username, email=email)
                 user.set_password(password)
                 user.is_active = False
@@ -91,6 +94,10 @@ class RegistrationView(View):
                 messages.success(request, 'Account successfully created')
                 return render(request, 'authentication/register.html')
 
+            messages.error(request, "Email already exists!")
+            return render(request, 'authentication/register.html')
+
+        messages.error(request, "User already exists!")
         return render(request, 'authentication/register.html')
 
 

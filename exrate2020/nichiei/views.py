@@ -11,7 +11,6 @@ logger = logging.getLogger("error")
 
 class ContactView(View):
     def get(self, request):
-        messages.info(request, "Fill in the following form.")
         return render(request, "nichiei/contact.html")
 
     def post(self, request):

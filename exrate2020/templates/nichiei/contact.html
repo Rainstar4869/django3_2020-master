@@ -1,160 +1,103 @@
-{% extends 'nichiei/layouts/base.html' %}
+{% extends 'base_auth.html' %}
 {% load static %}
+
+
 {% block content %}
+		<section id="content">
+			<div class="content-wrap py-0">
 
-		<!-- Page Title
-		============================================= -->
-		<section id="page-title">
+				<div class="section p-0 m-0 h-100 position-absolute" style="background: url({% static 'canvas/images/parallax/home/1.jpg' %}) center center no-repeat; background-size: cover;"></div>
 
-			<div class="container clearfix">
-				<h1>Contact</h1>
-				<span>Get in Touch with Us</span>
-				<ol class="breadcrumb">
-					<li class="breadcrumb-item"><a href="/">Home</a></li>
-					<li class="breadcrumb-item active" aria-current="page">Contact</li>
-				</ol>
-			</div>
+				<div class="section bg-transparent min-vh-100 p-0 m-0">
+					<div class="vertical-middle">
+						<div class="container-fluid py-5 mx-auto">
+							<div class="center">
+								<a href="index.html"><img src="{% static 'nichiei/canvas/images/nichiei_with_text_black.png' %}" style="max-width: 100px;margin-bottom: 1rem;" alt="Canvas Logo"></a>
+							</div>
 
-		</section><!-- #page-title end -->
+                            <div class="card mx-auto rounded-0 border-0"
+                                 style="max-width: 600px; background-color: rgba(255,255,255,0.93);">
+                                <div class="card-title">
 
-		<!-- Page Sub Menu
-		============================================= -->
-		<div id="page-menu">
-			<div id="page-menu-wrap">
-				<div class="container">
-					<div class="page-menu-row">
+                                    <section id="page-title" style="padding: 1rem;">
 
-						<div class="page-menu-title">Contact <span>Options</span></div>
+                                        <div class="container clearfix">
+                                            <h1>Contact</h1>
+                                            <span>Get in Touch with Us</span>
+                                            <ol class="breadcrumb">
+                                                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                                                <li class="breadcrumb-item active" aria-current="page">Contact</li>
+                                            </ol>
+                                        </div>
 
-{#						<nav class="page-menu-nav">#}
-{#							<ul class="page-menu-container">#}
-{#								<li class="page-menu-item current"><a href="contact-6.html"><div>Default</div></a></li>#}
-{#								<li class="page-menu-item"><a href="contact-6-recaptcha.html"><div>With reCaptcha</div></a></li>#}
-{#								<li class="page-menu-item"><a href="contact-6-file.html"><div>File Upload</div></a></li>#}
-{#								<li class="page-menu-item"><a href="contact-6-inline.html"><div>Inline Notification</div></a></li>#}
-{#							</ul>#}
-{#						</nav>#}
+                                    </section>
+                                </div>
+                                <div class="card-body" style="padding: 40px;">
 
-						<div id="page-menu-trigger"><i class="icon-reorder"></i></div>
+                                        {% include 'partials/_messages.html' %}
 
+                                        <form class="row mb-0" action="{% url 'contact' %}" method="post">
+                                            {% csrf_token %}
+                                            <div class="col-md-6 form-group">
+                                                <label for="name">Name <small>*</small></label>
+                                                <input type="text" id="name" name="name" value=""
+                                                       class="sm-form-control required"/>
+                                            </div>
+
+                                            <div class="col-md-6 form-group">
+                                                <label for="email">Email <small>*</small></label>
+                                                <input type="email" id="email" name="email" value=""
+                                                       class="required email sm-form-control"/>
+                                            </div>
+
+                                            <div class="w-100"></div>
+
+                                            <div class="col-12 form-group">
+                                                <label for="subject">Subject <small>*</small></label>
+                                                <input type="text" id="subject" name="subject" value=""
+                                                       class="required sm-form-control"/>
+                                            </div>
+
+                                            <div class="col-12 form-group">
+                                                <label for="message">Message <small>*</small></label>
+                                                <textarea class="required sm-form-control" id="message" name="message"
+                                                          rows="6"
+                                                          cols="30"></textarea>
+                                            </div>
+
+                                            <div class="col-12 form-group">
+                                                <input class="button button-3d m-0" type="submit"
+                                                       value="Send us Message"/>
+                                            </div>
+
+                                        </form>
+
+                                    <div class="line" style="margin: 1rem 0;"></div>
+
+                                    <div class="row col-mb-50">
+                                        <div class="col-md-6">
+                                            <address>
+                                                <strong>Headquarters:</strong><br>
+                                                795 Folsom Ave, Suite 600<br>
+                                                San Francisco, CA 94107<br>
+                                            </address>
+                                        </div><!-- Contact Info End -->
+                                        <div class="col-md-6">
+                                            <abbr title="Phone Number"><strong>Phone:</strong></abbr> (1) 8547
+                                            632521<br>
+                                            <abbr title="Fax"><strong>Fax:</strong></abbr> (1) 11 4752 1433<br>
+                                            <abbr title="Email Address"><strong>Email:</strong></abbr> info@canvas.com
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="text-center dark mt-3"><small>Copyrights &copy; All Rights Reserved by Canvas Inc.</small></div>
+						</div>
 					</div>
 				</div>
-			</div>
-		</div><!-- #page-menu end -->
-
-		<!-- Contact Form & Map Overlay Section
-		============================================= -->
-		<section id="map-overlay">
-			<div class="container">
-
-				<div class="row">
-					<!-- Contact Form Overlay
-					============================================= -->
-					<div class="contact-form-overlay col-md-8 offset-md-2 p-5">
-
-						<div class="fancy-title title-border">
-							<h3>Send us an Email</h3>
-						</div>
-                        <div class="form-widget">
-
-							<div class="form-result"></div>
-                                    {% include 'partials/_messages.html' %}
-
-							<!-- Contact Form
-							============================================= -->
-                            <form class="row mb-0" action="{% url 'contact' %}" method="post">
-                                {% csrf_token %}
-                                <div class="col-md-6 form-group">
-                                    <label for="name">Name <small>*</small></label>
-                                    <input type="text" id="name" name="name" value="" class="sm-form-control required"/>
-                                </div>
-
-                                <div class="col-md-6 form-group">
-                                    <label for="email">Email <small>*</small></label>
-                                    <input type="email" id="email" name="email" value=""
-                                           class="required email sm-form-control"/>
-                                </div>
-
-                                <div class="w-100"></div>
-
-                                <div class="col-12 form-group">
-                                    <label for="subject">Subject <small>*</small></label>
-                                    <input type="text" id="subject" name="subject" value=""
-                                           class="required sm-form-control"/>
-                                </div>
-
-                                <div class="col-12 form-group">
-                                    <label for="message">Message <small>*</small></label>
-                                    <textarea class="required sm-form-control" id="message" name="message" rows="6"
-                                              cols="30"></textarea>
-                                </div>
-
-                                <div class="col-12 form-group">
-                                    <input class="button button-3d m-0" type="submit" value="Send us Message"/>
-                                </div>
-
-                            </form>
-
-{#                            <form class="row mb-0" action="{% url 'web_request-reset-email' %}" method="post">#}
-{#                                {% csrf_token %}#}
-{##}
-{#                                {% include 'partials/_messages.html' %}#}
-{#                                <div class="form-group">#}
-{#                                    <input#}
-{#                                            type="email"#}
-{#                                            name="email"#}
-{#                                            placeholder="Email"#}
-{#                                            class="form-control form-control-sm"#}
-{#                                            id="emailField"#}
-{##}
-{#                                            value="{{ fieldValues.email }}"#}
-{#                                    />#}
-{#                                </div>#}
-{##}
-{#                                <div class="emailFeedBackArea invalid-feedback" style="display:none">#}
-{#                                </div>#}
-{#                                <input type="submit" value="Send Reset Email"#}
-{#                                       class="button button-3d m-0"/>#}
-{#                            </form>#}
-						</div>
-
-						<div class="line"></div>
-
-						<div class="row col-mb-50">
-							<!-- Contact Info
-							============================================= -->
-							<div class="col-md-12">
-								<address>
-									<strong>Headquarters:</strong><br>
-									795 Folsom Ave, Suite 600<br>
-									San Francisco, CA 94107<br>
-								</address>
-								<abbr title="Phone Number"><strong>Phone:</strong></abbr> (1) 8547 632521<br>
-								<abbr title="Fax"><strong>Fax:</strong></abbr> (1) 11 4752 1433<br>
-								<abbr title="Email Address"><strong>Email:</strong></abbr> info@canvas.com
-							</div><!-- Contact Info End -->
-
-							<!-- Testimonails
-							============================================= -->
-{#							<div class="col-md-8">#}
-{#								<div class="fslider customjs testimonial twitter-scroll twitter-feed" data-username="envato" data-count="4" data-animation="slide" data-arrows="false">#}
-{#									<i class="i-plain color icon-twitter mb-0" style="margin-right: 15px;"></i>#}
-{#									<div class="flexslider" style="width: auto;">#}
-{#										<div class="slider-wrap">#}
-{#											<div class="slide"></div>#}
-{#										</div>#}
-{#									</div>#}
-{#								</div>#}
-{#							</div>#}
-						</div>
-
-					</div><!-- Contact Form Overlay End -->
-				</div>
 
 			</div>
-
-			<!-- Google Map
-			============================================= -->
-{#			<section class="gmap" data-address="Melbourne, Australia" data-scrollwheel="false" data-markers='[{address: "Melbourne, Australia", html: "<div class=\"p-2\" style=\"width: 300px;\"><h4 class=\"mb-2\">Hi! We are <span>Envato!</span></h4><p class=\"mb-0\" style=\"font-size:1rem;\">Our mission is to help people to <strong>earn</strong> and to <strong>learn</strong> online. We operate <strong>marketplaces</strong> where hundreds of thousands of people buy and sell digital goods every day.</p></div>", icon:{ image: "images/icons/map-icon-red.png", iconsize: [32, 39], iconanchor: [32,39] } }]'></section>#}
-		</section><!-- Contact Form & Map Overlay Section End -->
+		</section>
 {% endblock content%}
