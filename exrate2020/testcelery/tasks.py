@@ -13,6 +13,6 @@ def add(x, y):
 
 
 @task(name="send_review_email_task")
-def send_review_email_task(name, email, review):
+def send_review_email_task(template, name, email, subject, review):
     logger.info("Sent review email")
-    return send_review_email(name, email, review)
+    return send_review_email(template, name, email, subject, review)

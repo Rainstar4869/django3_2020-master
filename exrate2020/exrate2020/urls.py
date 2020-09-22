@@ -6,6 +6,8 @@ from django.conf import settings
 from django.views.generic import TemplateView
 from rest_framework import permissions
 from upload.views import image_upload
+from nichiei.views import ContactView
+
 # from drf_yasg.views import get_schema_view
 # from drf_yasg import openapi
 
@@ -23,7 +25,10 @@ from upload.views import image_upload
 # )
 
 urlpatterns = [
-    path("", TemplateView.as_view(template_name="index.html"), name="top"),
+    path("", TemplateView.as_view(template_name="nichiei/index.html"), name="top"),
+    path("contact/", ContactView.as_view(), name="contact"),
+
+
     path("upload/", image_upload, name="upload"),
     path('admin/', admin.site.urls),
     path("apiauth/", include("authentication.urls")),
