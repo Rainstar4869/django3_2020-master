@@ -27,14 +27,14 @@
                 <div style="background: url({% static  'nichiei/canvas/images/world-map.png'%}) no-repeat center center; background-size: 100%;">
                   <address>
                     <strong>日栄株式会社</strong><br>
-                    〒336-0031 <br>
-                    日本埼玉県さいたま市南区鹿手袋7-19-17
+                    {{ settings.NICHIEI_INFO.SALES_POSTCODE }} <br>
+                    {{ settings.NICHIEI_INFO.SALES_ADD }}
                   </address>
                 </div>
-                  <abbr title="Phone Number"><strong>Phone:</strong></abbr> +81 48 708 6883<br>
-                  <abbr title="Fax"><strong>Fax:</strong></abbr> +81 48 708 6883<br>
-                  <abbr title="Email Address"><strong>Email:</strong></abbr> crs@nichiei.services<br>
-                  <abbr title="Email Address"><strong>日本語担当窓口:</strong></abbr> 070-4305-1891
+                  <abbr title="Phone Number"><strong>Phone:</strong></abbr> {{ settings.NICHIEI_INFO.SALES_PHONE }}<br>
+                  <abbr title="Fax"><strong>Fax:</strong></abbr> {{ settings.NICHIEI_INFO.SALES_PHONE }}<br>
+                  <abbr title="Email Address"><strong>Email:</strong></abbr> {{ settings.NICHIEI_INFO.SALES_EMAIL }}<br>
+                  <abbr title="Email Address"><strong>日本語担当窓口:</strong></abbr> {{ settings.NICHIEI_INFO.SALES_MAN_PHONE }}
             </div>
 
             <div class="col-md-4 ">

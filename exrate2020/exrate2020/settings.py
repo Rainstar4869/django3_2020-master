@@ -91,6 +91,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'django.template.context_processors.request',
+                'django_settings_export.settings_export',
             ],
         },
     },
@@ -248,3 +249,17 @@ try:
 except Exception as e:
     # in case of any error, pass silently.
     pass
+
+# Nichiei Related
+NICHIEI_INFO = {
+    "SALES_EMAIL": "crs@nichiei.services",
+    "SALES_PHONE": "+81 48 708 6883",
+    "SALES_MAN_PHONE": "+81 70-4305-1891",
+    "SALES_POSTCODE": "〒336-0031",
+    "SALES_ADD": "日本埼玉県さいたま市南区鹿手袋7-19-17"
+}
+
+
+SETTINGS_EXPORT = [
+    'NICHIEI_INFO',
+]

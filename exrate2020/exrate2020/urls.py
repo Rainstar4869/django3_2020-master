@@ -26,6 +26,8 @@ from nichiei.views import ContactView
 
 urlpatterns = [
     path("", TemplateView.as_view(template_name="nichiei/index.html"), name="top"),
+    path("company/", TemplateView.as_view(template_name="nichiei/company.html"), name="company"),
+    path("services/", TemplateView.as_view(template_name="nichiei/services.html"), name="services"),
     path("contact/", ContactView.as_view(), name="contact"),
 
 

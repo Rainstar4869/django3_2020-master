@@ -1,0 +1,70 @@
+{% extends 'nichiei/layouts/base.html' %}
+{% load static %}
+{% load render_bundle from webpack_loader %}
+
+{% block headerscript %}
+
+{% endblock headerscript%}
+{% block content %}
+<section id="page-title">
+
+			<div class="container clearfix">
+				<h1>日常用品受託生産</h1>
+				<span>Daily Commodities Prodution</span>
+				<ol class="breadcrumb">
+					<li class="breadcrumb-item"><a href="/">Home</a></li>
+					<li class="breadcrumb-item active" aria-current="page">Services</li>
+				</ol>
+			</div>
+
+		</section>
+
+		<section id="content">
+                    <div class="promo mx-6 my-3">
+						<span style="text-indent: 15px;">中国・ベトナムを中心とする各国から家庭用から業務用まで、生活に関わる様々な商品を調達しています。お客様のニーズに合わせた商品企画を始めとして、生産地の開発、品質管理まで、独自のネットワークを駆使した一貫管理体制により、リーズナブルで高品質な商品をご提供しております。お取引先も有名量販店からカタログ通販、専門メーカーまで多岐にわたり、お客様に合わせた納品形態にて取引させていただいております。お気軽にご連絡ください。</span>
+					</div>
+	            <div class="section parallax nobottommargin noborder dark" style="height: 450px; margin-top: 0!important;">
+
+					<div class="vertical-middle center" style="z-index: 2;">
+						<div class="container clearfix" data-animate="fadeInUp">
+							<div class="heading-block nobottomborder nobottommargin">
+								<h2 style="font-size: 42px;">Smart Manufacturing</h2>
+								<span class="d-none d-lg-block"></span>
+							</div>
+
+						</div>
+					</div>
+
+					<div class="video-wrap" style="z-index: 1;">
+						<video poster="{% static  'nichiei/canvas/images/news/factory.jpg'%}" preload="auto" loop autoplay muted>
+							<source src="{% static  'nichiei/canvas/videos/smart.mp4'%}" type='video/mp4' />
+						</video>
+						<div class="video-overlay" style="background-color: rgba(0,0,0,0.1);"></div>
+					</div>
+
+				</div>
+                    <div class="section">
+
+					<div class="container clearfix">
+
+						<div class="heading-block center">
+							<h2>サービス　ワークフォロー</h2>
+							<span>お客様のニューズにあわせ、製品企画・物流・製品提供までワンストップのサービスをご提供しています。</span>
+						</div>
+
+						<div class="col_full">
+
+							<img data-animate="fadeIn" class="aligncenter fadeIn animated" src="{% static  'nichiei/canvas/images/news/workflow.jpg'%}" alt="Macbook">
+
+						</div>
+
+					</div>
+
+				</div>
+
+		</section><!-- #content end -->
+{% endblock content%}
+
+{% block footerscript_last %}
+
+{% endblock footerscript_last%}

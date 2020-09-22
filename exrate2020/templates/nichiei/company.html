@@ -1,0 +1,103 @@
+{% extends 'nichiei/layouts/base.html' %}
+{% load static %}
+{% load render_bundle from webpack_loader %}
+
+{% block headerscript %}
+
+{% endblock headerscript%}
+{% block content %}
+    <section id="page-title">
+        <div class="container clearfix">
+            <h1>会社情報</h1>
+            <span>About Us</span>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Company</li>
+            </ol>
+        </div>
+    </section>
+    <section id="content">
+        <div class="content-wrap">
+            <div class="container clearfix">
+                <h4>会社概要</h4>
+                <table class="table table-striped">
+                    <tbody>
+                    <tr>
+                        <td style="width: 20%;">社名</td>
+                        <td>日栄株式会社</td>
+                    </tr>
+                    <tr>
+                        <td>本店</td>
+                        <td>埼玉県さいたま市鹿手袋七丁目１９番17−１０３号</td>
+                    </tr>
+                    <tr>
+                        <td>設立</td>
+                        <td>令和1年6月4日</td>
+                    </tr>
+                    <tr>
+                        <td>資本金</td>
+                        <td>500万円</td>
+                    </tr>
+                    <tr>
+                        <td>従業員数</td>
+                        <td>２０人（2019年9月）</td>
+                    </tr>
+                    <tr>
+                        <td>代表取締役社長</td>
+                        <td>古月　陽(こげつ　よう)</td>
+                    </tr>
+                    <tr>
+                        <td>事業内容</td>
+                        <td>
+                            <ul>
+                                <li>インターネットを利用した通信販売、情報の収集、管理、処理、提供の各種サービス及び仲介並びに代金決済システムの導入代行業務。</li>
+                                <li>デジタルサイネージに関する機器の販売・データ制作・保守。</li>
+                                <li>インターネットを含むコンピュータシステム、通信システム、制御システムの機器・装置及び付属機器・周辺機器の設計、製造、販売、運用管理、導入設置、保守メンテナンス、コンサルティングの業務。</li>
+                                <li>電気通信機器、情報通信機器、情報処理機器、放送設備機器、医療機器、 電子機器、電気通信のシステムの開発、販売、保守業務及び輸出入業務各種。</li>
+                                <li>外貨両替、外国為替取引、国内外の有価証券投資信託及び国内外のべンチャー企業に関する投資及び投資顧問業務。</li>
+                                <li>株式、有価証券、為替、不動産及び商品先物等の金融商品の投資及び運用に関するコンサルティング。</li>
+                                <li>貿易業、売買業売買の代理業、問屋業及び仲介業、物品の販売及び輸 出入業務各種。</li>
+                                <li>企業、団体等に対する新規事業、事業戦略及びM&Aに関する企画、立 案、支援及びそれらのコンサルティング並びに投資。</li>
+                                <li>イベント、キャンペーン、展示会パーティー等の企画、運営及びそれらのコンサルティング。</li>
+                                <li>労働者派遣事業及び有料職業紹介業。 </li>
+                                <li>前各号に附帯関連する一切の事業。</li>
+                            </ul>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+				<div class="promo parallax promo-dark bg-color promo-full mb-5" style="background-image: url({% static 'nichiei/canvas/images/sliders/promobox_1.jpg' %});" data-bottom-top="background-position:0px 300px;" data-top-bottom="background-position:0px -300px;">
+					<div class="container" style="background-color: #808080b0;padding: 15px;">
+						<div class="row align-items-center">
+                            <div class="col-12 col-lg">
+                                <h3>輸入卸の専門会社として弊社の <span class="text-warning">ビジネスモデル</span></h3>
+                                <span>ビジネスの中核となるのは、委託生産請負事業およびEC事業です。輸入卸の貿易商社として、世界からよりすぐった一流の品々を国内のお客様にお届けしています。そればかりでなく、製品企画、製品委託生産及び物流、アフターサポートまで自社で完結する体制を構築し、ワンストップのサービスをご提供しています。また、長年培った経験を生かして、コンサルティングまで国内お客様のビジネスをトータルにご支援しています。</span>
+                            </div>
+						</div>
+					</div>
+				</div>
+
+                <h3>貿易商社としての付加価値の向上</h3>
+                <blockquote>
+                    <p>主力となる輸入卸事業の拡充に継続的に取り組みます。商品の充実、サポート体制の強化を図り、業界のリーディングカンパニーを目指し、国内のお客様のご期待にお応えしていきます。</p>
+                </blockquote>
+                <h3>小売事業、EC事業の展開</h3>
+                <blockquote>
+                    <p>
+                        ビジネス領域の拡大を目指し、オリジナルブランドを中心とした小売事業およびEC事業に注力します。その新たな挑戦で得た蓄積を主力の事業にフィードバックし、弊社ならではのビジネスを展開していきます。</p>
+                </blockquote>
+                <h3>新規ビジネスへのチャレンジ</h3>
+                <blockquote>
+                    <p>
+                        代理店ビジネスにおける新ブランドの獲得、オリジナルブランドでの新規ブランド創出に取り組みます。若い社員たちの知恵と行動力を結集し、オンリーワンのブランドを目指して新しいビジネスにチャレンジし続けます。</p>
+                </blockquote>
+            </div>
+        </div>
+    </section><!-- #content end -->
+
+{% endblock content%}
+
+{% block footerscript_last %}
+
+{% endblock footerscript_last%}
