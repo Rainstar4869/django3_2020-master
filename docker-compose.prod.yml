@@ -8,6 +8,7 @@ services:
     volumes:
       - ./exrate2020/staticfiles:/home/app/web/staticfiles
       - ./exrate2020/mediafiles:/home/app/web/mediafiles
+      - ./exrate2020/logs/nginx:/var/log/nginx
     ports:
       - 80:80
     depends_on:
