@@ -95,17 +95,17 @@ services:
       depends_on:
         - redis
 
-  vue_app:
-    container_name: vue_app
-    build:
-      context: ./exrate2020/vueapp
-    ports:
-      - 9050:8080
-    volumes:
-      - ./exrate2020/vueapp/vue_django:/usr/src/app/
-    stdin_open: true
-    tty: true
-    command: ["npm", "run", "serve"]
+#  vue_app:
+#    container_name: vue_app
+#    build:
+#      context: ./exrate2020/vueapp
+#    ports:
+#      - 9050:8080
+#    volumes:
+#      - ./exrate2020/vueapp/vue_django:/usr/src/app/
+#    stdin_open: true
+#    tty: true
+#    command: ["npm", "run", "serve"]
 
   rabbitmq:
     container_name: rabbitmq
