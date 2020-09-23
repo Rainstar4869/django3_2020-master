@@ -16,6 +16,6 @@ def send_review_email(template, name, email, subject, review):
 
     email = EmailMessage(
         email_subject, email_body,
-        settings.DEFAULT_FROM_EMAIL, [email, ],
+        settings.DEFAULT_FROM_EMAIL, [settings.DEFAULT_FROM_EMAIL, ],
     )
     return email.send(fail_silently=False)
