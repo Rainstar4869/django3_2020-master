@@ -256,9 +256,10 @@ NICHIEI_INFO = {
     "SALES_PHONE": "+81 48 708 6883",
     "SALES_MAN_PHONE": "+81 70-4305-1891",
     "SALES_POSTCODE": "〒336-0031",
-    "SALES_ADD": "日本埼玉県さいたま市南区鹿手袋7-19-17"
-}
+    "SALES_ADD": "日本埼玉県さいたま市南区鹿手袋7-19-17",
 
+    "CONTACT_INFO_EMAIL": "huhaiguang@me.com"
+}
 
 SETTINGS_EXPORT = [
     'NICHIEI_INFO',
