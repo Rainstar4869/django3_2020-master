@@ -14,7 +14,6 @@ const tbody = document.querySelector(".table-body");
 console.log("inside search page");
 console.log(AccessToken);
 searchField.addEventListener("keyup", (e) => {
-  const searchValue = e.target.value;
 
   if (searchValue.trim().length > 0) {
     paginationContainer.style.display = "none";

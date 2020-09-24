@@ -30,6 +30,8 @@ urlpatterns = [
     path("services/", TemplateView.as_view(template_name="nichiei/services.html"), name="services"),
     path("contact/", ContactView.as_view(), name="contact"),
 
+    path("studydjango/", include("studydjango.urls")),
+
 
     path("upload/", image_upload, name="upload"),
     path('admin/', admin.site.urls),

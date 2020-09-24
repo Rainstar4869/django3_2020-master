@@ -1,7 +1,6 @@
 import csv
 import xlwt
 from django.contrib.auth.decorators import login_required
-from django.core.paginator import Paginator
 from django.db.models import Sum
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render
@@ -143,7 +142,7 @@ class ExpenseListView(ListView):
 
 def search_expenses(request):
     if request.method == "POST":
-        search_str = json.loads(request.body).get('searchText')
+        search_str = json.get('searchText')
         expenses = Expense.objects.filter(amount__startswith=search_str, owner=request.user) | \
                    Expense.objects.filter(date__startswith=search_str, owner=request.user) | \
                    Expense.objects.filter(description__icontains=search_str, owner=request.user) | \
