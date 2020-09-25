@@ -17,6 +17,7 @@ from django.contrib.auth.tokens import PasswordResetTokenGenerator
 import threading
 import logging
 from django.contrib.auth.signals import user_logged_in
+from rolepermissions.roles import assign_role
 
 logger = logging.getLogger("error_logger")
 
@@ -68,6 +69,9 @@ class RegistrationView(View):
                 user.set_password(password)
                 user.is_active = False
                 user.save()
+
+                assign_role(user, "member")
+
                 current_site = get_current_site(request)
                 email_body = {
                     'user': user,

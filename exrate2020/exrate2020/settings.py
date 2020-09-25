@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'webpack_loader',
     "authentication",
+    'rolepermissions',
     'django_celery_results',
     'django_celery_beat',
     "expenses",
@@ -183,6 +184,8 @@ WEBPACK_LOADER = {
         # 'IGNORE': ['.+\.hot-update.js', '.+\.map']
     }
 }
+
+ROLEPERMISSIONS_MODULE = 'exrate2020.roles'
 
 BROKER_TRANSPORT_OPTIONS = {
     'visibility_timeout': 3600
