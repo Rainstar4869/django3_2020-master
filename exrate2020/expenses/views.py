@@ -11,7 +11,6 @@ from django.views.generic import ListView
 from .serializers import ExpenseSerializer
 from .models import Expense
 from rest_framework import permissions
-from .permissions import IsOwner
 import datetime
 import json
 import logging
@@ -167,7 +166,7 @@ class ExpenseListAPIView(ListCreateAPIView):
 
 class ExpenseDetailAPIView(RetrieveUpdateDestroyAPIView):
     serializer_class = ExpenseSerializer
-    permission_classes = (permissions.IsAuthenticated, IsOwner,)
+    permission_classes = (permissions.IsAuthenticated,)
     queryset = Expense.objects.all()
     lookup_field = "id"
 

@@ -8,13 +8,13 @@ from .models import Student
 from .serializers import StudentSerializers
 import json
 import logging
-
+from authentication.permissions import IsDistributor
 
 logger = logging.getLogger("error")
 
 
 class StudentAPI(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsDistributor]
 
     def get(self, request):
         students = Student.objects.all()
