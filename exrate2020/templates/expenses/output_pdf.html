@@ -26,16 +26,16 @@
 
     <table>
         <thead>
-        <th>No</th>
-        <th>Amount</th>
-        <th>Category</th>
-        <th>Description</th>
-        <th>Date</th>
+        <th style="width: 10%;">No</th>
+        <th style="width: 20%;">Amount</th>
+        <th style="width: 20%;">Category</th>
+        <th style="width: 30%;">Description</th>
+        <th style="width: 20%;">Date</th>
         </thead>
         <tbody>
         {% for expense in expenses %}
             <tr>
-                <td>{{ forloop.counter }}></td>
+                <td>{{ forloop.counter }}</td>
                 <td>{{ expense.amount }}</td>
                 <td>{{ expense.category }}</td>
                 <td>{{ expense.description }}</td>

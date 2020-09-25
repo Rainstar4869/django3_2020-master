@@ -51,7 +51,7 @@ WORKDIR $APP_HOME
 
 
 # install dependencies
-RUN apk --update  add libpq supervisor
+RUN apk --update  add libpq supervisor wget
 RUN apk add openssl-dev
 RUN apk add gcc g++
 RUN apk add libjpeg
@@ -65,6 +65,16 @@ COPY --from=builder /usr/src/app/wheels /wheels
 COPY --from=builder /usr/src/app/requirements.txt .
 
 RUN pip install --no-cache /wheels/*
+
+RUN apk add --no-cache msttcorefonts-installer fontconfig
+    RUN update-ms-fonts
+    # Google fonts
+    RUN wget https://github.com/google/fonts/archive/master.tar.gz -O gf.tar.gz --no-check-certificate
+    RUN tar -xf gf.tar.gz
+    RUN mkdir -p /usr/share/fonts/truetype/google-fonts
+    RUN find $PWD/fonts-master/ -name "*.ttf" -exec install -m644 {} /usr/share/fonts/truetype/google-fonts/ \; || return 1
+    RUN rm -f gf.tar.gz
+    RUN fc-cache -f && rm -rf /var/cache/*
 
 # copy entrypoint-prod.sh
 COPY ./entrypoint.prod.sh $APP_HOME
