@@ -1,4 +1,3 @@
-
 from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
@@ -32,7 +31,6 @@ urlpatterns = [
 
     path("studydjango/", include("studydjango.urls")),
 
-
     path("upload/", image_upload, name="upload"),
     path('admin/', admin.site.urls),
     path("apiauth/", include("authentication.urls")),
@@ -41,6 +39,7 @@ urlpatterns = [
     path('expenses/', include('expenses.urls')),
     path('incomes/', include('income.urls')),
     path('userstats/', include('userstats.urls')),
+    path('cart/', include('shoppingcarts.urls')),
 
 ]
 

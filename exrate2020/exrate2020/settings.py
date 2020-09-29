@@ -59,7 +59,10 @@ INSTALLED_APPS = [
     "income",
     "userstats",
     "upload",
-    "studydjango"
+    "studydjango",
+
+    "store",
+    "shoppingcarts",
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True
@@ -268,3 +271,5 @@ NICHIEI_INFO = {
 SETTINGS_EXPORT = [
     'NICHIEI_INFO',
 ]
+
+CART_SESSION_ID = "nichiei_cart"
