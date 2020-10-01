@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
+    'django.contrib.humanize',
     'corsheaders',
     'imagekit',
     'allauth',
@@ -55,14 +56,14 @@ INSTALLED_APPS = [
     'rolepermissions',
     'django_celery_results',
     'django_celery_beat',
+    'crispy_forms',
+
     "expenses",
     "income",
     "userstats",
     "upload",
     "studydjango",
-
     "store",
-    "shoppingcarts",
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True
@@ -97,6 +98,8 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'django.template.context_processors.request',
                 'django_settings_export.settings_export',
+                "store.context_processors.cart",
+                "store.context_processors.cartitem_count",
             ],
         },
     },
@@ -221,7 +224,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 MEDIA_URL = "/mediafiles/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "mediafiles")
 
-LOGIN_REDIRECT_URL = '/'
+# LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = 'webauth/login/'
 LOGOUT_URL = 'webauth/logout/'
 

@@ -39,7 +39,7 @@ urlpatterns = [
     path('expenses/', include('expenses.urls')),
     path('incomes/', include('income.urls')),
     path('userstats/', include('userstats.urls')),
-    path('cart/', include('shoppingcarts.urls')),
+    path('store/', include('store.urls')),
 
 ]
 

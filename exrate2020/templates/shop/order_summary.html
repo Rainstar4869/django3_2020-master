@@ -1,0 +1,179 @@
+{% extends 'nichiei/layouts/base.html' %}
+{% load static %}
+{% load humanize %}
+{#{% load cart_tag %}#}
+{% block headerscript %}
+
+{% endblock headerscript%}
+{% block content %}
+
+
+		<!-- Page Title
+		============================================= -->
+		<section id="page-title">
+
+			<div class="container">
+				<h1>Cart</h1>
+				<ol class="breadcrumb">
+					<li class="breadcrumb-item"><a href="#">Home</a></li>
+					<li class="breadcrumb-item"><a href="#">Shop</a></li>
+					<li class="breadcrumb-item active" aria-current="page">Cart</li>
+				</ol>
+			</div>
+
+		</section><!-- #page-title end -->
+		<!-- Content
+		============================================= -->
+		<section id="content">
+			<div class="content-wrap">
+                <div class="container">
+
+                    <div class="table-responsive mb-5">
+                        <table class="table cart">
+                            <thead>
+                            <tr>
+                                <th class="cart-product-remove">&nbsp;</th>
+                                <th class="cart-product-thumbnail">&nbsp;</th>
+                                <th class="cart-product-name">Product</th>
+                                <th class="cart-product-price">Unit Price</th>
+                                <th class="cart-product-quantity">Quantity</th>
+                                <th class="cart-product-subtotal">Total</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for orderitem in order.items.all %}
+                                <tr class="cart_item">
+                                    <td class="cart-product-remove">
+                                        <a href="{% url 'store:remove-from-cart' orderitem.item.pk %}" class="remove"
+                                           title="Remove this item"><i class="icon-trash2"></i></a>
+                                    </td>
+
+                                    <td class="cart-product-thumbnail">
+                                        <a href="#"><img width="64" height="64"
+                                                         src="{{ orderitem.item.thumbimage.url }}"
+                                                         alt="Pink Printed Dress"></a>
+                                    </td>
+
+                                    <td class="cart-product-name">
+                                        <a href="#">{{ orderitem.item.item_name }}</a>
+                                    </td>
+
+                                    <td class="cart-product-price">
+                                        {% if orderitem.item.discount_price %}
+                                            <del>¥{{ orderitem.item.price |intcomma}}</del>
+                                            <span class="amount">{{ orderitem.item.discount_price |intcomma}}</span>
+                                        {% else %}
+                                            <span class="amount">{{ orderitem.item.price |intcomma}}</span>
+                                        {% endif %}
+
+                                    </td>
+
+                                    <td class="cart-product-quantity">
+                                        <div class="quantity">
+                                            <a href="{% url 'store:reduce-quantity-item' orderitem.item.pk %}"><i
+                                                    class="icon-minus-sign mx-2"></i></a>
+                                            {{ orderitem.quantity }}
+                                            <a href="{% url 'store:add-to-cart' orderitem.item.pk 'store:order_summary' %}"><i
+                                                    class="icon-plus-sign mx-2"></i></a>
+                                        </div>
+                                    </td>
+
+                                    <td class="cart-product-subtotal">
+                                        {% if orderitem.item.discount_price %}
+                                            <span class="amount">${{ orderitem.get_discount_item_price |intcomma}}</span>
+                                            <span class="badge badge-success">Saved ¥{{ orderitem.get_amount_saved |intcomma}}</span>
+                                        {% else %}
+                                            <span class="amount">${{ orderitem.get_total_item_price |intcomma}}</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="6">Your Cart Empity</td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="6">
+                                        <a href="/" class="btn btn-primary float-right">Continue Shopping</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            {% if order.get_total_quantity %}
+                                 <tr class="cart_item">
+                                <td colspan="6">
+                                    <div class="row">
+                                        <div class="col-lg-4 col-4 p-0">
+                                            <div class="row">
+                                                <div class="col-lg-8 col-7">
+                                                    <input type="text" value="" class="sm-form-control"
+                                                           placeholder="Enter Coupon Code..">
+                                                </div>
+                                                <div class="col-lg-4 col-5">
+                                                    <a href="#" class="button button-3d button-black m-0">Apply
+                                                        Coupon</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-8 col-8 p-0">
+                                            <a href="{% url 'store:checkout' %}" class="button button-3d mt-0 float-right">Proceed to
+                                                Checkout</a>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endif %}
+                            </tbody>
+
+                        </table>
+                    </div>
+                {% if order.get_total_price %}
+                    <div class="row col-mb-30">
+                        <div class="col-lg-6">
+                            <h4>Cart Totals</h4>
+
+                            <div class="table-responsive">
+                                <table class="table cart">
+                                    <tbody>
+                                    <tr class="cart_item">
+                                        <td class="cart-product-name">
+                                            <strong>Cart Subtotal</strong>
+                                        </td>
+
+                                        <td class="cart-product-name">
+                                            <span class="amount">¥{{ order.get_total_price |intcomma}}</span>
+                                        </td>
+                                    </tr>
+{#                                    <tr class="cart_item">#}
+{#                                        <td class="cart-product-name">#}
+{#                                            <strong>Shipping</strong>#}
+{#                                        </td>#}
+{##}
+{#                                        <td class="cart-product-name">#}
+{#                                            <span class="amount">Free Delivery</span>#}
+{#                                        </td>#}
+{#                                    </tr>#}
+                                    <tr class="cart_item">
+                                        <td class="cart-product-name">
+                                            <strong>Total</strong>
+                                        </td>
+
+                                        <td class="cart-product-name">
+                                            <span class="amount color lead"><strong>¥{{ order.get_total_price |intcomma}}</strong></span>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+                </div>
+			</div>
+		</section><!-- #content end -->
+
+{% endblock content%}
+
+{% block footerscript_last %}
+
+{% endblock footerscript_last%}
