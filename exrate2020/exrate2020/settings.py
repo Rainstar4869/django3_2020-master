@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = '2us*m@736zhmk@=3!49hm2x#%w4b2v%&n0qktr+r+(esc7hi^%'
 # SECRET_KEY = os.environ.get("SECRET_KEY")
 
-DEBUG = True
+DEBUG = False
 # DEBUG = int(os.environ.get("DEBUG", default=0))
 
 ALLOWED_HOSTS = ["*"]
@@ -64,6 +64,8 @@ INSTALLED_APPS = [
     "upload",
     "studydjango",
     "store",
+
+    "chat",
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True

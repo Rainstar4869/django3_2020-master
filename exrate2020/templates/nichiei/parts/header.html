@@ -5,9 +5,10 @@
 
         <div class="row justify-content-between align-items-center">
             <div class="col-12 col-md-auto">
-                <p class="mb-0 py-2 text-center text-md-left"><strong><i class="icon-phone-sign"></i></strong> {{ settings.NICHIEI_INFO.SALES_PHONE }} |
-                    <strong><i class="icon-email3"></i></strong>
-                    {{ settings.NICHIEI_INFO.SALES_EMAIL }}</p>
+                <p class="mb-0 py-2 text-center text-md-left">
+                    <strong><a href="{% url 'store:home' %}"><i class="icon-shop"></i> Cozy Shop</a> </strong> |
+                    <strong><i class="icon-email3 mr-1"></i>{{ settings.NICHIEI_INFO.SALES_EMAIL }}</strong>
+                </p>
             </div>
 
             <div class="col-12 col-md-auto">

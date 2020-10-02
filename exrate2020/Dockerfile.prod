@@ -57,9 +57,9 @@ RUN apk add gcc g++
 RUN apk add libjpeg
 RUN apk  --no-cache add cairo-dev pango-dev gdk-pixbuf
 
-RUN mkdir -p /etc/supervisor/
-COPY /system/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-COPY /system/supervisord.conf /etc/supervisord.conf
+#RUN mkdir -p /etc/supervisor/
+#COPY /system/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+#COPY /system/supervisord.conf /etc/supervisord.conf
 
 COPY --from=builder /usr/src/app/wheels /wheels
 COPY --from=builder /usr/src/app/requirements.txt .
