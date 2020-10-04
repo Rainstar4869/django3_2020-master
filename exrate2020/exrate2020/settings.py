@@ -274,10 +274,12 @@ NICHIEI_INFO = {
     "CONTACT_INFO_EMAIL": "huhaiguang@me.com"
 }
 
-SETTINGS_EXPORT = [
-    'NICHIEI_INFO',
-]
 
 CART_SESSION_ID = "nichiei_cart"
 ADMIN_NAME = "admin"
+ADMIN_INTROCODE = "51fa7641-e634-44ac-a963-33675c967e5c"
 
+SETTINGS_EXPORT = [
+    'NICHIEI_INFO',
+    "ADMIN_INTROCODE"
+]

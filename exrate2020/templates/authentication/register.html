@@ -22,7 +22,7 @@
                                 <div class="card-body" style="padding: 40px;">
                                     <form  class="mb-0" action="{% url 'register' %}"
                                           method="post">
-                                        <h3>Register ME</h3>
+                                        <h3>Register</h3>
 
                                         {% csrf_token %}
 
@@ -44,7 +44,15 @@
 
                                             <div class="col-12 form-group">
                                                 <label for="introcode">Parentcode:</label>
-                                                <input type="text"  name="introcode" value="{{ request.GET.introcode }}" class="form-control not-dark"/>
+                                                {% if  request.GET.introcode %}
+                                                    <input type="text" name="introcode"
+                                                           value="{{ request.GET.introcode }}"
+                                                           class="form-control not-dark"/>
+                                                {% else %}
+                                                    <input type="text" name="introcode"
+                                                           value="{{ settings.ADMIN_INTROCODE }}"
+                                                           class="form-control not-dark"/>
+                                                {% endif %}
                                             </div>
 
                                             <div class="col-12 form-group">

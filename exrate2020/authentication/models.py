@@ -106,27 +106,28 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 
 @receiver(post_save, sender=User)
-def post_save(sender, instance, **kwargs):
-    try:
-        if instance.parent_introcode:
-            parent = User.objects.get(introcode=instance.parent_introcode)
-        else:
+def create_user(sender, instance, created, **kwargs):
+    if created:
+        logger.error("post_save create_user")
+        try:
+            if instance.parent_introcode:
+                parent = User.objects.get(introcode=instance.parent_introcode)
+            else:
+                parent = User.objects.get(username=settings.ADMIN_NAME)
+        except ObjectDoesNotExist:
             parent = User.objects.get(username=settings.ADMIN_NAME)
-    except ObjectDoesNotExist:
-        parent = User.objects.get(username=settings.ADMIN_NAME)
 
-    logger.error("post_save user")
-    logger.error(parent)
+        logger.error(parent)
 
-    try:
-        parent_profile = Profile.objects.get(user__username=parent.username)
-        user_profile = Profile.objects.create(user=instance, parent=parent_profile)
-        logger.error("normal use profile created")
-        logger.error(user_profile)
-    except ObjectDoesNotExist:
-        user_profile = Profile.objects.create(user=instance, parent=None)
-        logger.error("ObjectDoesNotExist use profile created")
-        logger.error(user_profile)
+        try:
+            parent_profile = Profile.objects.get(user__username=parent.username)
+            user_profile = Profile.objects.create(user=instance, parent=parent_profile)
+            logger.error("normal use profile created")
+            logger.error(user_profile)
+        except ObjectDoesNotExist:
+            user_profile = Profile.objects.create(user=instance, parent=None)
+            logger.error("ObjectDoesNotExist use profile created")
+            logger.error(user_profile)
 
 
 class Profile(MPTTModel):

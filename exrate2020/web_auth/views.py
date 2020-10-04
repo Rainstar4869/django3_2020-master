@@ -39,6 +39,7 @@ class EmailThread(threading.Thread):
     def run(self):
         self.email.send(fail_silently=False)
 
+
 class RegistrationView(View):
     def get(self, request):
         return render(request, "authentication/register.html")
@@ -52,6 +53,9 @@ class RegistrationView(View):
         email = request.POST['email']
         password = request.POST['password']
         parent_introcode = request.POST['introcode']
+
+        if not parent_introcode:
+            parent_introcode = settings.parent_introcode
 
         context = {
             'fieldValues': request.POST
