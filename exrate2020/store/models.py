@@ -5,6 +5,7 @@ from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
 import uuid
 import os
+from mptt.models import MPTTModel, TreeForeignKey
 
 CATEGORY = (
     ('S', 'Shirt'),
@@ -18,6 +19,17 @@ LABEL = (
 )
 
 
+class Category(MPTTModel):
+    name = models.CharField(max_length=64)
+    parent = TreeForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='children')
+
+    class MPTTMeta:
+        order_insertion_by = ['name']
+
+    def __str__(self):
+        return "{}".format(self.name)
+
+
 def image_path(instance, filename):
     ext = filename.split(".")[-1]
     filename = '{}.{}'.format(uuid.uuid4().hex[:10], ext)
@@ -28,7 +40,7 @@ class Item(models.Model):
     item_name = models.CharField(max_length=100)
     price = models.FloatField()
     discount_price = models.FloatField(blank=True, null=True)
-    category = models.CharField(choices=CATEGORY, max_length=2)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
     label = models.CharField(choices=LABEL, max_length=2)
     description = models.TextField()
     image = models.ImageField(null=True, upload_to=image_path)
@@ -101,7 +113,7 @@ class Order(models.Model):
         for order_item in self.items.all():
             total += order_item.get_final_price()
         return total
-    
+
     def get_total_quantity(self):
         total = 0
         for order_item in self.items.all():

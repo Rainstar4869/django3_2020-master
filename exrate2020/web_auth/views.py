@@ -18,6 +18,7 @@ import threading
 import logging
 from django.contrib.auth.signals import user_logged_in
 from rolepermissions.roles import assign_role
+from django.conf import settings
 
 logger = logging.getLogger("error_logger")
 
@@ -38,7 +39,6 @@ class EmailThread(threading.Thread):
     def run(self):
         self.email.send(fail_silently=False)
 
-
 class RegistrationView(View):
     def get(self, request):
         return render(request, "authentication/register.html")
@@ -51,12 +51,14 @@ class RegistrationView(View):
         username = request.POST['username']
         email = request.POST['email']
         password = request.POST['password']
+        parent_introcode = request.POST['introcode']
 
         context = {
             'fieldValues': request.POST
         }
 
         logger.error("register new user: " + str(username))
+        logger.error(context)
 
         if not User.objects.filter(username=username).exists():
             if not User.objects.filter(email=email).exists():
@@ -65,10 +67,13 @@ class RegistrationView(View):
                     return render(request, 'authentication/register.html', context)
 
                 logger.error("read to register  ")
-                user = User.objects.create_user(username=username, email=email)
-                user.set_password(password)
-                user.is_active = False
-                user.save()
+                user = User.objects.create_user(username=username,
+                                                email=email,
+                                                parent_introcode=parent_introcode,
+                                                password=password)
+                # user.set_password(password)
+                # user.is_active = False
+                # user.save()
 
                 assign_role(user, "member")
 
@@ -96,6 +101,8 @@ class RegistrationView(View):
                 # email.send(fail_silently=False)
                 EmailThread(email).start()
                 messages.success(request, 'Account successfully created')
+                return redirect("web_login")
+
                 return render(request, 'authentication/register.html')
 
             messages.error(request, "Email already exists!")

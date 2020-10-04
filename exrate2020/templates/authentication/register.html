@@ -22,7 +22,7 @@
                                 <div class="card-body" style="padding: 40px;">
                                     <form  class="mb-0" action="{% url 'register' %}"
                                           method="post">
-                                        <h3>Register for a free account</h3>
+                                        <h3>Register ME</h3>
 
                                         {% csrf_token %}
 
@@ -40,6 +40,11 @@
                                             <div class="col-12 form-group">
                                                 <label for="password">Password:</label>
                                                 <input type="password"  name="password" value="" class="form-control not-dark"/>
+                                            </div>
+
+                                            <div class="col-12 form-group">
+                                                <label for="introcode">Parentcode:</label>
+                                                <input type="text"  name="introcode" value="{{ request.GET.introcode }}" class="form-control not-dark"/>
                                             </div>
 
                                             <div class="col-12 form-group">

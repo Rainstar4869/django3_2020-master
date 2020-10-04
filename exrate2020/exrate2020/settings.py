@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'django_celery_results',
     'django_celery_beat',
     'crispy_forms',
+    'mptt',
 
     "expenses",
     "income",
@@ -278,3 +279,5 @@ SETTINGS_EXPORT = [
 ]
 
 CART_SESSION_ID = "nichiei_cart"
+ADMIN_NAME = "admin"
+

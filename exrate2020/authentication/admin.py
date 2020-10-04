@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
-from .models import User
+from .models import User, Profile
 
 
 class AccountAdmin(BaseUserAdmin):
@@ -27,3 +27,4 @@ class AccountAdmin(BaseUserAdmin):
 
 
 admin.site.register(User, AccountAdmin)
+admin.site.register(Profile)
