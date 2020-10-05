@@ -1,6 +1,7 @@
 {% extends 'nichiei/layouts/base.html' %}
 {% load static %}
 {% load humanize %}
+{% load mptt_tags %}
 
 {% block content %}
     <!-- Page Title
@@ -29,7 +30,6 @@
                     <!-- Post Content
                     ============================================= -->
                     <div class="postcontent col-lg-9 order-lg-last">
-
                         <!-- Shop
                         ============================================= -->
                         <div id="shop" class="shop row grid-container gutter-20" data-layout="fitRows">
@@ -49,20 +49,14 @@
                                                 <div class="bg-overlay-content align-items-end justify-content-between"
                                                      data-hover-animate="fadeIn" data-hover-speed="400">
                                                     {% if user.is_authenticated %}
-{#                                                        <a href="javascript:void(0);" product_id="{{ product.id }}"#}
-{#                                                           class="btn btn-dark mr-2 btnAddToCart">              #}
-                                                        <a href="{% url 'store:add-to-cart' product.id 'store:home'  %}"
+                                                        <a href="{% url 'store:add-to-cart' pk=product.id location='store:home'  %}"
                                                            class="btn btn-dark mr-2">
-
                                                             <i class="icon-shopping-cart" product_id="{{ product.id }}"
                                                                user_id="{{ user.id }}"></i>
                                                         </a>
                                                     {% else %}
 
                                                     {% endif %}
-{#                                                    <a href="{% static 'canvas/include/ajax/shop-item.html' %}"#}
-{#                                                       class="btn btn-dark" data-lightbox="ajax"><i#}
-{#                                                            class="icon-line-expand"></i></a>#}
                                                     <a href="javascript:void(0);" class="btn btn-dark btnShowProduct"><i class="icon-line-expand"  product_id="{{ product.id }}"></i></a>
                                                 </div>
                                                 <div class="bg-overlay-bg bg-transparent"></div>
@@ -93,36 +87,28 @@
 
                     <!-- Sidebar
                     ============================================= -->
-                    <div class="sidebar col-lg-3">
+                    <div class="sidebar col-lg-3 hidden-sm">
                         <div class="sidebar-widgets-wrap">
+                        {% recursetree store_categories %}
+                            {% if node.is_root_node %}
+                                <div class="widget widget-filter-links root">
+                                <h4>{{ node.name }}</h4>
+                            {% else %}
+                                <li><a href="#" data-filter=".{{ node.name }}">{{ node.name }}</a></li>
+                            {% endif %}
 
-                            <div class="widget widget-filter-links">
 
-                                <h4>Select Category</h4>
-                                <ul class="custom-filter pl-2" data-container="#shop" data-active-class="active-filter">
-                                    <li class="widget-filter-reset active-filter"><a href="#" data-filter="*">Clear</a>
-                                    </li>
-                                    {% for key,value in categories %}
-                                        <li><a href="#" data-filter=".{{ key }}">{{ value }}</a></li>
-                                    {% endfor %}
-                                </ul>
-
-                            </div>
-
-                            <div class="widget widget-filter-links">
-
-                                <h4>Sort By</h4>
-                                <ul class="shop-sorting pl-2">
-                                    <li class="widget-filter-reset active-filter"><a href="#"
-                                                                                     data-sort-by="original-order">Clear</a>
-                                    </li>
-                                    <li><a href="#" data-sort-by="name">Name</a></li>
-                                    <li><a href="#" data-sort-by="price_lh">Price: Low to High</a></li>
-                                    <li><a href="#" data-sort-by="price_hl">Price: High to Low</a></li>
-                                </ul>
+                        {% if not node.is_leaf_node %}
+                            <ul class="custom-filter pl-2 children" data-container="#shop"
+                                data-active-class="active-filter">
+                                {{ children }}
+                            </ul>
+                        {% endif %}
+                        {% if node.is_root_node %}
 
                             </div>
-
+                            {% endif %}
+                        {% endrecursetree %}
                         </div>
                     </div><!-- .sidebar end -->
                 </div>
@@ -166,15 +152,16 @@
 
                         <!-- Product Single - Quantity & Cart Button
                         ============================================= -->
-                        <form class="cart mb-0" method="post" enctype='multipart/form-data'>
-                            <div class="quantity">
-                                <input type="button" value="-" class="minus">
-                                <input type="text" step="1" min="1" name="quantity" value="1"
-                                       title="Qty" class="qty" size="4"/>
-                                <input type="button" value="+" class="plus">
-                            </div>
-                            <button type="submit" class="add-to-cart button m-0">Add to cart</button>
-                        </form><!-- Product Single - Quantity & Cart Button End -->
+{#                        <form class="cart mb-0" method="post" enctype='multipart/form-data'>#}
+{#                            <div class="quantity">#}
+{##}
+{#                                <input type="button" value="-" class="minus">#}
+{#                                <input type="text" step="1" min="1" name="quantity" value="1"#}
+{#                                       title="Qty" class="qty" size="4"/>#}
+{#                                <input type="button" value="+" class="plus">#}
+{#                            </div>#}
+{#                            <button type="submit" class="add-to-cart button m-0">Add to cart</button>#}
+{#                        </form>#}
 
                         <div class="clear"></div>
                         <div class="line"></div>

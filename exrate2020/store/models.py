@@ -3,9 +3,16 @@ from django.db import models
 from django.shortcuts import reverse
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from mptt.models import MPTTModel, TreeForeignKey
 import uuid
 import os
-from mptt.models import MPTTModel, TreeForeignKey
+import logging
+import json
+from authentication.models import User, Profile
+
+logger = logging.getLogger("error")
 
 CATEGORY = (
     ('S', 'Shirt'),
@@ -38,8 +45,11 @@ def image_path(instance, filename):
 
 class Item(models.Model):
     item_name = models.CharField(max_length=100)
-    price = models.FloatField()
-    discount_price = models.FloatField(blank=True, null=True)
+    price = models.IntegerField()
+    discount_price = models.IntegerField(blank=True, null=True)
+    distributor_price = models.IntegerField(blank=True, null=True)
+    buy_price = models.IntegerField(blank=True, null=True)
+
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     label = models.CharField(choices=LABEL, max_length=2)
     description = models.TextField()
@@ -74,7 +84,7 @@ class Item(models.Model):
 
 class OrderItem(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
-                             on_delete=models.CASCADE)
+                             on_delete=models.CASCADE, related_name="orderitems")
     ordered = models.BooleanField(default=False)
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
     quantity = models.IntegerField(default=1)
@@ -96,9 +106,23 @@ class OrderItem(models.Model):
             return self.get_discount_item_price()
         return self.get_total_item_price()
 
+    def get_total_item_buy_price(self):
+        return self.quantity * self.item.buy_price
+
+    def get_total_item_distributor_price(self):
+        return self.quantity * self.item.distributor_price
+
+    def get_margin_item_distributor(self):
+        if self.item.discount_price:
+            return self.get_discount_item_price() - self.get_total_item_distributor_price()
+        return self.get_total_item_price() - self.get_total_item_distributor_price()
+
+    def get_margin_item_admin(self):
+        return self.get_total_item_distributor_price() - self.get_total_item_buy_price()
+
 
 class Order(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="orders")
     items = models.ManyToManyField(OrderItem)
     start_date = models.DateTimeField(auto_now_add=True)
     ordered_date = models.DateTimeField()
@@ -120,6 +144,18 @@ class Order(models.Model):
             total += order_item.quantity
         return total
 
+    def get_total_distributor_margin(self):
+        total = 0
+        for order_item in self.items.all():
+            total += order_item.get_margin_item_distributor()
+        return total
+
+    def get_total_admin_margin(self):
+        total = 0
+        for order_item in self.items.all():
+            total += order_item.get_margin_item_admin()
+        return total
+
 
 class ShippingAddress(models.Model):
     name = models.CharField(max_length=56)
@@ -134,3 +170,58 @@ class ShippingAddress(models.Model):
 
     def __str__(self):
         return "{}, {}".format(self.name, self.postcode)
+
+
+class Margin(models.Model):
+    order = models.ForeignKey("Order", on_delete=models.CASCADE, related_name="margins")
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="margins")
+    level = models.IntegerField(default=1)
+    amount = models.IntegerField(default=0)
+    is_valid = models.BooleanField(default=False)
+    is_paid = models.BooleanField(default=False)
+    paid_at = models.DateTimeField(blank=True, null=True)
+
+    def __str__(self):
+        return "margin to {} from order {}".format(self.user.username, self.order.id)
+
+# @receiver(post_save, sender=Order)
+# def create_order(sender, instance, created, **kwargs):
+#     if created:
+#         last_index = len(settings.MARGIN_RATES)
+#         user_profile = instance.user.profile
+#         ancestors = user_profile.get_ancestors(ascending=True, include_self=False)
+#         ancestors_list = list(ancestors)
+#         ancestors_list.pop()  # remove last root element
+# 
+#         logger.error("order {}".format(instance.id))
+#         logger.error(instance)
+#         
+#         order = Order.objects.get(pk=instance.id)
+#         margin_left = order.get_total_distributor_margin()
+#         logger.error("margin_left {} ".format(margin_left))
+#         
+#         for level in range(len(ancestors_list[:last_index])):
+#             level_rate = settings.MARGIN_RATES[str(level + 1)]
+#             level_margin = int(margin_left*level_rate)
+#             margin_left -= level_margin
+# 
+#             logger.error("order_{}, distibute to {} with margin {} at level:{}".format(order.id, ancestors_list[
+#                 level].user.username, level_margin, level))
+#             Margin.objects.create(
+#                 order=order,
+#                 user=ancestors_list[level].user,
+#                 level=level,
+#                 amount=level_margin,
+#             )
+# 
+#         if margin_left:
+#             # mount left margin to root
+# 
+#             logger.error("order_{}, distibute to ADMIN with margin {} ".format(order.id, level_margin))
+#             adminuser = User.objects.get(username=settings.ADMIN_NAME)
+#             Margin.objects.create(
+#                 order=order,
+#                 user=adminuser,
+#                 level=100,
+#                 amount=margin_left,
+#             )

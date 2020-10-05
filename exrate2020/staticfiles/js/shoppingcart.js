@@ -6,6 +6,9 @@ const ProductName = document.querySelector("#product_name");
 const ProductDiscountPrice = document.querySelector("#product_discountprice");
 const ProductPrice = document.querySelector("#product_price");
 const ProductImage = document.getElementById("product_image");
+const ProductModal_minus = document.getElementById("ProductModal_minus");
+const ProductModal_plus = document.getElementById("ProductModal_plus");
+const ProductModal_quantity = document.getElementById("ProductModal_quantity");
 
 
 var accessToken = getCookie("accessToken");

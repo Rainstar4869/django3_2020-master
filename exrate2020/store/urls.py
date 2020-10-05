@@ -21,7 +21,7 @@ urlpatterns = [
     path('api/add-to-cart/', csrf_exempt(AddToChartAPIView.as_view()), name='api-add-to-cart'),
     path('api/product/get/', csrf_exempt(ProductAPIView.as_view()), name='api-get-product'),
     path('remove-from-cart/<int:pk>/', remove_from_cart, name='remove-from-cart'),
-    path('order-summary', OrderSummaryView.as_view(),
+    path('order-summary/', OrderSummaryView.as_view(),
          name='order-summary'),
     path('reduce-quantity-item/<int:pk>/', reduce_quantity_item,
          name='reduce-quantity-item'),

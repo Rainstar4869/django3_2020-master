@@ -73,7 +73,7 @@
                                             <a href="{% url 'store:reduce-quantity-item' orderitem.item.pk %}"><i
                                                     class="icon-minus-sign mx-2"></i></a>
                                             {{ orderitem.quantity }}
-                                            <a href="{% url 'store:add-to-cart' orderitem.item.pk 'store:order_summary' %}"><i
+                                            <a href="{% url 'store:add-to-cart' pk=orderitem.item.pk location='store:order-summary' %}"><i
                                                     class="icon-plus-sign mx-2"></i></a>
                                         </div>
                                     </td>

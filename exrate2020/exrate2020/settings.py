@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = '2us*m@736zhmk@=3!49hm2x#%w4b2v%&n0qktr+r+(esc7hi^%'
 # SECRET_KEY = os.environ.get("SECRET_KEY")
 
-DEBUG = False
+DEBUG = True
 # DEBUG = int(os.environ.get("DEBUG", default=0))
 
 ALLOWED_HOSTS = ["*"]
@@ -102,7 +102,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django_settings_export.settings_export',
                 "store.context_processors.cart",
-                "store.context_processors.cartitem_count",
+                "store.context_processors.store_categories",
             ],
         },
     },
@@ -274,7 +274,6 @@ NICHIEI_INFO = {
     "CONTACT_INFO_EMAIL": "huhaiguang@me.com"
 }
 
-
 CART_SESSION_ID = "nichiei_cart"
 ADMIN_NAME = "admin"
 ADMIN_INTROCODE = "51fa7641-e634-44ac-a963-33675c967e5c"
@@ -283,3 +282,11 @@ SETTINGS_EXPORT = [
     'NICHIEI_INFO',
     "ADMIN_INTROCODE"
 ]
+
+MARGIN_RATES = {
+    "1": 0.5,
+    "2": 0.3,
+    "3": 0.2
+}
+
+MARGIN_CRITERIA_ORDERS = 5

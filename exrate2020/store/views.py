@@ -9,14 +9,16 @@ from django.views.generic import ListView, DetailView, View
 from django.utils import timezone
 import logging
 import json
+from django.conf import settings
 from .forms import CheckoutForm
-from .models import ShippingAddress
 from .serializers import OrderSerializer, ItemSerializer
-
+from authentication.models import User
 from .models import (
     Item,
     Order,
-    OrderItem
+    OrderItem,
+    ShippingAddress,
+    Margin
 )
 
 CATEGORY = (
@@ -49,6 +51,8 @@ class OrderSummaryView(LoginRequiredMixin, View):
     login_url = "/webauth/login/"
 
     def get(self, *args, **kwargs):
+
+        logger.error("OrderSummaryView")
         try:
             order = Order.objects.get(user=self.request.user, ordered=False)
             context = {
@@ -84,6 +88,8 @@ class CheckoutView(LoginRequiredMixin, View):
 
         try:
             order = Order.objects.get(user=self.request.user, ordered=False)
+            logger.error("order wrong??")
+            logger.error(order)
             if form.is_valid():
                 logger.error(" form is_valid")
                 logger.error(str(form.cleaned_data))
@@ -110,10 +116,12 @@ class CheckoutView(LoginRequiredMixin, View):
                 )
                 checkout_address.save()
                 order.checkout_address = checkout_address
-                # order.ordered = True
+                order.ordered = True
                 order.save()
 
-                # order.items.update(ordered=True)
+                order.items.update(ordered=True)
+
+                self.caculate_margins(order)
 
                 messages.success(self.request, "Place Order successfully!")
                 return redirect('store:checkout')
@@ -125,11 +133,65 @@ class CheckoutView(LoginRequiredMixin, View):
             messages.error(self.request, "You do not have an order")
             return redirect("store:order-summary")
 
+    def caculate_margins(self, order):
+        if order:
+            last_index = len(settings.MARGIN_RATES)
+            user_profile = order.user.profile
+            ancestors = user_profile.get_ancestors(ascending=True, include_self=False)
+            ancestors_list = list(ancestors)
+
+            # logger.error("before pop root: len {} ".format(len(ancestors_list)))
+
+            if len(ancestors_list) >= 1:
+                ancestors_list.pop()  # remove last root element
+
+            # logger.error("after pop root: len {} ".format(len(ancestors_list)))
+
+            margin_left = order.get_total_distributor_margin()
+
+            if ancestors_list:
+                margin_left_loop = margin_left
+                logger.error("margin_left {} ".format(margin_left))
+
+                for level in range(len(ancestors_list[:last_index])):
+                    level_rate = settings.MARGIN_RATES[str(level + 1)]
+                    level_margin = int(margin_left_loop * level_rate)
+                    user = ancestors_list[level].user
+
+                    logger.error("order_{}, distibute to {} with margin {} at level:{}, level_rate {}".format(order.id,
+                                                                                                              user.username,
+                                                                                                              level_margin,
+                                                                                                              level,
+                                                                                                              level_rate))
+
+                    if user.orders.count() >= settings.MARGIN_CRITERIA_ORDERS:
+                        Margin.objects.create(
+                            order=order,
+                            user=user,
+                            level=level,
+                            amount=level_margin,
+                        )
+                        margin_left -= level_margin
+
+            if margin_left:
+                # mount left margin to root
+
+                logger.error("order_{}, distibute to ADMIN with margin {} ".format(order.id, margin_left))
+                adminuser = User.objects.get(username=settings.ADMIN_NAME)
+                Margin.objects.create(
+                    order=order,
+                    user=adminuser,
+                    level=100,
+                    amount=margin_left,
+                )
+
 
 @login_required(login_url="/webauth/login/")
 def add_to_cart(request, pk, location):
     item = get_object_or_404(Item, pk=pk)
+    logger.error("add to cart")
     logger.error(location)
+    logger.error(item)
     order_item, created = OrderItem.objects.get_or_create(
         item=item,
         user=request.user,
@@ -138,25 +200,30 @@ def add_to_cart(request, pk, location):
     order_qs = Order.objects.filter(user=request.user, ordered=False)
 
     if order_qs.exists():
+        logger.error("add to cart: order_qs")
+        logger.error(order_qs)
         order = order_qs[0]
 
         if order.items.filter(item__pk=item.pk).exists():
+            logger.error("add to cart: order.items.filter(item__pk=item.pk) before")
+            logger.error(order_item)
             order_item.quantity += 1
             order_item.save()
+            logger.error("add to cart: order.items.filter(item__pk=item.pk) after")
+            logger.error(order_item)
             messages.info(request, "Added quantity Item")
             return redirect(location)
-            # return redirect("store:order-summary")
         else:
+            logger.error("add to cart: else")
+            logger.error(order_item)
             order.items.add(order_item)
             return redirect(location)
-            # return redirect("store:order-summary")
     else:
+        logger.error("add to cart: create new order")
         ordered_date = timezone.now()
         order = Order.objects.create(user=request.user, ordered_date=ordered_date)
         order.items.add(order_item)
-        # messages.info(request, "Item added to your cart")
         return redirect(location)
-        # return redirect("store:order-summary")
 
 
 @login_required(login_url="/webauth/login/")

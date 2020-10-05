@@ -1,4 +1,4 @@
-from .models import Order
+from .models import Order, Category
 
 
 def cart(request):
@@ -12,5 +12,6 @@ def cart(request):
     return {"cart": {}}
 
 
-def cartitem_count(request):
-    return {"cartitem_count": 10}
+def store_categories(request):
+    categories = Category.objects.all()
+    return {"store_categories": categories}
