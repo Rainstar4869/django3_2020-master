@@ -11,4 +11,7 @@ class OrderSerializer(serializers.ModelSerializer):
 class ItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = Item
-        fields = "__all__"
+        # exclude = ('buy_price','buy_price','buy_price',)
+        # fields = "__all__"
+        fields = ("item_name", "category", "image", "inventory", "is_valid", "price",
+                  "discount_price", "label", "description")

@@ -40,7 +40,8 @@ class SearchProductView(ListView):
     def get_queryset(self):
         keyval = self.request.GET.get("q", "")
         self.searchKey = keyval
-        products = Item.objects.filter(item_name__icontains=keyval)
+        products = Item.objects.filter(item_name__icontains=keyval) | \
+                   Item.objects.filter(description__icontains=keyval)
         logger.error("get_queryset: search product with keyval {}".format(keyval))
         return products
 

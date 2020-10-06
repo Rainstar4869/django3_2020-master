@@ -6,6 +6,7 @@ const ProductName = document.querySelector("#product_name");
 const ProductDiscountPrice = document.querySelector("#product_discountprice");
 const ProductPrice = document.querySelector("#product_price");
 const ProductImage = document.getElementById("product_image");
+const ProductDescription = document.getElementById("product_description");
 const ProductModal_minus = document.getElementById("ProductModal_minus");
 const ProductModal_plus = document.getElementById("ProductModal_plus");
 const ProductModal_quantity = document.getElementById("ProductModal_quantity");
@@ -57,12 +58,13 @@ function ShowProduct(e){
         }).then((res) => res.json()).then((data) => {
             console.log(data);
             if (data.result ==="OK"){
-                console.log(data.product.item_name);
+                console.log(data.product.description);
                 ProductName.innerHTML=data.product.item_name;
                 ProductDiscountPrice.innerHTML="¥"+data.product.discount_price;
                 ProductPrice.innerHTML="¥"+data.product.price;
                 // document.getElementById("product_image").src = 'img/new-image.jpg';
                 ProductImage.src=data.product.image;
+                ProductDescription.innerHTML=data.product.description;
 
                 ToastMessage("success","OK");
             }

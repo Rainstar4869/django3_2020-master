@@ -32,12 +32,14 @@
                     <div class="postcontent col-lg-9 order-lg-last">
                         {% if keyval and not products %}
                             <div class="style-msg errormsg">
-								<div class="sb-msg"><i class="icon-remove"></i><strong>Oh snap!</strong> {{keyval}} not found!</div>
+								<div class="sb-msg d-inline-block"><i class="icon-remove"></i><strong>Oh snap!</strong> {{keyval}} not found!</div>
+                                <a href="{% url 'store:home' %}" class="d-inline-block float-right alertmsg sb-msg">Finish Search</a>
 							</div>
                         {% elif keyval and products %}
 
                             <div class="style-msg successmsg">
-								<div class="sb-msg"><i class="icon-thumbs-up"></i><strong>Well done!</strong> Products contains {{ keyval }} are found!</div>
+								<div class="sb-msg d-inline-block"><i class="icon-thumbs-up"></i><strong>Well done!</strong> Products contains {{ keyval }} are found!</div>
+                                <a href="{% url 'store:home' %}" class="d-inline-block float-right alertmsg sb-msg">Finish Search</a>
 							</div>
                         {% endif %}
                         <!-- Shop
@@ -148,7 +150,8 @@
         <div class="single-product shop-quick-view-ajax mt-lg-6">
 
             <div class="ajax-modal-title">
-                <h2 id="product_name"></h2>
+                <h2 class="modal-title d-inline-block" id="product_name"></h2>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
             </div>
 
             <div class="product modal-padding">
@@ -190,8 +193,7 @@
 
                         <div class="clear"></div>
                         <div class="line"></div>
-                        <p>Libero velit id eaque ex quae laboriosam nulla optio doloribus! Perspiciatis,
-                            libero, neque, perferendis at nisi optio dolor!</p>
+                        <p id="product_description"></p>
                         <ul class="iconlist">
                             <li><i class="icon-caret-right"></i> Dynamic Color Options</li>
                             <li><i class="icon-caret-right"></i> Lots of Size Options</li>
