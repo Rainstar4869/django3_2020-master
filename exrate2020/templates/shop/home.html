@@ -22,7 +22,7 @@
 
     <!-- Content
     ============================================= -->
-    <section id="content">
+    <section id="content" class="d-none d-md-block">
         <div class="content-wrap">
             <div class="container clearfix">
 
@@ -87,7 +87,7 @@
 
                     <!-- Sidebar
                     ============================================= -->
-                    <div class="sidebar col-lg-3 hidden-sm">
+                    <div class="sidebar col-lg-3">
                         <div class="sidebar-widgets-wrap">
                         {% recursetree store_categories %}
                             {% if node.is_root_node %}
@@ -101,6 +101,7 @@
                         {% if not node.is_leaf_node %}
                             <ul class="custom-filter pl-2 children" data-container="#shop"
                                 data-active-class="active-filter">
+                                <li class="widget-filter-reset active-filter"><a href="#" data-filter="*">Clear</a></li>
                                 {{ children }}
                             </ul>
                         {% endif %}
@@ -111,6 +112,20 @@
                         {% endrecursetree %}
                         </div>
                     </div><!-- .sidebar end -->
+                </div>
+
+            </div>
+        </div>
+    </section><!-- #content end -->
+
+        <!-- Content
+    ============================================= -->
+    <section id="content" class="d-block d-sm-none">
+        <div class="content-wrap">
+            <div class="container clearfix">
+
+                <div class="row gutter-40 col-mb-80">
+                    <h2>show in XS</h2>
                 </div>
 
             </div>
