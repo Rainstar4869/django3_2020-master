@@ -1,4 +1,4 @@
-{% extends 'nichiei/layouts/base.html' %}
+{% extends 'shop/base.html' %}
 {% load static %}
 {% load humanize %}
 {% load mptt_tags %}
@@ -26,10 +26,20 @@
         <div class="content-wrap">
             <div class="container clearfix">
 
-                <div class="row gutter-40 col-mb-80">
+                <div class="row gutter-40 col-mb-80" id="productlist">
                     <!-- Post Content
                     ============================================= -->
                     <div class="postcontent col-lg-9 order-lg-last">
+                        {% if keyval and not products %}
+                            <div class="style-msg errormsg">
+								<div class="sb-msg"><i class="icon-remove"></i><strong>Oh snap!</strong> {{keyval}} not found!</div>
+							</div>
+                        {% elif keyval and products %}
+
+                            <div class="style-msg successmsg">
+								<div class="sb-msg"><i class="icon-thumbs-up"></i><strong>Well done!</strong> Products contains {{ keyval }} are found!</div>
+							</div>
+                        {% endif %}
                         <!-- Shop
                         ============================================= -->
                         <div id="shop" class="shop row grid-container gutter-20" data-layout="fitRows">
@@ -209,6 +219,7 @@
     </div>
 
     <div id="custom-notification-message" data-notify-position="top-right" data-notify-type="info" data-notify-msg='<i class="icon-info-sign"></i> Welcome to Canvas Demo!'></div>
+
 
 {% endblock %}
 

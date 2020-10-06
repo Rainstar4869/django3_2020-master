@@ -31,6 +31,27 @@ CATEGORY = (
 logger = logging.getLogger("error")
 
 
+class SearchProductView(ListView):
+    model = Item
+    template_name = "shop/home.html"
+    context_object_name = "products"
+    searchKey = ""
+
+    def get_queryset(self):
+        keyval = self.request.GET.get("q", "")
+        self.searchKey = keyval
+        products = Item.objects.filter(item_name__icontains=keyval)
+        logger.error("get_queryset: search product with keyval {}".format(keyval))
+        return products
+
+    def get_context_data(self, *args, object_list=None, **kwargs):
+        context = super(SearchProductView, self).get_context_data(*args, **kwargs)
+        context["keyval"] = self.searchKey
+
+        logger.error("get_context_data: search product with keyval {}".format(self.searchKey))
+        return context
+
+
 # Create your views here.
 class HomeView(ListView):
     model = Item
