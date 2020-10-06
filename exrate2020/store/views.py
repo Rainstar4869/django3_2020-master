@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import JsonResponse
+from django.utils.decorators import method_decorator
 from rest_framework.response import Response
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView, DetailView, View
@@ -40,6 +41,18 @@ class HomeView(ListView):
         context = super(HomeView, self).get_context_data(*args, **kwargs)
         context["categories"] = CATEGORY
         return context
+
+
+@method_decorator(login_required(login_url='/webauth/login/'), name="dispatch")
+class OrderListView(ListView):
+    model = Order
+    template_name = "shop/accounts/orders.html"
+    context_object_name = "orders"
+    paginate_by = 2
+
+    def get_queryset(self):
+        orders = Order.objects.filter(user=self.request.user)
+        return orders
 
 
 class ProductView(DetailView):

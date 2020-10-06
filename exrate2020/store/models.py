@@ -25,6 +25,11 @@ LABEL = (
     ('BS', 'Best Seller')
 )
 
+ORDER_STATUS = (
+    ("NEW", "NEW"),
+    ("FINISHED", "FINISHED"),
+)
+
 
 class Category(MPTTModel):
     name = models.CharField(max_length=64)
@@ -123,6 +128,8 @@ class OrderItem(models.Model):
 
 class Order(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="orders")
+    uuid = models.UUIDField(default=uuid.uuid4())
+    status = models.CharField(choices=ORDER_STATUS, max_length=10,default="NEW")
     items = models.ManyToManyField(OrderItem)
     start_date = models.DateTimeField(auto_now_add=True)
     ordered_date = models.DateTimeField()
@@ -183,45 +190,3 @@ class Margin(models.Model):
 
     def __str__(self):
         return "margin to {} from order {}".format(self.user.username, self.order.id)
-
-# @receiver(post_save, sender=Order)
-# def create_order(sender, instance, created, **kwargs):
-#     if created:
-#         last_index = len(settings.MARGIN_RATES)
-#         user_profile = instance.user.profile
-#         ancestors = user_profile.get_ancestors(ascending=True, include_self=False)
-#         ancestors_list = list(ancestors)
-#         ancestors_list.pop()  # remove last root element
-# 
-#         logger.error("order {}".format(instance.id))
-#         logger.error(instance)
-#         
-#         order = Order.objects.get(pk=instance.id)
-#         margin_left = order.get_total_distributor_margin()
-#         logger.error("margin_left {} ".format(margin_left))
-#         
-#         for level in range(len(ancestors_list[:last_index])):
-#             level_rate = settings.MARGIN_RATES[str(level + 1)]
-#             level_margin = int(margin_left*level_rate)
-#             margin_left -= level_margin
-# 
-#             logger.error("order_{}, distibute to {} with margin {} at level:{}".format(order.id, ancestors_list[
-#                 level].user.username, level_margin, level))
-#             Margin.objects.create(
-#                 order=order,
-#                 user=ancestors_list[level].user,
-#                 level=level,
-#                 amount=level_margin,
-#             )
-# 
-#         if margin_left:
-#             # mount left margin to root
-# 
-#             logger.error("order_{}, distibute to ADMIN with margin {} ".format(order.id, level_margin))
-#             adminuser = User.objects.get(username=settings.ADMIN_NAME)
-#             Margin.objects.create(
-#                 order=order,
-#                 user=adminuser,
-#                 level=100,
-#                 amount=margin_left,
-#             )

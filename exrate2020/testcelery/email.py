@@ -41,6 +41,7 @@ def send_txt_mail(subject, context, to_email, txt_template):
     )
     return email.send(fail_silently=False)
 
+
 def send_bothtype_mail(subject, context, to_email, txt_template, html_template):
     subject, from_email = subject, settings.DEFAULT_FROM_EMAIL
     text_content = render_to_string(txt_template, context)

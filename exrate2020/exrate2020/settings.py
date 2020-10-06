@@ -208,7 +208,7 @@ CELERY_CACHE_BACKEND = 'django-cache'
 CELERY_TIMEZONE = 'Asia/Tokyo'
 DJANGO_CELERY_BEAT_TZ_AWARE = False
 CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ja'
 
 TIME_ZONE = 'Asia/Tokyo'
 
@@ -228,8 +228,8 @@ MEDIA_URL = "/mediafiles/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "mediafiles")
 
 # LOGIN_REDIRECT_URL = '/'
-LOGIN_URL = 'webauth/login/'
-LOGOUT_URL = 'webauth/logout/'
+LOGIN_URL = '/webauth/login/'
+LOGOUT_URL = '/webauth/logout/'
 
 SITE_ID = 4
 

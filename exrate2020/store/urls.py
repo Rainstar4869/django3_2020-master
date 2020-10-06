@@ -1,5 +1,6 @@
 from django.urls import path
 from django.views.decorators.csrf import csrf_exempt
+
 from .views import (
     remove_from_cart,
     reduce_quantity_item,
@@ -9,7 +10,8 @@ from .views import (
     OrderSummaryView,
     CheckoutView,
     AddToChartAPIView,
-    ProductAPIView
+    ProductAPIView,
+    OrderListView
 )
 
 app_name = 'store'
@@ -26,5 +28,9 @@ urlpatterns = [
     path('reduce-quantity-item/<int:pk>/', reduce_quantity_item,
          name='reduce-quantity-item'),
     path('checkout/', CheckoutView.as_view(),
-         name='checkout')
+         name='checkout'),
+
+    # account related
+    path('account/orders/', OrderListView.as_view(), name="my_orders"),
+
 ]
