@@ -72,7 +72,9 @@ class OrderListView(ListView):
     paginate_by = 10
 
     def get_queryset(self):
+        logger.error("error message")
         orders = Order.objects.filter(user=self.request.user)
+        logger.error(orders)
         return orders
 
 
