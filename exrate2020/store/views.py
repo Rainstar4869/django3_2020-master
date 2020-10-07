@@ -61,7 +61,6 @@ class HomeView(ListView):
 
     def get_context_data(self, *args, object_list=None, **kwargs):
         context = super(HomeView, self).get_context_data(*args, **kwargs)
-        context["categories"] = CATEGORY
         return context
 
 
@@ -70,7 +69,7 @@ class OrderListView(ListView):
     model = Order
     template_name = "shop/accounts/orders.html"
     context_object_name = "orders"
-    paginate_by = 2
+    paginate_by = 10
 
     def get_queryset(self):
         orders = Order.objects.filter(user=self.request.user)
@@ -322,7 +321,8 @@ def reduce_quantity_item(request, pk):
 @login_required(login_url="/webauth/login/")
 def show_dashboard(request):
     context = {
-        "lionhu": "kinghu"
+        "lionhu": "kinghu",
+        "membertree": request.user.profile.get_descendants(include_self=True)
     }
     return render(request, "shop/accounts/dashboard.html", context)
 

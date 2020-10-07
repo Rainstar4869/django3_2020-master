@@ -1,9 +1,8 @@
 {% extends 'shop/base.html' %}
 {% load static %}
 {% load humanize %}
-{% block headerscript %}
-
-{% endblock headerscript%}
+{% load math_tags %}
+{% block headerscript %}{% endblock headerscript%}
 {% block content %}
 
 		<!-- Page Title
@@ -46,10 +45,11 @@
                                 <tbody>
                                 {% for order in orders %}
                                     <tr>
-                                        <td>{{ order.uuid }}</td>
+                                        <td>{{ order.uuid | shorten_id}}</td>
                                         <td>{{order.ordered_date|naturalday}}</td>
                                         <td>{{ order.status }}</td>
-                                        <td>{{ order.get_total_quantity }}</td>
+                                        <td>{{ order.get_total_quantity}}</td>
+{#                                        <td>{{ order.get_total_quantity | multiply5:5 }},{%  multiply6 order.get_total_quantity 6  %}</td>#}
                                         <td>{{order.get_total_price|intcomma}}</td>
                                     </tr>
                                 {% endfor %}
