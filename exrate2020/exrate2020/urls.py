@@ -6,6 +6,7 @@ from django.views.generic import TemplateView
 from rest_framework import permissions
 from upload.views import image_upload
 from nichiei.views import ContactView
+import debug_toolbar
 
 # from drf_yasg.views import get_schema_view
 # from drf_yasg import openapi
@@ -24,6 +25,7 @@ from nichiei.views import ContactView
 # )
 
 urlpatterns = [
+    path('__debug__/', include(debug_toolbar.urls)),
     path("", TemplateView.as_view(template_name="nichiei/index.html"), name="top"),
     path("company/", TemplateView.as_view(template_name="nichiei/company.html"), name="company"),
     path("services/", TemplateView.as_view(template_name="nichiei/services.html"), name="services"),

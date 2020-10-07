@@ -1959,51 +1959,53 @@
     <div class="header-wrap-clone"></div>
 </header><!-- #header end -->
 
-<div id="page-menu" data-mobile-sticky="true">
-    <div id="page-menu-wrap">
-        <div class="container">
-            <div class="page-menu-row">
+{% if user.is_authenticated %}
+    <div id="page-menu" data-mobile-sticky="true">
+        <div id="page-menu-wrap">
+            <div class="container">
+                <div class="page-menu-row">
 
-                <div class="page-menu-title">Explore <span>{{ user.username }}</span></div>
+                    <div class="page-menu-title">Explore <span>{{ user.username }}</span></div>
 
-                <nav class="page-menu-nav">
-                    <ul class="page-menu-container">
-                        <li class="page-menu-item current"><a href="{% url 'store:my_orders' %}">
-                            <div>Order</div>
-                        </a></li>
-                        <li class="page-menu-item"><a href="#">
-                            <div>Features</div>
-                        </a></li>
-                        <li class="page-menu-item"><a href="#">
-                            <div>Models</div>
-                        </a></li>
-                        <li class="page-menu-item"><a href="#">
-                            <div>Reviews<i class="icon-angle-down"></i></div>
-                        </a>
-                            <ul class="page-menu-sub-menu">
-                                <li class="page-menu-item"><a href="#">
-                                    <div>Expert Reviews</div>
-                                </a></li>
-                                <li class="page-menu-item"><a href="#">
-                                    <div>User Reviews</div>
-                                </a></li>
-                            </ul>
-                        </li>
-                        <li class="page-menu-item"><a href="#">
-                            <div>Compare</div>
-                        </a></li>
-                        <li class="page-menu-item"><a href="#">
-                            <div>Build</div>
-                        </a></li>
-                        <li class="page-menu-item"><a href="#">
-                            <div>Order</div>
-                        </a></li>
-                    </ul>
-                </nav>
+                    <nav class="page-menu-nav">
+                        <ul class="page-menu-container">
+                            <li class="page-menu-item current"><a href="{% url 'store:my_orders' %}">
+                                <div>Order</div>
+                            </a></li>
+                            <li class="page-menu-item"><a href="#">
+                                <div>Features</div>
+                            </a></li>
+                            <li class="page-menu-item"><a href="#">
+                                <div>Models</div>
+                            </a></li>
+                            <li class="page-menu-item"><a href="#">
+                                <div>Reviews<i class="icon-angle-down"></i></div>
+                            </a>
+                                <ul class="page-menu-sub-menu">
+                                    <li class="page-menu-item"><a href="#">
+                                        <div>Expert Reviews</div>
+                                    </a></li>
+                                    <li class="page-menu-item"><a href="#">
+                                        <div>User Reviews</div>
+                                    </a></li>
+                                </ul>
+                            </li>
+                            <li class="page-menu-item"><a href="#">
+                                <div>Compare</div>
+                            </a></li>
+                            <li class="page-menu-item"><a href="#">
+                                <div>Build</div>
+                            </a></li>
+                            <li class="page-menu-item"><a href="#">
+                                <div>Order</div>
+                            </a></li>
+                        </ul>
+                    </nav>
 
-                <div id="page-menu-trigger"><i class="icon-reorder"></i></div>
+                    <div id="page-menu-trigger"><i class="icon-reorder"></i></div>
 
+                </div>
             </div>
         </div>
     </div>
-</div>
+{% endif %}
