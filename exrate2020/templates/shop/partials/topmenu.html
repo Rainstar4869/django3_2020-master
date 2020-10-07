@@ -13,34 +13,48 @@
 							<ul class="top-links-container">
 								<li class="top-links-item"><a href="index.html">NICHIEI</a>
 									<ul class="top-links-sub-menu">
-										<li class="top-links-item"><a href="about.html">About</a></li>
-										<li class="top-links-item"><a href="faqs.html">FAQs</a></li>
-										<li class="top-links-item"><a href="contact.html">Contact</a></li>
-										<li class="top-links-item"><a href="sitemap.html">Sitemap</a></li>
+										<li class="top-links-item"><a href="{% url 'top' %}">Home</a></li>
+										<li class="top-links-item"><a href="{% url 'company' %}">About Us</a></li>
+										<li class="top-links-item"><a href="{% url 'services' %}">Services</a></li>
+										<li class="top-links-item"><a href="{% url 'contact' %}">Contact</a></li>
 									</ul>
 								</li>
 								<li class="top-links-item"><a href="faqs.html">FAQs</a></li>
-								<li class="top-links-item"><a href="contact.html">Contact</a></li>
-								<li class="top-links-item"><a href="login-register.html">Login</a>
+								<li class="top-links-item"><a href="faqs.html">Contact</a></li>
+
+                                {% if user.is_authenticated %}
+                                    <li class="top-links-item"><a href="index.html">{{user.username}}</a>
+                                        <ul class="top-links-sub-menu">
+                                            <li class="top-links-item"><a href="about.html">Account</a></li>
+                                            <li class="top-links-item"><a href="{% url 'store:my_dashboard' %}">Dashboard</a></li>
+                                            <li class="top-links-item"><a href="contact.html">Contact</a></li>
+                                            <li class="top-links-item"><a href="{% url 'web_logout' %}">Logout</a></li>
+                                        </ul>
+                                    </li>
+                                {% else %}
+								    <li class="top-links-item"><a href="login-register.html">Login</a>
 									<div class="top-links-section">
-										<form id="top-login" autocomplete="off">
+										<form id="top-login" action="{% url 'web_login' %}"  method="post" autocomplete="off">
+                                            <input type="text" name="redirect" value="store:home" hidden>
+                                            {% csrf_token %}
 											<div class="form-group">
-												<label>Username</label>
-												<input type="email" class="form-control" placeholder="Email address">
+												<label>Email</label>
+												<input type="email" name="username" class="form-control" placeholder="Email address">
 											</div>
 											<div class="form-group">
 												<label>Password</label>
-												<input type="password" class="form-control" placeholder="Password" required="">
+												<input type="password" name="password" class="form-control" placeholder="Password" required="">
 											</div>
-											<div class="form-group form-check">
-												<input class="form-check-input" type="checkbox" value="" id="top-login-checkbox">
-												<label class="form-check-label" for="top-login-checkbox">Remember Me</label>
-											</div>
+{#											<div class="form-group form-check">#}
+{#												<input class="form-check-input" type="checkbox" value="" id="top-login-checkbox">#}
+{#												<label class="form-check-label" for="top-login-checkbox">Remember Me</label>#}
+{#											</div>#}
 											<button class="btn btn-danger btn-block" type="submit">Sign in</button>
 										</form>
 									</div>
 								</li>
-							</ul>
+                                {% endif %}
+                            </ul>
 						</div><!-- .top-links end -->
 
 					</div>

@@ -245,6 +245,9 @@ class LoginView(View):
     def post(self, request):
         username = request.POST['username']
         password = request.POST['password']
+        redirect_url = request.POST.get("redirect", "top")
+
+        logger.error("take user to {}".format(redirect_url))
 
         if username and password:
             user = auth.authenticate(username=username, password=password)
@@ -253,8 +256,9 @@ class LoginView(View):
                 if user.is_active:
                     auth.login(request, user)
                     messages.success(request, 'Welcome, ' + user.username + ' you are now logged in')
-                    return redirect("top")
-                    return render(request, 'index.html', {"accessToken": "Bearer " + user.tokens()["access"]})
+
+                    return redirect(redirect_url)
+                    # return render(request, 'index.html', {"accessToken": "Bearer " + user.tokens()["access"]})
                 messages.error(
                     request, 'Account is not active,please check your email')
                 return render(request, 'authentication/login.html')

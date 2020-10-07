@@ -12,7 +12,9 @@ from .views import (
     CheckoutView,
     AddToChartAPIView,
     ProductAPIView,
-    OrderListView
+    OrderListView,
+
+    show_dashboard,
 )
 
 app_name = 'store'
@@ -32,8 +34,8 @@ urlpatterns = [
     path('checkout/', CheckoutView.as_view(),
          name='checkout'),
 
-
     # account related
     path('account/orders/', OrderListView.as_view(), name="my_orders"),
+    path('account/dashboard/', show_dashboard, name="my_dashboard"),
 
 ]

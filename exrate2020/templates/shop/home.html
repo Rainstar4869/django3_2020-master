@@ -38,7 +38,7 @@
                         {% elif keyval and products %}
 
                             <div class="style-msg successmsg">
-								<div class="sb-msg d-inline-block"><i class="icon-thumbs-up"></i><strong>Well done!</strong> Products contains {{ keyval }} are found!</div>
+								<div class="sb-msg d-inline-block"><i class="icon-thumbs-up"></i><strong>Well done!</strong> Found {{ products.count }} Products contains " {{ keyval }} " are found!</div>
                                 <a href="{% url 'store:home' %}" class="d-inline-block float-right alertmsg sb-msg">Finish Search</a>
 							</div>
                         {% endif %}

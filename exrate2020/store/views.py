@@ -319,6 +319,14 @@ def reduce_quantity_item(request, pk):
         return redirect("store:order-summary")
 
 
+@login_required(login_url="/webauth/login/")
+def show_dashboard(request):
+    context = {
+        "lionhu": "kinghu"
+    }
+    return render(request, "shop/accounts/dashboard.html", context)
+
+
 class ProductAPIView(View):
     def post(self, request):
         data = json.loads(request.body)
