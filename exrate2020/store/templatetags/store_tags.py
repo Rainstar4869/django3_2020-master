@@ -5,13 +5,11 @@ register = template.Library()  # Djangoのテンプレートタグライブラ�
 
 # カスタムフィルタとして登録する
 @register.filter
-def multiply5(value1, value2):
-    return value1 * value2
-
-
-@register.filter
-def shorten_id(value):
-    return "..."+str(value)[-6:-1]
+def orderpluarl(value):
+    if value == 1:
+        return str(value)+" order"
+    else:
+        return str(value)+" orders"
 
 
 # カスタムタグとして登録する

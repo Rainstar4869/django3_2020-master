@@ -1,9 +1,11 @@
 {% extends 'shop/base.html' %}
 {% load static %}
 {% load humanize %}
-{% block headerscript %}
+{% load mptt_tags %}
+{% load store_tags %}
 
-{% endblock headerscript%}
+
+{% block headerscript %}{% endblock headerscript%}
 {% block content %}
 
 		<!-- Page Title
@@ -31,7 +33,25 @@
 						<!-- Post Content
 						============================================= -->
 						<div class="postcontent col-lg-9 order-lg-last">
-                            <h1>DashBoard</h1>
+
+                            {% recursetree membertree %}
+                            <div class="toggle lionhu-toggle">
+                                <div class="toggle-header">
+                                    <div class="toggle-icon">
+                                        <i class="toggle-closed icon-line-plus"></i>
+                                        <i class="toggle-open icon-line-minus"></i>
+                                    </div>
+                                    <div class="toggle-title">
+                                        {{ node.user.username }}{% if node.user.orders.count %}( {{ node.user.orders.count |orderpluarl }} ){% endif %}
+                                    </div>
+                                </div>
+                                    {% if not node.is_leaf_node %}
+                                <div class="toggle-content">
+                                        {{ children }}
+                                </div>
+                                    {% endif %}
+                            </div>
+                            {% endrecursetree %}
 						</div><!-- .postcontent end -->
 
 						<!-- Sidebar

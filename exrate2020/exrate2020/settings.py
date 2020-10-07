@@ -60,6 +60,7 @@ INSTALLED_APPS = [
     'mptt',
     'django_extensions',
     'debug_toolbar',
+    'treewidget',
 
     "expenses",
     "income",
