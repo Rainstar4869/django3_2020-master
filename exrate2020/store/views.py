@@ -18,6 +18,7 @@ from django.conf import settings
 from .forms import CheckoutForm
 from .serializers import OrderSerializer, ItemSerializer
 from authentication.models import User
+from django.core import serializers
 from .models import (
     Item,
     Order,
@@ -94,6 +95,14 @@ class HomeView(ListView):
         return context
 
 
+def get_order_from_json(jsonstr):
+    modelobject = None
+    for obj in serializers.deserialize('json', jsonstr):
+        modelobject = obj.object
+
+    return modelobject
+
+
 @method_decorator(login_required(login_url='/webauth/login/'), name="dispatch")
 class OrderListView(ListView):
     model = Order
@@ -105,6 +114,11 @@ class OrderListView(ListView):
         logger.error("error message")
         orders = Order.objects.filter(user=self.request.user, ordered=True)
         logger.error(orders)
+
+        # for order in orders:
+        #     if order.status == "COMPLETED":
+        #         order = get_order_from_json(order.json_order)
+
         return orders
 
 

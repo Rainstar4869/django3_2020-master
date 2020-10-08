@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.db import models
 from django.shortcuts import reverse
+from django.contrib.postgres.fields import JSONField
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
 from django.db.models.signals import post_save
@@ -11,6 +12,7 @@ import os
 import logging
 import json
 from authentication.models import User, Profile
+from django.core import serializers
 
 logger = logging.getLogger("error")
 
@@ -140,6 +142,7 @@ class Order(models.Model):
     ordered_date = models.DateTimeField()
     ordered = models.BooleanField(default=False)
     checkout_address = models.ForeignKey("ShippingAddress", on_delete=models.CASCADE, blank=True, null=True)
+    json_order = JSONField(blank=True, null=True)
 
     def __str__(self):
         return self.user.username
@@ -195,3 +198,23 @@ class Margin(models.Model):
 
     def __str__(self):
         return "margin to {} from order {}".format(self.user.username, self.order.id)
+
+
+@receiver(post_save, sender=Order)
+def post_save(sender, instance, created, update_fields, **kwargs):
+    print("print update_fields: ".format(str(update_fields)))
+    print("print kwargs: ".format(str(kwargs)))
+    print("print created: ".format(str(created)))
+    print("print instance: ".format(str(kwargs)))
+
+    if not created:
+        if instance.status == "COMPLETED":
+            json_order = serializers.serialize('json', Order.objects.filter(pk=instance.id))  
+            # serializer just one object should add []
+            # get model object from json_order as following
+            #     orderobj = None
+            #     for obj in serializers.deserialize('json', order.json_order):
+            #         orderobj = obj.object
+            Order.objects.filter(pk=instance.id).update(json_order=json_order)
+        else:
+            Order.objects.filter(pk=instance.id).update(json_order=None)
