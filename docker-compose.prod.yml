@@ -31,7 +31,7 @@ services:
       - ./exrate2020/logs:/etc/supervisor/logs
       - ./exrate2020/system/certs:/etc/nginx/certs
       - ./exrate2020/system/supervisord.conf:/etc/supervisor/conf.d/supervisord.conf
-#      - ./exrate2020/system/supervisord.conf:/etc/supervisord.conf
+      - ./system/fonts:/usr/share/fonts
     expose:
       - 8000
 #      - 8001
