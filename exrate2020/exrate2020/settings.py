@@ -59,7 +59,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'mptt',
     'django_extensions',
-    'debug_toolbar',
+    # 'debug_toolbar',
     'treewidget',
 
     "expenses",
@@ -87,7 +87,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.cache.FetchFromCacheMiddleware',  # This must be last
     'middlewares.setAccessToken.SimpleMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
+    # 'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'exrate2020.urls'

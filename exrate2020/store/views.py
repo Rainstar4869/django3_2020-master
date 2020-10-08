@@ -11,7 +11,7 @@ from django.views.generic import ListView, DetailView, View
 from django.utils import timezone
 import logging
 import json
-from weasyprint import HTML, CSS
+from weasyprint import HTML, CSS, default_url_fetcher
 import tempfile
 import datetime
 from django.conf import settings
@@ -54,7 +54,7 @@ def export_pdf_order(request, pk):
         result = HTML(string=html_string, base_url=request.build_absolute_uri()).write_pdf(
             stylesheets=[
                 CSS('staticfiles/css/invoice_pdf.css')
-            ], )
+            ])
 
         # result = html.write_pdf()
 
@@ -119,10 +119,6 @@ class OrderListView(ListView):
         logger.error("error message")
         orders = Order.objects.filter(user=self.request.user, ordered=True)
         logger.error(orders)
-
-        # for order in orders:
-        #     if order.status == "COMPLETED":
-        #         order = get_order_from_json(order.json_order)
 
         return orders
 

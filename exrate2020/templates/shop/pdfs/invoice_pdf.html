@@ -1,5 +1,5 @@
 
-{% load humanize %}
+{% load static %}
 <!doctype html>
 <html>
   <head>
@@ -49,9 +49,9 @@
       {% for orderitem in order.items.all %}
         <tr>
           <td>{{ orderitem.item.item_name }}</td>
-          <td>{{ orderitem.get_final_item_price |intcomma }}</td>
+          <td>{{ orderitem.get_final_item_price }}</td>
           <td>{{ orderitem.quantity }}</td>
-          <td>{{ orderitem.get_final_price |intcomma  }}</td>
+          <td>{{ orderitem.get_final_price  }}</td>
         </tr>
       {% endfor %}
       </tbody>
@@ -65,7 +65,8 @@
       </thead>
       <tbody>
         <tr>
-          <td></td>
+          <td>
+    <img style="width: 160px;" src="http://www.nichiei.services/img/nichiei_with_text_black.png" alt=""></td>
           <td>{{order.ordered_date}}</td>
           <td>{{ order.get_total_price }}</td>
         </tr>
