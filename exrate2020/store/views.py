@@ -73,7 +73,7 @@ class OrderListView(ListView):
 
     def get_queryset(self):
         logger.error("error message")
-        orders = Order.objects.filter(user=self.request.user)
+        orders = Order.objects.filter(user=self.request.user,ordered=True)
         logger.error(orders)
         return orders
 

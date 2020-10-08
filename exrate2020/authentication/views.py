@@ -119,3 +119,17 @@ class PasswordTokenCheckAPI(generics.GenericAPIView):
             if not PasswordResetTokenGenerator().check_token(user, token):
                 return Response({'error': 'Token is not valid, please request a new one'},
                                 status=status.HTTP_401_UNAUTHORIZED)
+
+
+def error_404(request):
+    contexts = {
+        'request_path': request.path,
+    }
+    return render(request, '404.html', contexts, status=404)
+
+
+def error_500(request):
+    contexts = {
+        'request_path': request.path,
+    }
+    return render(request, 'error_pages/500.html', contexts, status=500)
