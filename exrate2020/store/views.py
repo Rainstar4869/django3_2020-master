@@ -18,6 +18,10 @@ from django.conf import settings
 from .forms import CheckoutForm
 from .serializers import OrderSerializer, ItemSerializer
 from authentication.models import User
+from io import BytesIO
+from barcode.writer import SVGWriter
+import barcode
+
 from django.core import serializers
 from .models import (
     Item,
@@ -43,6 +47,7 @@ def export_pdf_order(request, pk):
 
     if pk:
         order = Order.objects.get(pk=pk)
+
         html_string = render_to_string("shop/pdfs/invoice_pdf.html", {
             "order": order,
         })

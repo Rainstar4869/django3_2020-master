@@ -11,6 +11,7 @@
 
   <body>
     <h1>Invoice</h1>
+    <small>{{ order.uuid }}</small>
 
     <aside>
       <address id="from">
@@ -31,8 +32,8 @@
     </aside>
 
     <dl id="informations">
-      <dt>NO</dt>
-      <dd>{{ order.uuid }}</dd>
+      <dt>NICHIEI SERVICES</dt>
+      <dd></dd>
       <dt>Date</dt>
       <dd>{{order.ordered_date}}</dd>
     </dl>
@@ -58,15 +59,15 @@
 
     <table id="total">
       <thead>
+        <th>Order</th>
         <th>Due by</th>
-        <th>Account number</th>
         <th>Total due</th>
       </thead>
       <tbody>
         <tr>
-          <td>May 10, 2018</td>
-          <td>132 456 789 012</td>
-          <td>€10,545.00</td>
+          <td></td>
+          <td>{{order.ordered_date}}</td>
+          <td>{{ order.get_total_price }}</td>
         </tr>
       </tbody>
     </table>
