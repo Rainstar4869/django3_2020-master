@@ -15,6 +15,7 @@ from .views import (
     OrderListView,
 
     show_dashboard,
+    export_pdf_order,
 )
 
 app_name = 'store'
@@ -37,5 +38,8 @@ urlpatterns = [
     # account related
     path('account/orders/', OrderListView.as_view(), name="my_orders"),
     path('account/dashboard/', show_dashboard, name="my_dashboard"),
+
+    path('export_pdf/<int:pk>/', export_pdf_order, name="export_order_pdf"),
+
 
 ]

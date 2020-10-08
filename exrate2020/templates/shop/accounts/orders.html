@@ -41,6 +41,7 @@
                                     <th>STATUS</th>
                                     <th>Qty</th>
                                     <th>Total</th>
+                                    <th></th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -52,6 +53,7 @@
                                         <td>{{ order.get_total_quantity }}</td>
                                         {#                                        <td>{{ order.get_total_quantity | multiply5:5 }},{%  multiply6 order.get_total_quantity 6  %}</td>#}
                                         <td>{{ order.get_total_price|intcomma }}</td>
+                                        <td><a href="{% url 'store:export_order_pdf' pk=order.id %}">Download</a></td>
                                     </tr>
                                 {% endfor %}
                                 </tbody>

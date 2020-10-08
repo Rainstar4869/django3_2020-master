@@ -121,13 +121,6 @@ class PasswordTokenCheckAPI(generics.GenericAPIView):
                                 status=status.HTTP_401_UNAUTHORIZED)
 
 
-def error_404(request):
-    contexts = {
-        'request_path': request.path,
-    }
-    return render(request, '404.html', contexts, status=404)
-
-
 def error_500(request):
     contexts = {
         'request_path': request.path,

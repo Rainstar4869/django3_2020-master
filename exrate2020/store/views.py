@@ -2,7 +2,8 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import ObjectDoesNotExist
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
+from django.template.loader import render_to_string
 from django.utils.decorators import method_decorator
 from rest_framework.response import Response
 from django.shortcuts import render, get_object_or_404, redirect
@@ -10,6 +11,9 @@ from django.views.generic import ListView, DetailView, View
 from django.utils import timezone
 import logging
 import json
+from weasyprint import HTML, CSS
+import tempfile
+import datetime
 from django.conf import settings
 from .forms import CheckoutForm
 from .serializers import OrderSerializer, ItemSerializer
@@ -29,6 +33,32 @@ CATEGORY = (
 )
 
 logger = logging.getLogger("error")
+
+
+def export_pdf_order(request, pk):
+    response = HttpResponse(content_type="application/pdf")
+    response["Content-Disposition"] = "inline;attachment;filename=Expenses" + str(datetime.datetime.now()) + '.pdf'
+    response["Content-Transfer-Encoding"] = "binary"
+
+    if pk:
+        order = Order.objects.get(pk=pk)
+        html_string = render_to_string("shop/pdfs/invoice_pdf.html", {
+            "order": order,
+        })
+        result = HTML(string=html_string, base_url=request.build_absolute_uri()).write_pdf(
+            stylesheets=[
+                CSS('staticfiles/css/invoice_pdf.css')
+            ], )
+
+        # result = html.write_pdf()
+
+        with tempfile.NamedTemporaryFile(delete=True) as output:
+            output.write(result)
+            output.flush()
+            output = open(output.name, "rb")
+            response.write(output.read())
+
+        return response
 
 
 class SearchProductView(ListView):
@@ -73,7 +103,7 @@ class OrderListView(ListView):
 
     def get_queryset(self):
         logger.error("error message")
-        orders = Order.objects.filter(user=self.request.user,ordered=True)
+        orders = Order.objects.filter(user=self.request.user, ordered=True)
         logger.error(orders)
         return orders
 

@@ -23,7 +23,6 @@ import debug_toolbar
 #     public=True,
 #     permission_classes=(permissions.AllowAny,),
 # )
-handler404 = 'authentication.views.error_404'
 handler500 = 'authentication.views.error_500'
 
 urlpatterns = [

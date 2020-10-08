@@ -106,6 +106,11 @@ class OrderItem(models.Model):
     def get_amount_saved(self):
         return self.get_total_item_price() - self.get_discount_item_price()
 
+    def get_final_item_price(self):
+        if self.item.discount_price:
+            return self.item.discount_price
+        return self.item.price
+
     def get_final_price(self):
         if self.item.discount_price:
             return self.get_discount_item_price()
@@ -129,7 +134,7 @@ class OrderItem(models.Model):
 class Order(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="orders")
     uuid = models.UUIDField(default=uuid.uuid4())
-    status = models.CharField(choices=ORDER_STATUS, max_length=10,default="NEW")
+    status = models.CharField(choices=ORDER_STATUS, max_length=10, default="NEW")
     items = models.ManyToManyField(OrderItem)
     start_date = models.DateTimeField(auto_now_add=True)
     ordered_date = models.DateTimeField()
