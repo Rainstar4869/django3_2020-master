@@ -6313,6 +6313,11 @@ body:not(.has-plugin-html5video) .video-wrap video {
 		text-align: center;
 	}
 
+	#page-title .nichiei-pull-left{
+		padding: 2rem 0;
+		text-align: left;
+	}
+
 	#page-title h1 {
 		line-height: 1.5;
 		font-size: calc( 1rem + 2vw );

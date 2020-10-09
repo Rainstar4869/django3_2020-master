@@ -33,28 +33,32 @@
 						<!-- Post Content
 						============================================= -->
                         <div class="postcontent col-lg-12">
-
                             <h1>My Team Tree</h1>
-                            {% recursetree membertree %}
-                                <div class="toggle lionhu-toggle">
-                                    <div class="toggle-header">
-                                        <div class="toggle-icon">
-                                            <i class="toggle-closed icon-line-plus"></i>
-                                            <i class="toggle-open icon-line-minus"></i>
-                                        </div>
-                                        <div class="toggle-title {% if not node.is_leaf_node %} successmsg {% endif %}">
-                                            {{ node.user.username }}{% if node.user.orders.count %}(
-                                                {{ node.user.orders.count |orderpluarl }} ){% endif %}
-                                        </div>
-                                    </div>
-                                    {% if not node.is_leaf_node %}
-                                        <div class="toggle-content">
-                                            {{ children }}
-                                        </div>
-                                    {% endif %}
-                                </div>
-                            {% endrecursetree %}
-                        </div><!-- .postcontent end -->
+                            <ul class="sub-menu-container root">
+                                {% recursetree membertree %}
+                                    <li class="menu-item">
+                                        <a class="menu-link" href="#">
+                                            <div>
+                                                {% if not node.is_leaf_node %}
+                                                    <i class="icon-users text-success"></i>
+                                                {% else %}
+                                                    <i class="icon-user text-warning"></i>
+                                                {% endif %}
+                                                {{ node.user.username }}
+                                                {% if node.user.orders.count %}(
+                                                    {{ node.user.orders.count |orderpluarl }} )
+                                                {% endif %}
+                                            </div>
+                                        </a>
+                                        {% if not node.is_leaf_node %}
+                                            <ul class="sub-menu-container children">
+                                                {{ children }}
+                                            </ul>
+                                        {% endif %}
+                                    </li>
+                                {% endrecursetree %}
+                            </ul>
+                        </div>
 					</div>
 
 				</div>

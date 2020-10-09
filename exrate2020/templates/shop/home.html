@@ -6,19 +6,25 @@
 {% block content %}
     <!-- Page Title
     ============================================= -->
-    <section id="page-title">
+    <section id="page-title" style="padding: 1rem 0;">
 
         <div class="container clearfix">
             <h1>Shop</h1>
-            <span>Products with Filter Functionality</span>
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                <li class="breadcrumb-item"><a href="#">Filters</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Shop Filter</li>
-            </ol>
-{#            {% drilldown_tree_for_node store_categories as drilldown %}#}
+            <ul class="sub-menu-container root">
 
-
+                {% recursetree store_categories %}
+                    <li class="menu-item">
+                        <a class="menu-link" href="#">
+                            <div><i class="icon-stack"></i>{{ node.name }}</div>
+                        </a>
+                        {% if not node.is_leaf_node %}
+                            <ul class="sub-menu-container children">
+                                {{ children }}
+                            </ul>
+                        {% endif %}
+                    </li>
+                {% endrecursetree %}
+            </ul>
         </div>
 
     </section><!-- #page-title end -->
