@@ -30,28 +30,46 @@
                                         <div class="row">
                                             <div class="col-12 form-group">
                                                 <label for="username">Username:</label>
-                                                <input type="text"  name="username" value="" class="form-control not-dark"/>
+                                                <div class="input-group mb-3">
+                                                    <input type="text" class="form-control not-dark" name="username" id="username"
+                                                           placeholder="username"
+                                                           aria-label="username"
+                                                           aria-describedby="basic-addon2">
+                                                    <div class="input-group-append" id="username_check_wrapper" >
+                                                        <span class="input-group-text"
+                                                              id="username_check"></span>
+                                                    </div>
+                                                </div>
+{#                                                <input type="text"  name="username" value="" class="form-control not-dark"/>#}
                                             </div>
                                             <div class="col-12 form-group">
                                                 <label for="email">Email:</label>
-                                                <input type="text"  name="email" value="" class="form-control not-dark"/>
+                                                <div class="input-group mb-3">
+                                                    <input type="email" class="form-control not-dark" name="email" id="email"
+                                                           placeholder="email"
+                                                           aria-label="email"
+                                                           aria-describedby="basic-addon2">
+                                                    <div class="input-group-append" id="email_check_wrapper">
+                                                        <span class="input-group-text"
+                                                              id="email_check"></span>
+                                                    </div>
+                                                </div>
                                             </div>
 
                                             <div class="col-12 form-group">
                                                 <label for="password">Password:</label>
-                                                <input type="password"  name="password" value="" class="form-control not-dark"/>
+                                                <input type="password" minlength="6"  name="password" value="" class="form-control not-dark"/>
                                             </div>
 
                                             <div class="col-12 form-group">
-                                                <label for="introcode">Parentcode:</label>
                                                 {% if  request.GET.introcode %}
                                                     <input type="text" name="introcode"
                                                            value="{{ request.GET.introcode }}"
-                                                           class="form-control not-dark"/>
+                                                           class="form-control not-dark" hidden/>
                                                 {% else %}
                                                     <input type="text" name="introcode"
                                                            value="{{ settings.ADMIN_INTROCODE }}"
-                                                           class="form-control not-dark"/>
+                                                           class="form-control not-dark" hidden/>
                                                 {% endif %}
                                             </div>
 
@@ -77,3 +95,8 @@
 {#<script src="{% static 'js/register.js' %}"></script>#}
 
 {% endblock content %}
+
+
+{% block footer_scripts %}
+<script src="{% static 'js/register.js' %}"></script>
+{% endblock %}

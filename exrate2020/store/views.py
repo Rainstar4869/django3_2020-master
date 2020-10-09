@@ -40,14 +40,15 @@ CATEGORY = (
 logger = logging.getLogger("error")
 
 
+@login_required(login_url="/webauth/login/")
 def export_pdf_order(request, pk):
     response = HttpResponse(content_type="application/pdf")
     response["Content-Disposition"] = "inline;attachment;filename=Expenses" + str(datetime.datetime.now()) + '.pdf'
     response["Content-Transfer-Encoding"] = "binary"
 
-    if pk:
-        order = Order.objects.get(pk=pk)
+    order = Order.objects.get(pk=pk)
 
+    if order.user == request.user:
         html_string = render_to_string("shop/pdfs/invoice_pdf.html", {
             "order": order,
         })
@@ -65,6 +66,8 @@ def export_pdf_order(request, pk):
             response.write(output.read())
 
         return response
+    
+    return redirect("store:home")
 
 
 class SearchProductView(ListView):
