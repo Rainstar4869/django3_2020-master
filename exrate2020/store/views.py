@@ -66,7 +66,7 @@ def export_pdf_order(request, pk):
             response.write(output.read())
 
         return response
-    
+
     return redirect("store:home")
 
 
@@ -92,7 +92,7 @@ class SearchProductView(ListView):
         return context
 
 
-# Create your views here.
+@method_decorator(login_required(login_url='/webauth/login/'), name="dispatch")
 class HomeView(ListView):
     model = Item
     template_name = "shop/home.html"
