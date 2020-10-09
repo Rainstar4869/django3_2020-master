@@ -50,9 +50,9 @@
       {% for orderitem in order.items.all %}
         <tr>
           <td>{{ orderitem.item.item_name }}</td>
-          <td>{{ orderitem.get_final_item_price |intcomma}}</td>
+          <td>{{ orderitem.get_final_item_price |intcomma:False}}</td>
           <td>{{ orderitem.quantity }}</td>
-          <td>{{ orderitem.get_final_price |intcomma }}</td>
+          <td>{{ orderitem.get_final_price |intcomma:False }}</td>
         </tr>
       {% endfor %}
       </tbody>
@@ -69,7 +69,7 @@
           <td>
     <img style="width: 160px;" src="http://www.nichiei.services/img/nichiei_with_text_black.png" alt=""></td>
           <td>{{order.ordered_date}}</td>
-          <td>{{ order.get_total_price }}</td>
+          <td>{{ order.get_total_price|intcomma:False }}</td>
         </tr>
       </tbody>
     </table>

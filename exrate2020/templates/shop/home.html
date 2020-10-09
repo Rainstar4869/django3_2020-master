@@ -82,8 +82,8 @@
                                                     href="#">{{ product.item_name }} {{ product.is_valid }}</a></h3>
                                             </div>
                                             <div class="product-price">
-                                                <del>¥{{ product.price |intcomma}}</del>
-                                                <ins>¥{{ product.discount_price |intcomma}}</ins>
+                                                <del>¥{{ product.price |intcomma:False}}</del>
+                                                <ins>¥{{ product.discount_price |intcomma:False}}</ins>
                                             </div>
                                             <div class="product-rating">
                                                 <i class="icon-star3"></i>

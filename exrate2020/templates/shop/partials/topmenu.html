@@ -152,7 +152,7 @@
                                     {% endfor %}
                                 </div>
                                 <div class="top-cart-action">
-                                    <span class="top-checkout-price">¥{{ cart.get_total_price |intcomma }}</span>
+                                    <span class="top-checkout-price">¥{{ cart.get_total_price |intcomma:False }}</span>
                                     <a href="{% url 'store:order-summary' %}" class="button button-3d button-small m-0">View
                                         Cart</a>
                                 </div>
