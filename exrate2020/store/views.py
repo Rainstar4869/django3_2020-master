@@ -208,10 +208,10 @@ class CheckoutView(LoginRequiredMixin, View):
                 self.caculate_margins(order)
 
                 messages.success(self.request, "Place Order successfully!")
-                return redirect('store:checkout')
+                return redirect('store:top')
 
             messages.warning(self.request, "Failed Chekout")
-            return redirect('store:checkout')
+            return redirect('store:top')
 
         except ObjectDoesNotExist:
             messages.error(self.request, "You do not have an order")
