@@ -24,8 +24,6 @@ class UserManager(BaseUserManager):
             raise TypeError("Users should have a username")
         if email is None:
             raise TypeError("Users should have a Email")
-        if parent_introcode is None:
-            raise TypeError("parent_introcode is needed")
 
         user = self.model(username=username,
                           email=self.normalize_email(email),
@@ -41,7 +39,10 @@ class UserManager(BaseUserManager):
             raise TypeError("Password should not be None")
 
         user = self.create_user(username, email, None, password)
-        User.objects.filter(email=email).update(is_superuser=True, is_staff=True)
+        User.objects.filter(email=email).update(is_superuser=True,
+                                                is_staff=True,
+                                                is_verified=True,
+                                                is_active=True)
 
         return user
 

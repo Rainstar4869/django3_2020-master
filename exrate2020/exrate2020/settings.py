@@ -261,7 +261,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "mediafiles")
 LOGIN_URL = '/webauth/login/'
 LOGOUT_URL = '/webauth/logout/'
 
-SITE_ID = 4
+SITE_ID = 7
 
 # Provider specific settings
 SOCIALACCOUNT_PROVIDERS = {

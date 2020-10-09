@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.db import models
 from django.shortcuts import reverse
-from django.contrib.postgres.fields import JSONField
+import jsonfield
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
 from django.db.models.signals import post_save
@@ -135,14 +135,14 @@ class OrderItem(models.Model):
 
 class Order(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="orders")
-    uuid = models.UUIDField(default=uuid.uuid4())
+    uuid = models.UUIDField(default=uuid.uuid4(),editable=False)
     status = models.CharField(choices=ORDER_STATUS, max_length=10, default="NEW")
     items = models.ManyToManyField(OrderItem)
     start_date = models.DateTimeField(auto_now_add=True)
     ordered_date = models.DateTimeField()
     ordered = models.BooleanField(default=False)
     checkout_address = models.ForeignKey("ShippingAddress", on_delete=models.CASCADE, blank=True, null=True)
-    json_order = JSONField(blank=True, null=True)
+    json_order = jsonfield.JSONField(blank=True, null=True)
 
     def __str__(self):
         return self.user.username

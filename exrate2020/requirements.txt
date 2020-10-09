@@ -37,6 +37,7 @@ django-extensions==3.0.9
 django-filter==2.3.0
 django-imagekit==4.0.2
 django-js-asset==1.2.2
+django-jsonfield==1.4.0
 django-mptt==0.11.0
 django-redis==4.12.1
 django-redis-cache==2.1.1
