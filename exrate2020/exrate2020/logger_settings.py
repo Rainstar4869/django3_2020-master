@@ -1,3 +1,5 @@
+from django.conf import settings
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -26,6 +28,9 @@ LOGGING = {
             'filename': 'logs/InfoLoggers.log',
             'formatter': 'large',
         },
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
     },
     'loggers': {
         'error_logger': {
@@ -37,6 +42,10 @@ LOGGING = {
             'handlers': ['info_file'],
             'level': 'INFO',
             'propagate': False,
+        },
+        'django.db.backends': {
+            'handlers': ['console'],
+            'level': 'DEBUG' if settings.DEBUG else 'INFO',
         },
     },
 }

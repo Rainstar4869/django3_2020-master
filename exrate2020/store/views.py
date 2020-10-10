@@ -37,7 +37,7 @@ CATEGORY = (
     ('OW', 'Out Wear')
 )
 
-logger = logging.getLogger("error")
+logger = logging.getLogger("error_logger")
 
 
 @login_required(login_url="/webauth/login/")
@@ -107,7 +107,7 @@ class HomeView(ListView):
         products = cache.get("nichiei_store_all_products")
 
         if products is None:
-            products = Item.objects.all()
+            products = Item.objects.all().defer("buy_price", "discount_price", "distributor_price")
             cache.set("nichiei_store_all_products", products, CACHE_TTL)
 
         return products
@@ -130,7 +130,7 @@ class OrderListView(ListView):
 
     def get_queryset(self):
         logger.error("error message")
-        orders = Order.objects.filter(user=self.request.user, ordered=True)
+        orders = Order.objects.filter(user=self.request.user, ordered=True).select_related("user").prefetch_related("items")
         logger.error(orders)
 
         return orders
