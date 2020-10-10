@@ -45,6 +45,8 @@ urlpatterns = [
     path('store/', include('store.urls')),
     path('chat/', include('chat.urls')),
 
+    path('qr_code/', include('qr_code.urls', namespace="qr_code")),
+
 ]
 
 if bool(settings.DEBUG):

@@ -1,6 +1,7 @@
 
 {% load static %}
 {% load humanize %}
+{% load qr_code %}
 <!doctype html>
 <html>
   <head>
@@ -67,7 +68,8 @@
       <tbody>
         <tr>
           <td>
-    <img style="width: 160px;" src="http://www.nichiei.services/img/nichiei_with_text_black.png" alt=""></td>
+              {% qr_for_contact qrcode size='S' %}
+          </td>
           <td>{{order.ordered_date}}</td>
           <td>{{ order.get_total_price|intcomma:False }}</td>
         </tr>

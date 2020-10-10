@@ -3,6 +3,7 @@
 {% load humanize %}
 {% load mptt_tags %}
 {% load store_tags %}
+{% load qr_code %}
 
 
 {% block headerscript %}{% endblock headerscript%}
@@ -13,7 +14,8 @@
 		<section id="page-title">
 
 			<div class="container clearfix">
-				<h1>{{lionhu}}</h1>
+
+				<h1>Dashboard</h1>
 				<span>Products with Filter Functionality</span>
 				<ol class="breadcrumb">
 					<li class="breadcrumb-item"><a href="#">Home</a></li>
@@ -32,7 +34,7 @@
                     <div class="row gutter-40 col-mb-80">
                         <!-- Post Content
                         ============================================= -->
-                        <div class="postcontent col-lg-12">
+                        <div class="postcontent col-lg-6">
                             <h1>My Team Tree</h1>
 
                             <nav class="primary-menu sub-title">
@@ -74,7 +76,7 @@
 
                             </nav><!-- #primary-menu end -->
 
-                                <div class="">
+                            <div class="">
                                     <ul class="sub-menu-container root">
                                         {% recursetree membertree %}
                                             <li class="menu-item">
@@ -101,6 +103,15 @@
 
                                     </ul>
                                 </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <div class="card">
+                                <div class="card-header">Introcode</div>
+                                <div class="card-body text-center">
+                                    {% qr_for_contact qrcode_introcode size='S' %}
+                                </div>
+                            </div>
                         </div>
 
                     </div>

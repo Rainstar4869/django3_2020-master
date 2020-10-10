@@ -61,6 +61,7 @@ INSTALLED_APPS = [
     'django_extensions',
     'debug_toolbar',
     'treewidget',
+    'qr_code',
 
     "expenses",
     "income",
@@ -169,8 +170,15 @@ CACHES = {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
             "SERIALIZER": "django_redis.serializers.json.JSONSerializer",
         }
+    },
+    'qr-code': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'qr-code-cache',
+        'TIMEOUT': 3600
     }
 }
+QR_CODE_CACHE_ALIAS = 'qr-code'
+
 SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases

@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.sites.shortcuts import get_current_site
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import JsonResponse, HttpResponse
 from django.template.loader import render_to_string
@@ -22,6 +23,7 @@ from authentication.models import User
 from django.core.cache.backends.base import DEFAULT_TIMEOUT
 from django.views.decorators.cache import cache_page
 from django.core.cache import cache
+from qr_code.qrcode.utils import ContactDetail
 from .models import (
     Item,
     Order,
@@ -42,6 +44,16 @@ logger = logging.getLogger("error_logger")
 
 @login_required(login_url="/webauth/login/")
 def export_pdf_order(request, pk):
+    current_site = get_current_site(request)
+    register_url = 'http://' + current_site.domain + "/webauth/register/?introcode=" + str(request.user.introcode)
+
+    contact_detail = ContactDetail(
+        first_name=request.user.username,
+        # tel=request.user.phone,
+        email=request.user.email,
+        url=register_url
+    )
+
     response = HttpResponse(content_type="application/pdf")
     response["Content-Disposition"] = "inline;attachment;filename=Expenses" + str(datetime.datetime.now()) + '.pdf'
     response["Content-Transfer-Encoding"] = "binary"
@@ -51,6 +63,7 @@ def export_pdf_order(request, pk):
     if order.user == request.user:
         html_string = render_to_string("shop/pdfs/invoice_pdf.html", {
             "order": order,
+            "qrcode": contact_detail
         })
         result = HTML(string=html_string, base_url=request.build_absolute_uri()).write_pdf(
             stylesheets=[
@@ -130,7 +143,8 @@ class OrderListView(ListView):
 
     def get_queryset(self):
         logger.error("error message")
-        orders = Order.objects.filter(user=self.request.user, ordered=True).select_related("user").prefetch_related("items")
+        orders = Order.objects.filter(user=self.request.user, ordered=True).select_related("user").prefetch_related(
+            "items")
         logger.error(orders)
 
         return orders
@@ -380,8 +394,18 @@ def reduce_quantity_item(request, pk):
 
 @login_required(login_url="/webauth/login/")
 def show_dashboard(request):
+    current_site = get_current_site(request)
+    register_url = 'http://' + current_site.domain + "/webauth/register/?introcode=" + str(request.user.introcode)
+
+    contact_detail = ContactDetail(
+        first_name=request.user.username,
+        # tel=request.user.phone,
+        email=request.user.email,
+        url=register_url
+    )
+
     context = {
-        "lionhu": "kinghu",
+        "qrcode_introcode": contact_detail,
         "membertree": request.user.profile.get_descendants(include_self=True)
     }
     return render(request, "shop/accounts/dashboard.html", context)
