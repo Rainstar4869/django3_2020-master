@@ -12,6 +12,7 @@ import os
 import logging
 import json
 from authentication.models import User, Profile
+from django.utils.translation import ugettext_lazy as _
 from django.core import serializers
 
 logger = logging.getLogger("error")
@@ -135,7 +136,7 @@ class OrderItem(models.Model):
 
 class Order(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="orders")
-    uuid = models.UUIDField(default=uuid.uuid4(),editable=False)
+    uuid = models.UUIDField(default=uuid.uuid4(), editable=False)
     status = models.CharField(choices=ORDER_STATUS, max_length=10, default="NEW")
     items = models.ManyToManyField(OrderItem)
     start_date = models.DateTimeField(auto_now_add=True)
@@ -200,6 +201,20 @@ class Margin(models.Model):
         return "margin to {} from order {}".format(self.user.username, self.order.id)
 
 
+class Cart(models.Model):
+    creation_date = models.DateTimeField(verbose_name=_('creation date'))
+    checked_out = models.BooleanField(default=False, verbose_name=_('checked out'))
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="cart", default=None)
+
+    class Meta:
+        verbose_name = _('cart')
+        verbose_name_plural = _('carts')
+        ordering = ('-creation_date',)
+
+    def __str__(self):
+        return str(self.creation_date)
+
+
 @receiver(post_save, sender=Order)
 def post_save(sender, instance, created, update_fields, **kwargs):
     print("print update_fields: ".format(str(update_fields)))
@@ -209,7 +224,7 @@ def post_save(sender, instance, created, update_fields, **kwargs):
 
     if not created:
         if instance.status == "COMPLETED":
-            json_order = serializers.serialize('json', Order.objects.filter(pk=instance.id))  
+            json_order = serializers.serialize('json', Order.objects.filter(pk=instance.id))
             # serializer just one object should add []
             # get model object from json_order as following
             #     orderobj = None
