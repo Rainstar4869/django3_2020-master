@@ -15,14 +15,13 @@ from weasyprint import HTML, CSS, default_url_fetcher
 import tempfile
 import datetime
 from django.conf import settings
+from django.core import serializers
 from .forms import CheckoutForm
 from .serializers import OrderSerializer, ItemSerializer
 from authentication.models import User
-from io import BytesIO
-from barcode.writer import SVGWriter
-import barcode
-
-from django.core import serializers
+from django.core.cache.backends.base import DEFAULT_TIMEOUT
+from django.views.decorators.cache import cache_page
+from django.core.cache import cache
 from .models import (
     Item,
     Order,
@@ -31,6 +30,7 @@ from .models import (
     Margin
 )
 
+CACHE_TTL = getattr(settings, 'CACHE_TTL', DEFAULT_TIMEOUT)
 CATEGORY = (
     ('S', 'Shirt'),
     ('SP', 'Sport Wear'),
@@ -92,6 +92,7 @@ class SearchProductView(ListView):
         return context
 
 
+# @cache_page(CACHE_TTL)
 @method_decorator(login_required(login_url='/webauth/login/'), name="dispatch")
 class HomeView(ListView):
     model = Item
@@ -101,6 +102,15 @@ class HomeView(ListView):
     def get_context_data(self, *args, object_list=None, **kwargs):
         context = super(HomeView, self).get_context_data(*args, **kwargs)
         return context
+
+    def get_queryset(self):
+        products = cache.get("nichiei_store_all_products")
+
+        if products is None:
+            products = Item.objects.all()
+            cache.set("nichiei_store_all_products", products, CACHE_TTL)
+
+        return products
 
 
 def get_order_from_json(jsonstr):

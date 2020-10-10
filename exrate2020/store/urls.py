@@ -1,6 +1,8 @@
 from django.urls import path
 from django.views.decorators.csrf import csrf_exempt
-
+from django.views.decorators.cache import cache_page
+from django.core.cache.backends.base import DEFAULT_TIMEOUT
+from django.conf import settings
 from .views import (
     remove_from_cart,
     reduce_quantity_item,
@@ -19,9 +21,10 @@ from .views import (
 )
 
 app_name = 'store'
+CACHE_TTL = getattr(settings, 'CACHE_TTL', DEFAULT_TIMEOUT)
 
 urlpatterns = [
-    path('', HomeView.as_view(), name='home'),
+    path('', cache_page(CACHE_TTL)(HomeView.as_view()), name='home'),
     path('product/<int:pk>/', ProductView.as_view(), name='product'),
     path('search-product/', csrf_exempt(SearchProductView.as_view()), name='search-product'),
     path('add-to-cart/<int:pk>/<str:location>/', add_to_cart, name='add-to-cart'),

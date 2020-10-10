@@ -1,6 +1,7 @@
 {% load static %}
 {% load humanize %}
 {% load mptt_tags %}
+{% load cache %}
 
 <!-- Top Bar
 ============================================= -->
@@ -168,6 +169,7 @@
                                 <div>Products</div>
                                 <span>Out of the Box</span></a>
 
+                        {% cache 900 categories_info %}
                             <ul class="sub-menu-container root">
 
                                 {% recursetree store_categories %}
@@ -183,6 +185,7 @@
                                     </li>
                                 {% endrecursetree %}
                             </ul>
+                        {% endcache %}
                         </li>
                     </ul>
 
