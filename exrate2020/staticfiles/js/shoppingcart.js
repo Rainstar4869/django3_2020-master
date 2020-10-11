@@ -1,6 +1,6 @@
 import {getCookie,ToastMessage} from "./utils.js";
 
-const TopCartNumber = document.querySelector(".top-cart-number");
+const TopCartNumbers = document.querySelectorAll(".top-cart-number");
 const ProductModal = document.querySelector("#ProductModal");
 const ProductName = document.querySelector("#product_name");
 const ProductDiscountPrice = document.querySelector("#product_discountprice");
@@ -17,30 +17,82 @@ const baseUrl="/store/api/add-to-cart/";
 
 function AddToCart(e) {
     var product_id = e.target.getAttribute("product_id");
-    var url = baseUrl+product_id+"/";
+    var url = "/store/api/add-to-cart/";
 
-    console.log(url);
-    console.log(accessToken);
-
-    if (accessToken !== undefined && accessToken !== null) {
-        fetch(baseUrl, {
+    // if (accessToken !== undefined && accessToken !== null) {
+        fetch(url, {
             body: JSON.stringify({product_id: product_id}),
             method: "POST",
-            headers: {
-                'Authorization': accessToken,
-            }
+            // headers: {
+            //     'Authorization': accessToken,
+            // }
         }).then((res) => res.json()).then((data) => {
-            console.log(data);
-            console.log(data.order_count);
-            TopCartNumber.innerHTML = data["order_count"];
 
-            ToastMessage("success","Add successfully!");
+            if (data.result == "OK") {
+                TopCartNumbers.forEach(item => {
+                    item.innerHTML = data.order_count;
+                });
+                var orderitem_id = ".order_item_" + product_id;
+                var subtotal_id = ".order_item_"+ product_id+"_subtotal"
+                var orderitem_els = document.querySelectorAll(orderitem_id);
+                var ordersubtotal_els = document.querySelectorAll(subtotal_id);
+                console.log(orderitem_els);
+                console.log(data);
+                console.log(data.product_count);
+                orderitem_els.forEach(item => {
+                    item.innerHTML = data.product_count;
+                });
+                ordersubtotal_els.forEach(item => {
+                    item.innerHTML = data.product_subtotal;
+                });
+
+                ToastMessage("success", "Add successfully!");
+            }
         });
-    } else {
-        window.location.href = "/webauth/login/";
-    }
+    // }
+    // else {
+    //     window.location.href = "/webauth/login/";
+    // }
 
 }
+
+function DecreaseToCart(e) {
+    var product_id = e.target.getAttribute("product_id");
+    var url = "/store/api/decrease-to-cart/";
+
+    // if (accessToken !== undefined && accessToken !== null) {
+        fetch(url, {
+            body: JSON.stringify({product_id: product_id}),
+            method: "POST",
+            // headers: {
+            //     'Authorization': accessToken,
+            // }
+        }).then((res) => res.json()).then((data) => {
+
+            if (data.result == "OK") {
+                TopCartNumbers.forEach(item => {
+                    item.innerHTML = data.order_count;
+                });
+                var orderitem_id = ".order_item_" + product_id;
+                var orderitem_els = document.querySelectorAll(orderitem_id)
+                console.log(orderitem_els);
+                console.log(data);
+                console.log(data.product_count);
+                orderitem_els.forEach(item => {
+                    item.innerHTML = data.product_count;
+                });
+
+                ToastMessage("success", "Decrease successfully!");
+            }
+
+        });
+    // }
+    // else {
+    //     window.location.href = "/webauth/login/";
+    // }
+
+}
+
 
 function ShowProduct(e){
     var product_id = e.target.getAttribute("product_id");
@@ -77,8 +129,11 @@ function ShowProduct(e){
 document.querySelectorAll(".btnAddToCart").forEach(item => {
     item.addEventListener("click",AddToCart);
 });
-
+document.querySelectorAll(".btnDecreaseToCart").forEach(item => {
+    item.addEventListener("click",DecreaseToCart);
+});
 
 document.querySelectorAll(".btnShowProduct").forEach(item => {
     item.addEventListener("click",ShowProduct);
 });
+

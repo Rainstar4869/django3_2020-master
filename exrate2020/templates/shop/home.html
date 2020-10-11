@@ -4,6 +4,7 @@
 {% load mptt_tags %}
 {% load cache %}
 
+
 {% block content %}
     <!-- Page Title
     ============================================= -->
@@ -32,6 +33,13 @@
 
     </section><!-- #page-title end -->
 
+
+    <h1>test cart</h1>
+    {{ session_cart.items }}
+{% for item in session_cart.items %}
+    {{ item.product.item_name}}
+    {{ item.quantity}}
+{% endfor %}
     <!-- Content
     ============================================= -->
     <section id="content">
@@ -57,8 +65,7 @@
                         <!-- Shop
                         ============================================= -->
                         <div id="shop" class="shop row grid-container gutter-20" data-layout="fitRows">
-
-                            {% cache 900 homepage_store_products %}
+                            {# {% cache 900 homepage_store_products %} #}
                                 {% for product in products %}
                                     <div class="product col-md-4 col-sm-6 {{ product.category }}">
                                         <div class="grid-inner">
@@ -74,14 +81,10 @@
                                                     <div class="bg-overlay-content align-items-end justify-content-between"
                                                          data-hover-animate="fadeIn" data-hover-speed="400">
                                                         {% if user.is_authenticated %}
-                                                            <a href="{% url 'store:add-to-cart' pk=product.id location='store:home' %}"
-                                                               class="btn btn-dark mr-2">
-                                                                <i class="icon-shopping-cart"
-                                                                   product_id="{{ product.id }}"
-                                                                   user_id="{{ user.id }}"></i>
+                                                            <a href="javascript:void(0);"
+                                                               class="btn btn-dark mr-2  btnAddToCart" product_id="{{ product.id }}">
+                                                                <i class="icon-shopping-cart " product_id="{{ product.id }}"></i>
                                                             </a>
-                                                        {% else %}
-
                                                         {% endif %}
                                                         <a href="javascript:void(0);"
                                                            class="btn btn-dark btnShowProduct"><i
@@ -110,7 +113,7 @@
                                         </div>
                                     </div>
                                 {% endfor %}
-                            {% endcache %}
+                            {# {% endcache %} #}
                         </div><!-- #shop end -->
 
                         <div class="d-block d-sm-none">
@@ -244,6 +247,8 @@
     </div>
 
     <div id="custom-notification-message" data-notify-position="top-right" data-notify-type="info" data-notify-msg='<i class="icon-info-sign"></i> Welcome to Canvas Demo!'></div>
+
+
 
 
 {% endblock %}

@@ -59,7 +59,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'mptt',
     'django_extensions',
-    'debug_toolbar',
+    # 'debug_toolbar',
     'treewidget',
     'qr_code',
 
@@ -86,9 +86,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django.middleware.cache.FetchFromCacheMiddleware',  # This must be last
     'middlewares.setAccessToken.SimpleMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'django.middleware.cache.FetchFromCacheMiddleware',  # This must be last
+    # 'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'exrate2020.urls'
@@ -96,32 +96,32 @@ INTERNAL_IPS = [
     '127.0.0.1',
     'localhost'
 ]
-ENABLE_STACKTRACES_LOCALS=True
+# ENABLE_STACKTRACES_LOCALS=True
 
-DEBUG_TOOLBAR_PANELS = [
-    'debug_toolbar.panels.versions.VersionsPanel',
-    'debug_toolbar.panels.timer.TimerPanel',
-    'debug_toolbar.panels.settings.SettingsPanel',
-    'debug_toolbar.panels.headers.HeadersPanel',
-    'debug_toolbar.panels.request.RequestPanel',
-    'debug_toolbar.panels.sql.SQLPanel',
-    'debug_toolbar.panels.staticfiles.StaticFilesPanel',
-    'debug_toolbar.panels.templates.TemplatesPanel',
-    'debug_toolbar.panels.cache.CachePanel',
-    'debug_toolbar.panels.signals.SignalsPanel',
-    'debug_toolbar.panels.logging.LoggingPanel',
-    'debug_toolbar.panels.redirects.RedirectsPanel',
-    'debug_toolbar.panels.profiling.ProfilingPanel',
-]
-
-
-def show_toolbar(request):
-    return True
+# DEBUG_TOOLBAR_PANELS = [
+#     'debug_toolbar.panels.versions.VersionsPanel',
+#     'debug_toolbar.panels.timer.TimerPanel',
+#     'debug_toolbar.panels.settings.SettingsPanel',
+#     'debug_toolbar.panels.headers.HeadersPanel',
+#     'debug_toolbar.panels.request.RequestPanel',
+#     'debug_toolbar.panels.sql.SQLPanel',
+#     'debug_toolbar.panels.staticfiles.StaticFilesPanel',
+#     'debug_toolbar.panels.templates.TemplatesPanel',
+#     'debug_toolbar.panels.cache.CachePanel',
+#     'debug_toolbar.panels.signals.SignalsPanel',
+#     'debug_toolbar.panels.logging.LoggingPanel',
+#     'debug_toolbar.panels.redirects.RedirectsPanel',
+#     'debug_toolbar.panels.profiling.ProfilingPanel',
+# ]
 
 
-DEBUG_TOOLBAR_CONFIG = {
-    "SHOW_TOOLBAR_CALLBACK": show_toolbar,
-}
+# def show_toolbar(request):
+#     return True
+
+
+# DEBUG_TOOLBAR_CONFIG = {
+#     "SHOW_TOOLBAR_CALLBACK": show_toolbar,
+# }
 
 TEMPLATES = [
     {
@@ -136,8 +136,8 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'django.template.context_processors.request',
                 'django_settings_export.settings_export',
-                "store.context_processors.cart",
                 "store.context_processors.store_categories",
+                "store.context_processors.session_cart",
             ],
         },
     },
@@ -316,7 +316,15 @@ NICHIEI_INFO = {
     "CONTACT_INFO_EMAIL": "huhaiguang@me.com"
 }
 
-CART_SESSION_ID = "nichiei_cart"
+CART_SESSION_KEY = "nichiei_cart"
+CART_TEMPLATE_TAG_NAME = 'get_cart'
+CART_PRODUCT_MODEL = "store.models.Item"
+# CART_PRODUCT_LOOKUP = {
+#     'published': True,
+#     'status': 'A',
+# }
+
+
 ADMIN_NAME = "admin"
 ADMIN_INTROCODE = "51fa7641-e634-44ac-a963-33675c967e5c"
 

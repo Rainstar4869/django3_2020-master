@@ -41,50 +41,48 @@
                             </tr>
                             </thead>
                             <tbody>
-                            {% for orderitem in order.items.all %}
+                            {% for orderitem in session_cart.items %}
                                 <tr class="cart_item">
                                     <td class="cart-product-remove">
-                                        <a href="{% url 'store:remove-from-cart' orderitem.item.pk %}" class="remove"
+                                        <a href="{% url 'store:remove-from-cart' orderitem.product.pk %}" class="remove"
                                            title="Remove this item"><i class="icon-trash2"></i></a>
                                     </td>
 
                                     <td class="cart-product-thumbnail">
                                         <a href="#"><img width="64" height="64"
-                                                         src="{{ orderitem.item.thumbimage.url }}"
+                                                         src="{{ orderitem.product.thumbimage.url }}"
                                                          alt="Pink Printed Dress"></a>
                                     </td>
 
                                     <td class="cart-product-name">
-                                        <a href="#">{{ orderitem.item.item_name }}</a>
+                                        <a href="#">{{ orderitem.product.item_name }}</a>
                                     </td>
 
                                     <td class="cart-product-price">
-                                        {% if orderitem.item.discount_price %}
-                                            <del>¥{{ orderitem.item.price |intcomma:False}}</del>
-                                            <span class="amount">{{ orderitem.item.discount_price |intcomma:False}}</span>
+                                        {% if orderitem.product.discount_price %}
+                                            <del>¥{{ orderitem.product.price |intcomma:False}}</del>
+                                            <span class="amount">{{ orderitem.product.discount_price |intcomma:False}}</span>
                                         {% else %}
-                                            <span class="amount">{{ orderitem.item.price |intcomma:False}}</span>
+                                            <span class="amount">{{ orderitem.product.price |intcomma:False}}</span>
                                         {% endif %}
 
                                     </td>
 
                                     <td class="cart-product-quantity">
                                         <div class="quantity">
-                                            <a href="{% url 'store:reduce-quantity-item' orderitem.item.pk %}"><i
-                                                    class="icon-minus-sign mx-2"></i></a>
-                                            {{ orderitem.quantity }}
-                                            <a href="{% url 'store:add-to-cart' pk=orderitem.item.pk location='store:order-summary' %}"><i
-                                                    class="icon-plus-sign mx-2"></i></a>
+                                            <a href="javascript:void(0);"  class="btnDecreaseToCart" product_id="{{ orderitem.product.id }}">
+                                                <i class="icon-minus-sign mx-2"  product_id="{{ orderitem.product.id }}"></i>
+                                            </a>
+                                            <span class="order_item_{{ orderitem.product.id }}">{{ orderitem.quantity }}</span>
+
+                                            <a href="javascript:void(0);" class="btnAddToCart"  product_id="{{ orderitem.product.id }}">
+                                                <i class="icon-plus-sign mx-2"  product_id="{{ orderitem.product.id }}"></i>
+                                            </a>
                                         </div>
                                     </td>
 
                                     <td class="cart-product-subtotal">
-                                        {% if orderitem.item.discount_price %}
-                                            <span class="amount">${{ orderitem.get_discount_item_price |intcomma:False}}</span>
-                                            <span class="badge badge-success">Saved ¥{{ orderitem.get_amount_saved |intcomma:False}}</span>
-                                        {% else %}
-                                            <span class="amount">${{ orderitem.get_total_item_price |intcomma:False}}</span>
-                                        {% endif %}
+                                            <span class="amount" class="order_item_{{ orderitem.product.id }}_subtotal">¥{{ orderitem.subtotal |intcomma:False}}</span>
                                     </td>
                                 </tr>
                                 {% empty %}
@@ -165,4 +163,5 @@
 
 {% block footerscript_last %}
 
+    <script src="{% static 'js/shoppingcart.js' %}" type="module"></script>
 {% endblock footerscript_last%}

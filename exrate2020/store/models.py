@@ -135,6 +135,7 @@ class OrderItem(models.Model):
 
 
 class Order(models.Model):
+    objects = None
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="orders")
     uuid = models.UUIDField(default=uuid.uuid4(), editable=False)
     status = models.CharField(choices=ORDER_STATUS, max_length=10, default="NEW")

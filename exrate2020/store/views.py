@@ -24,6 +24,7 @@ from django.core.cache.backends.base import DEFAULT_TIMEOUT
 from django.views.decorators.cache import cache_page
 from django.core.cache import cache
 from qr_code.qrcode.utils import ContactDetail
+from .cart import Cart as _Cart
 from .models import (
     Item,
     Order,
@@ -114,6 +115,7 @@ class HomeView(ListView):
 
     def get_context_data(self, *args, object_list=None, **kwargs):
         context = super(HomeView, self).get_context_data(*args, **kwargs)
+        context["cart"] = _Cart(self.request)
         return context
 
     def get_queryset(self):
@@ -142,11 +144,12 @@ class OrderListView(ListView):
     paginate_by = 10
 
     def get_queryset(self):
-        logger.error("error message")
-        orders = Order.objects.filter(user=self.request.user, ordered=True).select_related("user").prefetch_related(
-            "items")
-        logger.error(orders)
-
+        user_orders_cache_key = "user_{}_orders".format(self.request.user.id)
+        orders = cache.get(user_orders_cache_key)
+        if not orders:
+            orders = Order.objects.filter(user=self.request.user, ordered=True).select_related("user").prefetch_related(
+                "items")
+            cache.set(user_orders_cache_key, orders, CACHE_TTL)
         return orders
 
 
@@ -160,17 +163,24 @@ class OrderSummaryView(LoginRequiredMixin, View):
 
     def get(self, *args, **kwargs):
 
-        logger.error("OrderSummaryView")
-        try:
-            order = Order.objects.get(user=self.request.user, ordered=False)
-            context = {
-                'order': order
-            }
-            logger.error(context)
-            return render(self.request, 'shop/order_summary.html', context)
-        except ObjectDoesNotExist:
-            messages.error(self.request, "You do not have an order")
-            return redirect("/")
+        # logger.error("OrderSummaryView")
+        # cart = _Cart(self.request.session)
+        # logger.error("type cart {}: ".format(str(type(cart.allitems))))
+        #
+        # for item in cart.allitems:
+        #     logger.error("type item {}: ".format(str(type(item))))
+        #
+        # try:
+        #     order = Order.objects.get(user=self.request.user, ordered=False)
+        #     context = {
+        #         'order': order,
+        #         'session_order': cart.cart_serializable()
+        #     }
+        #     logger.error(context)
+            return render(self.request, 'shop/order_summary.html')
+        # except ObjectDoesNotExist:
+        #     messages.error(self.request, "You do not have an order")
+        #     return redirect("/")
 
 
 class CheckoutView(LoginRequiredMixin, View):
@@ -297,46 +307,56 @@ class CheckoutView(LoginRequiredMixin, View):
 @login_required(login_url="/webauth/login/")
 def add_to_cart(request, pk, location):
     item = get_object_or_404(Item, pk=pk)
-    logger.error("add to cart")
-    logger.error(location)
-    logger.error(item)
-    order_item, created = OrderItem.objects.get_or_create(
-        item=item,
-        user=request.user,
-        ordered=False
-    )
-    order_qs = Order.objects.filter(user=request.user, ordered=False)
 
-    if order_qs.exists():
-        logger.error("add to cart: order_qs")
-        logger.error(order_qs)
-        order = order_qs[0]
-
-        if order.items.filter(item__pk=item.pk).exists():
-            logger.error("add to cart: order.items.filter(item__pk=item.pk) before")
-            logger.error(order_item)
-            order_item.quantity += 1
-            order_item.save()
-            logger.error("add to cart: order.items.filter(item__pk=item.pk) after")
-            logger.error(order_item)
-            messages.info(request, "Added quantity Item")
-            return redirect(location)
-        else:
-            logger.error("add to cart: else")
-            logger.error(order_item)
-            order.items.add(order_item)
-            return redirect(location)
-    else:
-        logger.error("add to cart: create new order")
-        ordered_date = timezone.now()
-        order = Order.objects.create(user=request.user, ordered_date=ordered_date)
-        order.items.add(order_item)
-        return redirect(location)
+    cart = _Cart(request)
+    cart.add(item)
+    # return redirect(location)
+    #
+    # logger.error("add to cart")
+    # logger.error(location)
+    # logger.error(item)
+    # order_item, created = OrderItem.objects.get_or_create(
+    #     item=item,
+    #     user=request.user,
+    #     ordered=False
+    # )
+    # order_qs = Order.objects.filter(user=request.user, ordered=False)
+    #
+    # if order_qs.exists():
+    #     logger.error("add to cart: order_qs")
+    #     logger.error(order_qs)
+    #     order = order_qs[0]
+    #
+    #     if order.items.filter(item__pk=item.pk).exists():
+    #         logger.error("add to cart: order.items.filter(item__pk=item.pk) before")
+    #         logger.error(order_item)
+    #         order_item.quantity += 1
+    #         order_item.save()
+    #         logger.error("add to cart: order.items.filter(item__pk=item.pk) after")
+    #         logger.error(order_item)
+    #         messages.info(request, "Added quantity Item")
+    #         return redirect(location)
+    #     else:
+    #         logger.error("add to cart: else")
+    #         logger.error(order_item)
+    #         order.items.add(order_item)
+    #         return redirect(location)
+    # else:
+    #     logger.error("add to cart: create new order")
+    #     ordered_date = timezone.now()
+    #     order = Order.objects.create(user=request.user, ordered_date=ordered_date)
+    #     order.items.add(order_item)
+    #     return redirect(location)
 
 
 @login_required(login_url="/webauth/login/")
 def remove_from_cart(request, pk):
     item = get_object_or_404(Item, pk=pk)
+
+    cart = _Cart(request)
+    cart.remove(item)
+    return redirect("store:order-summary")
+
     order_qs = Order.objects.filter(
         user=request.user,
         ordered=False
@@ -364,6 +384,11 @@ def remove_from_cart(request, pk):
 @login_required(login_url="/webauth/login/")
 def reduce_quantity_item(request, pk):
     item = get_object_or_404(Item, pk=pk)
+
+    cart = _Cart(request)
+    cart.decrement(item)
+    return redirect("store:order-summary")
+
     order_qs = Order.objects.filter(
         user=request.user,
         ordered=False
@@ -429,36 +454,89 @@ class AddToChartAPIView(View):
     def post(self, request):
         data = json.loads(request.body)
         pk = data["product_id"]
-        user = request.user
 
-        logger.error(request.path)
-        item = get_object_or_404(Item, pk=pk)
-        order_item, created = OrderItem.objects.get_or_create(
-            item=item,
-            user=request.user,
-            ordered=False
-        )
-        order_qs = Order.objects.filter(user=request.user, ordered=False)
+        try:
+            product = Item.objects.get(pk=pk)
+            cart = _Cart(request.session)
+            cart.add(product, price=product.price)
 
-        if order_qs.exists():
-            order = order_qs[0]
+            return JsonResponse({
+                "result": "OK",
+                "message": "add successfully",
+                "product_id": data["product_id"],
+                "product_count": cart.product_count(product),
+                "product_subtotal": cart.product_subtotal(product),
+                "order_count": cart.count,
+                "order_sum": cart.total,
+                # "cart": cart.cart_serializable()
+            })
+        except ObjectDoesNotExist:
+            return JsonResponse({
+                "result": "NG",
+                "message": "no such product exists",
+                "product_id": data["product_id"],
+                "order_count": 0,
+                "cart": {}
+            })
 
-            if order.items.filter(item__pk=item.pk).exists():
-                order_item.quantity += 1
-                order_item.save()
-            else:
-                order.items.add(order_item)
 
-        else:
-            ordered_date = timezone.now()
-            order = Order.objects.create(user=request.user, ordered_date=ordered_date)
-            order.items.add(order_item)
+class DecreaseToCart(View):
+    def post(self, request):
+        data = json.loads(request.body)
+        pk = data["product_id"]
 
-        serializer = OrderSerializer(instance=order, many=False)
+        try:
+            product = Item.objects.get(pk=pk)
+            cart = _Cart(request.session)
+            cart.remove_single(product)
+            return JsonResponse({
+                "result": "OK",
+                "message": "decrease successfully",
+                "product_id": data["product_id"],
+                "product_count": cart.product_count(product),
+                "product_subtotal": cart.product_subtotal(product),
+                "order_count": cart.count,
+                # "cart": cart.cart_serializable()
+            })
+        except ObjectDoesNotExist:
+            return JsonResponse({
+                "result": "NG",
+                "message": "no such product exists",
+                "product_id": data["product_id"],
+                "order_count": 0,
+                "cart": {}
+            })
 
-        return JsonResponse({
-            "result": "OK",
-            "product_id": data["product_id"],
-            "order_count": order.get_total_quantity(),
-            "order": serializer.data
-        })
+        # user = request.user
+        #
+        # logger.error(request.path)
+        # item = get_object_or_404(Item, pk=pk)
+        # order_item, created = OrderItem.objects.get_or_create(
+        #     item=item,
+        #     user=request.user,
+        #     ordered=False
+        # )
+        # order_qs = Order.objects.filter(user=request.user, ordered=False)
+        #
+        # if order_qs.exists():
+        #     order = order_qs[0]
+        #
+        #     if order.items.filter(item__pk=item.pk).exists():
+        #         order_item.quantity += 1
+        #         order_item.save()
+        #     else:
+        #         order.items.add(order_item)
+        #
+        # else:
+        #     ordered_date = timezone.now()
+        #     order = Order.objects.create(user=request.user, ordered_date=ordered_date)
+        #     order.items.add(order_item)
+        #
+        # serializer = OrderSerializer(instance=order, many=False)
+        #
+        # return JsonResponse({
+        #     "result": "OK",
+        #     "product_id": data["product_id"],
+        #     "order_count": order.get_total_quantity(),
+        #     "order": serializer.data
+        # })

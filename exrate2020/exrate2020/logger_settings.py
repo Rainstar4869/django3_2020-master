@@ -28,9 +28,9 @@ LOGGING = {
             'filename': 'logs/InfoLoggers.log',
             'formatter': 'large',
         },
-        'console': {
-            'class': 'logging.StreamHandler',
-        },
+        # 'console': {
+        #     'class': 'logging.StreamHandler',
+        # },
     },
     'loggers': {
         'error_logger': {
@@ -43,9 +43,9 @@ LOGGING = {
             'level': 'INFO',
             'propagate': False,
         },
-        'django.db.backends': {
-            'handlers': ['console'],
-            'level': 'DEBUG' if settings.DEBUG else 'INFO',
-        },
+        # 'django.db.backends': {
+        #     'handlers': ['console'],
+        #     'level': 'DEBUG' if settings.DEBUG else 'INFO',
+        # },
     },
 }

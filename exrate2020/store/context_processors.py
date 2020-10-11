@@ -2,19 +2,11 @@ from .models import Order, Category
 from django.core.cache import cache
 from django.core.cache.backends.base import DEFAULT_TIMEOUT
 from django.conf import settings
+from .cart import Cart as _Cart
+import logging
 
+Logger = logging.getLogger("error-logger")
 CACHE_TTL = getattr(settings, 'CACHE_TTL', DEFAULT_TIMEOUT)
-
-
-def cart(request):
-    if request.user.is_authenticated:
-        orders = Order.objects.filter(user=request.user, ordered=False)
-
-        if orders.exists():
-            order = orders[0]
-            return {"cart": order}
-
-    return {"cart": {}}
 
 
 def store_categories(request):
@@ -25,3 +17,7 @@ def store_categories(request):
         cache.set("nichiei_store_categories", categories, CACHE_TTL)
 
     return {"store_categories": categories}
+
+
+def session_cart(request):
+    return {"session_cart": _Cart(request.session)}
