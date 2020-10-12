@@ -70,12 +70,12 @@
                             class="icon-call"></i></span><span class="ts-text">0487086883</span></a></li>
                     <li><a href="mailto:info@canvas.com" class="si-email3"><span class="ts-icon"><i
                             class="icon-email3"></i></span><span class="ts-text">crs@nichiei.services</span></a></li>
-                    <li class="d-block d-sm-none"><a href="{% url 'store:order-summary' %}" class="si-dribbble"><span class="ts-icon"><i
-                            class="icon-shopping-cart"></i></span>
-                            {% if cart.get_total_quantity %}
-                                <span class="top-cart-number" style="top: 13px!important;">{{ cart.get_total_quantity }}</span>
-                            {% endif %}
-                    </a></li>
+                        <li class="d-block d-sm-none"><a href="{% url 'store:order-summary' %}"
+                                                         class="si-dribbble"><span class="ts-icon"><i
+                                class="icon-shopping-cart"></i></span>
+                            <span class="top-cart-number"
+                                  style="top: 13px!important;">{{ session_cart.count }}</span>
+                        </a></li>
                 </ul><!-- #top-social end -->
 
             </div>
@@ -123,7 +123,7 @@
                                 </div>
                                 <div class="top-cart-items">
                                     {% for cartitem in session_cart.items %}
-                                        <div class="top-cart-item"  id="cartitem_row_{{ cartitem.product.id }}">
+                                        <div class="top-cart-item cartitem_row_{{ cartitem.product.id }}">
                                             <div class="top-cart-item-image">
                                                 <a href="#"><img src="{{ cartitem.product.thumbimage.url }}"/></a>
                                             </div>

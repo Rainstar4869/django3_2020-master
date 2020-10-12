@@ -145,12 +145,12 @@ class OrderListView(ListView):
     paginate_by = 10
 
     def get_queryset(self):
-        user_orders_cache_key = "user_{}_orders".format(self.request.user.id)
-        orders = cache.get(user_orders_cache_key)
-        if not orders:
-            orders = Order.objects.filter(user=self.request.user, ordered=True).select_related("user").prefetch_related(
-                "items")
-            cache.set(user_orders_cache_key, orders, CACHE_TTL)
+        # user_orders_cache_key = "user_{}_orders".format(self.request.user.id)
+        # orders = cache.get(user_orders_cache_key)
+        # if not orders:
+        orders = Order.objects.filter(user=self.request.user, ordered=True).select_related("user").prefetch_related(
+                "orderitems")
+            # cache.set(user_orders_cache_key, orders, CACHE_TTL)
         return orders
 
 
@@ -325,45 +325,33 @@ class ProductAPIView(View):
         })
 
 
-class AddToChartAPIView(View):
+class ShoppingCartOperation(View):
     def post(self, request):
         data = json.loads(request.body)
         pk = data["product_id"]
+        action = data["action"]
 
         try:
             product = Item.objects.get(pk=pk)
             cart = _Cart(request.session, request.user.id)
-            cart.add(product, price=product.price)
 
-            return JsonResponse({
-                "result": "OK",
-                "message": "add successfully",
-                "product_id": data["product_id"],
-                "product_count": cart.product_count(product),
-                "product_subtotal": cart.product_subtotal(product),
-                "order_count": cart.count,
-                "order_total": cart.total,
-                # "cart": cart.cart_serializable()
-            })
-        except ObjectDoesNotExist:
-            return JsonResponse({
-                "result": "NG",
-                "message": "no such product exists",
-                "product_id": data["product_id"],
-                "order_count": 0,
-                "cart": {}
-            })
+            if action == "remove_cartitem":
+                cart.remove(product)
+                return JsonResponse({
+                    "result": "OK",
+                    "message": "decrease successfully",
+                    "product_id": data["product_id"],
+                    "order_count": cart.count,
+                    "order_total": cart.total,
+                    "action": action
+                    # "cart": cart.cart_serializable()
+                })
 
+            if action == "add_cartitem":
+                cart.add(product, price=product.price)
+            elif action == "decrease_cartitem":
+                cart.remove_single(product)
 
-class DecreaseToCart(View):
-    def post(self, request):
-        data = json.loads(request.body)
-        pk = data["product_id"]
-
-        try:
-            product = Item.objects.get(pk=pk)
-            cart = _Cart(request.session, request.user.id)
-            cart.remove_single(product)
             return JsonResponse({
                 "result": "OK",
                 "message": "decrease successfully",
@@ -372,7 +360,7 @@ class DecreaseToCart(View):
                 "product_subtotal": cart.product_subtotal(product),
                 "order_count": cart.count,
                 "order_total": cart.total,
-                # "cart": cart.cart_serializable()
+                "action": action
             })
         except ObjectDoesNotExist:
             return JsonResponse({
@@ -380,32 +368,7 @@ class DecreaseToCart(View):
                 "message": "no such product exists",
                 "product_id": data["product_id"],
                 "order_count": 0,
+                "action": action,
                 "cart": {}
             })
 
-
-class RemoveFromCart(View):
-    def post(self, request):
-        data = json.loads(request.body)
-        pk = data["product_id"]
-
-        try:
-            product = Item.objects.get(pk=pk)
-            cart = _Cart(request.session, request.user.id)
-            cart.remove(product)
-            return JsonResponse({
-                "result": "OK",
-                "message": "decrease successfully",
-                "product_id": data["product_id"],
-                "order_count": cart.count,
-                "order_total": cart.total,
-                # "cart": cart.cart_serializable()
-            })
-        except ObjectDoesNotExist:
-            return JsonResponse({
-                "result": "NG",
-                "message": "no such product exists",
-                "product_id": data["product_id"],
-                "order_count": cart.count,
-                "cart": {}
-            })

@@ -43,7 +43,7 @@
                             </thead>
                             <tbody>
                             {% for orderitem in session_cart.items %}
-                                <tr class="cart_item" id="cartitem_row_{{ orderitem.product.id }}">
+                                <tr class="cart_item cartitem_row_{{ orderitem.product.id }}">
                                     <td class="cart-product-remove">
                                         <a href="javascript:void(0);" class="remove btnRemoveItem" product_id="{{ orderitem.product.id }}"
                                            title="Remove this item"><i class="icon-trash2" product_id="{{ orderitem.product.id }}"></i></a>

@@ -24,12 +24,12 @@
       </address>
 
       <address id="to">
-        TO: {{order.checkout_address.name}}
-        EMAIL: {{order.checkout_address.email}}
-        PHONE: {{order.checkout_address.phone}}
-        ADDRESS: 〒 {{order.checkout_address.postcode}}　
-        {{ order.checkout_address.state }}{{ order.checkout_address.town }}{{ order.checkout_address.street }} {{ order.checkout_address.address_1 }}
-          {{ order.checkout_address.address_2 }}
+        TO: {{order.shippingaddress.name}}
+        EMAIL: {{order.shippingaddress.email}}
+        PHONE: {{order.shippingaddress.phone}}
+        ADDRESS: 〒 {{order.shippingaddress.postcode}}　
+        {{ order.shippingaddress.state }}{{ order.shippingaddress.town }}{{ order.shippingaddress.street }} {{ order.shippingaddress.address_1 }}
+          {{ order.shippingaddress.address_2 }}
       </address>
     </aside>
 
@@ -48,7 +48,7 @@
         <th>Subtotal</th>
       </thead>
       <tbody>
-      {% for orderitem in order.items.all %}
+      {% for orderitem in order.orderitems.all %}
         <tr>
           <td>{{ orderitem.item.item_name }}</td>
           <td>{{ orderitem.get_final_item_price |intcomma:False}}</td>

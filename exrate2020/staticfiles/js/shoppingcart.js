@@ -1,3 +1,4 @@
+
 import {getCookie, ToastMessage} from "./utils.js";
 
 const TopCartNumbers = document.querySelectorAll(".top-cart-number");
@@ -14,11 +15,12 @@ const ProductModal_quantity = document.getElementById("ProductModal_quantity");
 const RemoveItemBtns = document.querySelectorAll(".btnRemoveItem");
 
 var accessToken = getCookie("accessToken");
-const baseUrl = "/store/api/add-to-cart/";
+const baseUrl = "/store/api/shoppingcart/";
 
 function removeItemRow(product_id) {
-    var orderitemrow = document.getElementById("cartitem_row_" + product_id);
-    orderitemrow.remove()
+    document.querySelectorAll(".cartitem_row_" + product_id).forEach(item => {
+        item.classList.add("d-none");
+    });
 }
 
 function updateOrderItemInfo(product_id, quantity, subtotal, order_count, order_total) {
@@ -46,18 +48,18 @@ function updateOrderItemInfo(product_id, quantity, subtotal, order_count, order_
 
 function AddToCart(e) {
     var product_id = e.target.getAttribute("product_id");
-    var url = "/store/api/add-to-cart/";
+    // var url = "/store/api/shoppingcart/";
 
     // if (accessToken !== undefined && accessToken !== null) {
-    fetch(url, {
-        body: JSON.stringify({product_id: product_id}),
+    fetch(baseUrl, {
+        body: JSON.stringify({product_id: product_id,action:"add_cartitem"}),
         method: "POST",
         // headers: {
         //     'Authorization': accessToken,
         // }
     }).then((res) => res.json()).then((data) => {
 
-        if (data.result == "OK") {
+        if (data.result == "OK" && data.action=="add_cartitem") {
             updateOrderItemInfo(product_id, data.product_count, data.product_subtotal, data.order_count, data.order_total)
             ToastMessage("success", "Add successfully!");
         }
@@ -66,24 +68,18 @@ function AddToCart(e) {
 
 function DecreaseToCart(e) {
     var product_id = e.target.getAttribute("product_id");
-    var url = "/store/api/decrease-to-cart/";
-
-    // if (accessToken !== undefined && accessToken !== null) {
-    fetch(url, {
-        body: JSON.stringify({product_id: product_id}),
+    // var url = "/store/api/decrease-to-cart/";
+    fetch(baseUrl, {
+        body: JSON.stringify({product_id: product_id,action:"decrease_cartitem"}),
         method: "POST",
-        // headers: {
-        //     'Authorization': accessToken,
-        // }
     }).then((res) => res.json()).then((data) => {
+        console.log(data)
+        if (data.result == "OK" && data.action == "decrease_cartitem") {
 
-        if (data.result == "OK") {
+            updateOrderItemInfo(product_id, data.product_count, data.product_subtotal, data.order_count, data.order_total)
             if (data.product_count < 1) {
                 removeItemRow(product_id);
             }
-
-            updateOrderItemInfo(product_id, data.product_count, data.product_subtotal, data.order_count, data.order_total)
-
             if (data.order_count < 1) {
                 document.querySelectorAll(".cartcontent").forEach(item => {
                     item.classList.add("d-none");
@@ -98,22 +94,25 @@ function DecreaseToCart(e) {
 
 function RemoveCartItem(e) {
     var product_id = e.target.getAttribute("product_id");
-    var url = "/store/api/removeitem-from-cart/";
+    // var url = "/store/api/removeitem-from-cart/";
 
-    fetch(url, {
-        body: JSON.stringify({product_id: product_id}),
+    fetch(baseUrl, {
+        body: JSON.stringify({product_id: product_id,action:"remove_cartitem"}),
         method: "POST",
     }).then((res) => res.json()).then((data) => {
+        console.log(data)
+        if (data.result == "OK" && data.action=="remove_cartitem") {
 
-        if (data.result == "OK") {
-            removeItemRow(product_id);
+            updateOrderItemInfo(product_id, 0, 0, data.order_count, data.order_total)
+
+            removeItemRow(product_id)
+
             if (data.order_count < 1) {
                 document.querySelectorAll(".cartcontent").forEach(item => {
                     item.classList.add("d-none");
                 });
             }
 
-            updateOrderItemInfo(product_id, data.product_count, data.product_subtotal, data.order_count, data.order_total)
             ToastMessage("success", "Remove from cart successfully!");
         }
 

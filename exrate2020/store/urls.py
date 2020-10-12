@@ -9,9 +9,7 @@ from .views import (
     HomeView,
     OrderSummaryView,
     CheckoutView,
-    AddToChartAPIView,
-    DecreaseToCart,
-    RemoveFromCart,
+    ShoppingCartOperation,
     ProductAPIView,
     OrderListView,
 
@@ -31,10 +29,7 @@ urlpatterns = [
     path('checkout/', CheckoutView.as_view(),
          name='checkout'),
 
-    path('api/add-to-cart/', csrf_exempt(AddToChartAPIView.as_view()), name='api-add-to-cart'),
-    path('api/decrease-to-cart/', csrf_exempt(DecreaseToCart.as_view()), name='api-decrease-to-cart'),
-    path('api/removeitem-from-cart/', csrf_exempt(RemoveFromCart.as_view()), name='api-removeitem-from-cart'),
-
+    path('api/shoppingcart/', csrf_exempt(ShoppingCartOperation.as_view()), name='api-shoppingcart'),
     path('api/product/get/', csrf_exempt(ProductAPIView.as_view()), name='api-get-product'),
 
 
