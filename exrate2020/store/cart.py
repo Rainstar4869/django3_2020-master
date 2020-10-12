@@ -115,9 +115,15 @@ class Cart(object):
         """
         Removes the product.
         """
+        logger.error("before remove session:")
+        logger.error(self.session)
         if product in self.products:
             del self._items_dict[product.id]
             self.update_session()
+
+
+        logger.error("after remove session:")
+        logger.error(self.session)
 
     def remove_single(self, product):
         """
@@ -201,13 +207,19 @@ class Cart(object):
         """
         The number of unique items in cart, regardless of the quantity.
         """
-        return self._items_dict[product.id].quantity
+        try:
+            return self._items_dict[product.id].quantity
+        except KeyError:
+            return 0
 
     def product_subtotal(self, product):
         """
         The number of unique items in cart, regardless of the quantity.
         """
-        return self._items_dict[product.id].subtotal
+        try:
+            return self._items_dict[product.id].subtotal
+        except KeyError:
+            return 0
 
     @property
     def is_empty(self):

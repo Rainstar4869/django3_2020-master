@@ -1,4 +1,4 @@
-{% extends 'nichiei/layouts/base.html' %}
+{% extends 'shop/base.html' %}
 {% load static %}
 {% load humanize %}
 {#{% load cart_tag %}#}
@@ -28,7 +28,8 @@
 			<div class="content-wrap">
                 <div class="container">
 
-                    <div class="table-responsive mb-5">
+                {% if session_cart.count %}
+                    <div class="table-responsive mb-5 cartcontent">
                         <table class="table cart">
                             <thead>
                             <tr>
@@ -42,10 +43,10 @@
                             </thead>
                             <tbody>
                             {% for orderitem in session_cart.items %}
-                                <tr class="cart_item">
+                                <tr class="cart_item" id="cartitem_row_{{ orderitem.product.id }}">
                                     <td class="cart-product-remove">
-                                        <a href="{% url 'store:remove-from-cart' orderitem.product.pk %}" class="remove"
-                                           title="Remove this item"><i class="icon-trash2"></i></a>
+                                        <a href="javascript:void(0);" class="remove btnRemoveItem" product_id="{{ orderitem.product.id }}"
+                                           title="Remove this item"><i class="icon-trash2" product_id="{{ orderitem.product.id }}"></i></a>
                                     </td>
 
                                     <td class="cart-product-thumbnail">
@@ -73,7 +74,7 @@
                                             <a href="javascript:void(0);"  class="btnDecreaseToCart" product_id="{{ orderitem.product.id }}">
                                                 <i class="icon-minus-sign mx-2"  product_id="{{ orderitem.product.id }}"></i>
                                             </a>
-                                            <span class="order_item_{{ orderitem.product.id }}">{{ orderitem.quantity }}</span>
+                                            <span class="orderitem_quantity_{{ orderitem.product.id }}">{{ orderitem.quantity }}</span>
 
                                             <a href="javascript:void(0);" class="btnAddToCart"  product_id="{{ orderitem.product.id }}">
                                                 <i class="icon-plus-sign mx-2"  product_id="{{ orderitem.product.id }}"></i>
@@ -82,7 +83,7 @@
                                     </td>
 
                                     <td class="cart-product-subtotal">
-                                            <span class="amount" class="order_item_{{ orderitem.product.id }}_subtotal">¥{{ orderitem.subtotal |intcomma:False}}</span>
+                                            <span class="amount font-italic order_item_{{ orderitem.product.id }}_subtotal">¥{{ orderitem.subtotal |intcomma:False}}</span>
                                     </td>
                                 </tr>
                                 {% empty %}
@@ -92,66 +93,38 @@
 
                                 <tr>
                                     <td colspan="6">
-                                        <a href="/" class="btn btn-primary float-right">Continue Shopping</a>
+                                        <a href="{% url 'store:home' %}" class="btn btn-primary float-right">Continue Shopping</a>
                                     </td>
                                 </tr>
                             {% endfor %}
-                            {% if order.get_total_quantity %}
-                                 <tr class="cart_item">
-                                <td colspan="6">
-                                    <div class="row">
-
-                                        <div class="col-lg-8 col-8 p-0 offset-lg-4">
-                                            <a href="{% url 'store:checkout' %}" class="button button-3d mt-0 float-right">Proceed to
-                                                Checkout</a>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            {% endif %}
                             </tbody>
 
                         </table>
                     </div>
-                {% if order.get_total_price %}
-                    <div class="row col-mb-30">
+                    <div class="row col-mb-30 cartcontent">
                         <div class="col-lg-6">
                             <h4>Cart Totals</h4>
-
                             <div class="table-responsive">
                                 <table class="table cart">
                                     <tbody>
-                                    <tr class="cart_item">
-                                        <td class="cart-product-name">
-                                            <strong>Cart Subtotal</strong>
-                                        </td>
-
-                                        <td class="cart-product-name">
-                                            <span class="amount">¥{{ order.get_total_price |intcomma:False}}</span>
-                                        </td>
-                                    </tr>
-{#                                    <tr class="cart_item">#}
-{#                                        <td class="cart-product-name">#}
-{#                                            <strong>Shipping</strong>#}
-{#                                        </td>#}
-{##}
-{#                                        <td class="cart-product-name">#}
-{#                                            <span class="amount">Free Delivery</span>#}
-{#                                        </td>#}
-{#                                    </tr>#}
                                     <tr class="cart_item">
                                         <td class="cart-product-name">
                                             <strong>Total</strong>
                                         </td>
 
                                         <td class="cart-product-name">
-                                            <span class="amount color lead"><strong>¥{{ order.get_total_price |intcomma:False}}</strong></span>
+                                            <span class="amount color lead"><strong class="order_total">¥{{ session_cart.total |intcomma:False}}</strong></span>
                                         </td>
                                     </tr>
                                     </tbody>
 
                                 </table>
                             </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <a href="{% url 'store:checkout' %}"
+                               class="button button-3d mt-0 float-right">Proceed to
+                                Checkout</a>
                         </div>
                     </div>
                 {% endif %}

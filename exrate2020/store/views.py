@@ -162,25 +162,7 @@ class OrderSummaryView(LoginRequiredMixin, View):
     login_url = "/webauth/login/"
 
     def get(self, *args, **kwargs):
-
-        # logger.error("OrderSummaryView")
-        # cart = _Cart(self.request.session)
-        # logger.error("type cart {}: ".format(str(type(cart.allitems))))
-        #
-        # for item in cart.allitems:
-        #     logger.error("type item {}: ".format(str(type(item))))
-        #
-        # try:
-        #     order = Order.objects.get(user=self.request.user, ordered=False)
-        #     context = {
-        #         'order': order,
-        #         'session_order': cart.cart_serializable()
-        #     }
-        #     logger.error(context)
-            return render(self.request, 'shop/order_summary.html')
-        # except ObjectDoesNotExist:
-        #     messages.error(self.request, "You do not have an order")
-        #     return redirect("/")
+        return render(self.request, 'shop/order_summary.html')
 
 
 class CheckoutView(LoginRequiredMixin, View):
@@ -305,119 +287,6 @@ class CheckoutView(LoginRequiredMixin, View):
 
 
 @login_required(login_url="/webauth/login/")
-def add_to_cart(request, pk, location):
-    item = get_object_or_404(Item, pk=pk)
-
-    cart = _Cart(request)
-    cart.add(item)
-    # return redirect(location)
-    #
-    # logger.error("add to cart")
-    # logger.error(location)
-    # logger.error(item)
-    # order_item, created = OrderItem.objects.get_or_create(
-    #     item=item,
-    #     user=request.user,
-    #     ordered=False
-    # )
-    # order_qs = Order.objects.filter(user=request.user, ordered=False)
-    #
-    # if order_qs.exists():
-    #     logger.error("add to cart: order_qs")
-    #     logger.error(order_qs)
-    #     order = order_qs[0]
-    #
-    #     if order.items.filter(item__pk=item.pk).exists():
-    #         logger.error("add to cart: order.items.filter(item__pk=item.pk) before")
-    #         logger.error(order_item)
-    #         order_item.quantity += 1
-    #         order_item.save()
-    #         logger.error("add to cart: order.items.filter(item__pk=item.pk) after")
-    #         logger.error(order_item)
-    #         messages.info(request, "Added quantity Item")
-    #         return redirect(location)
-    #     else:
-    #         logger.error("add to cart: else")
-    #         logger.error(order_item)
-    #         order.items.add(order_item)
-    #         return redirect(location)
-    # else:
-    #     logger.error("add to cart: create new order")
-    #     ordered_date = timezone.now()
-    #     order = Order.objects.create(user=request.user, ordered_date=ordered_date)
-    #     order.items.add(order_item)
-    #     return redirect(location)
-
-
-@login_required(login_url="/webauth/login/")
-def remove_from_cart(request, pk):
-    item = get_object_or_404(Item, pk=pk)
-
-    cart = _Cart(request)
-    cart.remove(item)
-    return redirect("store:order-summary")
-
-    order_qs = Order.objects.filter(
-        user=request.user,
-        ordered=False
-    )
-    if order_qs.exists():
-        order = order_qs[0]
-        if order.items.filter(item__pk=item.pk).exists():
-            order_item = OrderItem.objects.filter(
-                item=item,
-                user=request.user,
-                ordered=False
-            )[0]
-            order_item.delete()
-            messages.info(request, "Item \"" + order_item.item.item_name + "\" remove from your cart")
-            return redirect("store:order-summary")
-        else:
-            messages.info(request, "This Item not in your cart")
-            return redirect("store:product", pk=pk)
-    else:
-        # add message doesnt have order
-        messages.info(request, "You do not have an Order")
-        return redirect("store:product", pk=pk)
-
-
-@login_required(login_url="/webauth/login/")
-def reduce_quantity_item(request, pk):
-    item = get_object_or_404(Item, pk=pk)
-
-    cart = _Cart(request)
-    cart.decrement(item)
-    return redirect("store:order-summary")
-
-    order_qs = Order.objects.filter(
-        user=request.user,
-        ordered=False
-    )
-    if order_qs.exists():
-        order = order_qs[0]
-        if order.items.filter(item__pk=item.pk).exists():
-            order_item = OrderItem.objects.filter(
-                item=item,
-                user=request.user,
-                ordered=False
-            )[0]
-            if order_item.quantity > 1:
-                order_item.quantity -= 1
-                order_item.save()
-            else:
-                order_item.delete()
-            # messages.info(request, "Item quantity was updated")
-            return redirect("store:order-summary")
-        else:
-            # messages.info(request, "This Item not in your cart")
-            return redirect("store:order-summary")
-    else:
-        # add message doesnt have order
-        messages.info(request, "You do not have an Order")
-        return redirect("store:order-summary")
-
-
-@login_required(login_url="/webauth/login/")
 def show_dashboard(request):
     current_site = get_current_site(request)
     register_url = 'http://' + current_site.domain + "/webauth/register/?introcode=" + str(request.user.introcode)
@@ -467,7 +336,7 @@ class AddToChartAPIView(View):
                 "product_count": cart.product_count(product),
                 "product_subtotal": cart.product_subtotal(product),
                 "order_count": cart.count,
-                "order_sum": cart.total,
+                "order_total": cart.total,
                 # "cart": cart.cart_serializable()
             })
         except ObjectDoesNotExist:
@@ -496,6 +365,7 @@ class DecreaseToCart(View):
                 "product_count": cart.product_count(product),
                 "product_subtotal": cart.product_subtotal(product),
                 "order_count": cart.count,
+                "order_total": cart.total,
                 # "cart": cart.cart_serializable()
             })
         except ObjectDoesNotExist:
@@ -507,36 +377,29 @@ class DecreaseToCart(View):
                 "cart": {}
             })
 
-        # user = request.user
-        #
-        # logger.error(request.path)
-        # item = get_object_or_404(Item, pk=pk)
-        # order_item, created = OrderItem.objects.get_or_create(
-        #     item=item,
-        #     user=request.user,
-        #     ordered=False
-        # )
-        # order_qs = Order.objects.filter(user=request.user, ordered=False)
-        #
-        # if order_qs.exists():
-        #     order = order_qs[0]
-        #
-        #     if order.items.filter(item__pk=item.pk).exists():
-        #         order_item.quantity += 1
-        #         order_item.save()
-        #     else:
-        #         order.items.add(order_item)
-        #
-        # else:
-        #     ordered_date = timezone.now()
-        #     order = Order.objects.create(user=request.user, ordered_date=ordered_date)
-        #     order.items.add(order_item)
-        #
-        # serializer = OrderSerializer(instance=order, many=False)
-        #
-        # return JsonResponse({
-        #     "result": "OK",
-        #     "product_id": data["product_id"],
-        #     "order_count": order.get_total_quantity(),
-        #     "order": serializer.data
-        # })
+
+class RemoveFromCart(View):
+    def post(self, request):
+        data = json.loads(request.body)
+        pk = data["product_id"]
+
+        try:
+            product = Item.objects.get(pk=pk)
+            cart = _Cart(request.session)
+            cart.remove(product)
+            return JsonResponse({
+                "result": "OK",
+                "message": "decrease successfully",
+                "product_id": data["product_id"],
+                "order_count": cart.count,
+                "order_total": cart.total,
+                # "cart": cart.cart_serializable()
+            })
+        except ObjectDoesNotExist:
+            return JsonResponse({
+                "result": "NG",
+                "message": "no such product exists",
+                "product_id": data["product_id"],
+                "order_count": cart.count,
+                "cart": {}
+            })
