@@ -41,9 +41,10 @@ class CartItem(object):
 
 
 class Cart(object):
-    def __init__(self, session, session_key=None):
+    def __init__(self, session, user_id, session_key=None):
         self._items_dict = {}
         self.session = session
+        self.user_id = user_id
         self.session_key = session_key or carton_settings.CART_SESSION_KEY
         # self.session["modified"] = False
         # If a cart representation was previously stored in session, then we
@@ -52,14 +53,16 @@ class Cart(object):
             cart_representation = self.session[self.session_key]
             logger.error("cart_representation")
             logger.error(cart_representation)
-            ids_in_cart = cart_representation.keys()
+            ids_in_cart = cart_representation["orderitems"].keys()
             logger.error("ids_in_cart")
             logger.error(ids_in_cart)
             products_queryset = self.get_queryset().filter(pk__in=ids_in_cart)
             for product in products_queryset:
                 logger.error("product ids_in_cart")
                 logger.error(product)
-                item = cart_representation[str(product.id)]
+                logger.error("cart_representation ids_in_cart")
+                logger.error(cart_representation)
+                item = cart_representation["orderitems"][str(product.id)]
                 self._items_dict[product.id] = CartItem(
                     product, item['quantity'], Decimal(item['price'])
                 )
@@ -121,7 +124,6 @@ class Cart(object):
             del self._items_dict[product.id]
             self.update_session()
 
-
         logger.error("after remove session:")
         logger.error(self.session)
 
@@ -141,6 +143,7 @@ class Cart(object):
         """
         Removes all items.
         """
+        logger.error("clear sesstion cart after ordered!")
         self._items_dict = {}
         self.update_session()
 
@@ -175,11 +178,17 @@ class Cart(object):
         }
         Note how the product pk servers as the dictionary key.
         """
+        orderitems = {}
         cart_representation = {}
         for item in self.items:
             # JSON serialization: object attribute should be a string
             product_id = str(item.product.id)
-            cart_representation[product_id] = item.to_dict()
+            orderitems[product_id] = item.to_dict()
+
+        cart_representation["orderitems"] = orderitems
+        cart_representation["Qty"] = self.count
+        cart_representation["Total"] = self.total
+        cart_representation["user_id"] = self.user_id
         return cart_representation
 
     @property
@@ -187,7 +196,7 @@ class Cart(object):
         """
         The list of items formatted for serialization.
         """
-        return self.cart_serializable.items()
+        return self.cart_serializable["orderitems"].items()
 
     @property
     def count(self):

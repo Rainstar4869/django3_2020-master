@@ -91,8 +91,8 @@ class Item(models.Model):
 
 
 class OrderItem(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL,
-                             on_delete=models.CASCADE, related_name="orderitems")
+    order = models.ForeignKey("Order",
+                              on_delete=models.CASCADE, related_name="orderitems")
     ordered = models.BooleanField(default=False)
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
     quantity = models.IntegerField(default=1)
@@ -135,41 +135,40 @@ class OrderItem(models.Model):
 
 
 class Order(models.Model):
-    objects = None
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="orders")
     uuid = models.UUIDField(default=uuid.uuid4(), editable=False)
     status = models.CharField(choices=ORDER_STATUS, max_length=10, default="NEW")
-    items = models.ManyToManyField(OrderItem)
     start_date = models.DateTimeField(auto_now_add=True)
-    ordered_date = models.DateTimeField()
+    ordered_date = models.DateTimeField(auto_now_add=True)
     ordered = models.BooleanField(default=False)
-    checkout_address = models.ForeignKey("ShippingAddress", on_delete=models.CASCADE, blank=True, null=True)
-    json_order = jsonfield.JSONField(blank=True, null=True)
+    shippingaddress = models.ForeignKey("ShippingAddress", on_delete=models.CASCADE, blank=True, null=True,
+                                        default=None)
+    json_orderitems = jsonfield.JSONField(blank=True, null=True, default=None)
 
     def __str__(self):
         return self.user.username
 
     def get_total_price(self):
         total = 0
-        for order_item in self.items.all():
+        for order_item in self.orderitems.all():
             total += order_item.get_final_price()
         return total
 
     def get_total_quantity(self):
         total = 0
-        for order_item in self.items.all():
+        for order_item in self.orderitems.all():
             total += order_item.quantity
         return total
 
     def get_total_distributor_margin(self):
         total = 0
-        for order_item in self.items.all():
+        for order_item in self.orderitems.all():
             total += order_item.get_margin_item_distributor()
         return total
 
     def get_total_admin_margin(self):
         total = 0
-        for order_item in self.items.all():
+        for order_item in self.orderitems.all():
             total += order_item.get_margin_item_admin()
         return total
 
@@ -201,36 +200,35 @@ class Margin(models.Model):
     def __str__(self):
         return "margin to {} from order {}".format(self.user.username, self.order.id)
 
+# class Cart(models.Model):
+#     creation_date = models.DateTimeField(verbose_name=_('creation date'))
+#     checked_out = models.BooleanField(default=False, verbose_name=_('checked out'))
+#     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="cart", default=None)
+#
+#     class Meta:
+#         verbose_name = _('cart')
+#         verbose_name_plural = _('carts')
+#         ordering = ('-creation_date',)
+#
+#     def __str__(self):
+#         return str(self.creation_date)
 
-class Cart(models.Model):
-    creation_date = models.DateTimeField(verbose_name=_('creation date'))
-    checked_out = models.BooleanField(default=False, verbose_name=_('checked out'))
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="cart", default=None)
 
-    class Meta:
-        verbose_name = _('cart')
-        verbose_name_plural = _('carts')
-        ordering = ('-creation_date',)
-
-    def __str__(self):
-        return str(self.creation_date)
-
-
-@receiver(post_save, sender=Order)
-def post_save(sender, instance, created, update_fields, **kwargs):
-    print("print update_fields: ".format(str(update_fields)))
-    print("print kwargs: ".format(str(kwargs)))
-    print("print created: ".format(str(created)))
-    print("print instance: ".format(str(kwargs)))
-
-    if not created:
-        if instance.status == "COMPLETED":
-            json_order = serializers.serialize('json', Order.objects.filter(pk=instance.id))
-            # serializer just one object should add []
-            # get model object from json_order as following
-            #     orderobj = None
-            #     for obj in serializers.deserialize('json', order.json_order):
-            #         orderobj = obj.object
-            Order.objects.filter(pk=instance.id).update(json_order=json_order)
-        else:
-            Order.objects.filter(pk=instance.id).update(json_order=None)
+# @receiver(post_save, sender=Order)
+# def post_save(sender, instance, created, update_fields, **kwargs):
+#     print("print update_fields: ".format(str(update_fields)))
+#     print("print kwargs: ".format(str(kwargs)))
+#     print("print created: ".format(str(created)))
+#     print("print instance: ".format(str(kwargs)))
+#
+#     if not created:
+#         if instance.status == "COMPLETED":
+#             json_order = serializers.serialize('json', Order.objects.filter(pk=instance.id))
+# serializer just one object should add []
+# get model object from json_order as following
+#     orderobj = None
+#     for obj in serializers.deserialize('json', order.json_order):
+#         orderobj = obj.object
+#     Order.objects.filter(pk=instance.id).update(json_order=json_order)
+# else:
+#     Order.objects.filter(pk=instance.id).update(json_order=None)

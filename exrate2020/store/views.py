@@ -24,6 +24,7 @@ from django.core.cache.backends.base import DEFAULT_TIMEOUT
 from django.views.decorators.cache import cache_page
 from django.core.cache import cache
 from qr_code.qrcode.utils import ContactDetail
+from . import settings as carton_settings
 from .cart import Cart as _Cart
 from .models import (
     Item,
@@ -115,7 +116,7 @@ class HomeView(ListView):
 
     def get_context_data(self, *args, object_list=None, **kwargs):
         context = super(HomeView, self).get_context_data(*args, **kwargs)
-        context["cart"] = _Cart(self.request)
+        context["cart"] = _Cart(self.request, self.request.user.id)
         return context
 
     def get_queryset(self):
@@ -169,27 +170,32 @@ class CheckoutView(LoginRequiredMixin, View):
     login_url = "/webauth/login/"
 
     def get(self, *args, **kwargs):
-        try:
-            form = CheckoutForm()
+        form = CheckoutForm()
 
-            order = Order.objects.get(user=self.request.user, ordered=False)
-            context = {
-                "order": order,
-                "form": form
-            }
-            return render(self.request, "shop/checkout.html", context)
-
-        except ObjectDoesNotExist:
-            messages.error(self.request, "You do not have an order")
-            return redirect("/")
+        # order = Order.objects.get(user=self.request.user, ordered=False)
+        context = {
+            # "order": order,
+            "form": form
+        }
+        return render(self.request, "shop/checkout.html", context)
 
     def post(self, *args, **kwargs):
         form = CheckoutForm(self.request.POST or None)
 
-        try:
-            order = Order.objects.get(user=self.request.user, ordered=False)
-            logger.error("order wrong??")
-            logger.error(order)
+        session_cart = _Cart(self.request.session, self.request.user.id)
+
+        if session_cart:
+            order = Order.objects.create(
+                user=self.request.user,
+                json_orderitems=json.dumps(session_cart.cart_serializable)
+            )
+            for item in session_cart.items:
+                OrderItem.objects.create(
+                    order=order,
+                    item=item.product,
+                    quantity=item.quantity
+                )
+
             if form.is_valid():
                 logger.error(" form is_valid")
                 logger.error(str(form.cleaned_data))
@@ -215,23 +221,23 @@ class CheckoutView(LoginRequiredMixin, View):
                     address_2=address_2,
                 )
                 checkout_address.save()
-                order.checkout_address = checkout_address
+
+                order.shippingaddress = checkout_address
                 order.ordered = True
                 order.save()
 
-                order.items.update(ordered=True)
-
                 self.caculate_margins(order)
+                session_cart.clear()
 
                 messages.success(self.request, "Place Order successfully!")
-                return redirect('store:top')
+                return redirect('store:checkout')
 
             messages.warning(self.request, "Failed Chekout")
-            return redirect('store:top')
+            return redirect('store:checkout')
 
-        except ObjectDoesNotExist:
+        else:
             messages.error(self.request, "You do not have an order")
-            return redirect("store:order-summary")
+            return redirect("store:checkout")
 
     def caculate_margins(self, order):
         if order:
@@ -326,7 +332,7 @@ class AddToChartAPIView(View):
 
         try:
             product = Item.objects.get(pk=pk)
-            cart = _Cart(request.session)
+            cart = _Cart(request.session, request.user.id)
             cart.add(product, price=product.price)
 
             return JsonResponse({
@@ -356,7 +362,7 @@ class DecreaseToCart(View):
 
         try:
             product = Item.objects.get(pk=pk)
-            cart = _Cart(request.session)
+            cart = _Cart(request.session, request.user.id)
             cart.remove_single(product)
             return JsonResponse({
                 "result": "OK",
@@ -385,7 +391,7 @@ class RemoveFromCart(View):
 
         try:
             product = Item.objects.get(pk=pk)
-            cart = _Cart(request.session)
+            cart = _Cart(request.session, request.user.id)
             cart.remove(product)
             return JsonResponse({
                 "result": "OK",

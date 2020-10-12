@@ -20,4 +20,4 @@ def store_categories(request):
 
 
 def session_cart(request):
-    return {"session_cart": _Cart(request.session)}
+    return {"session_cart": _Cart(request.session, request.user.id)}

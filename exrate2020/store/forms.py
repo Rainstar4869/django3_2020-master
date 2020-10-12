@@ -9,20 +9,23 @@ PAYMENT = (
 class CheckoutForm(forms.Form):
     name = forms.CharField(widget=forms.TextInput(attrs={
         'class': 'sm-form-control',
-        'placeholder': '1234 Main St'
+        'placeholder': '1234 Main St',
+        'value': "HU"
     }))
     email = forms.CharField(widget=forms.TextInput(attrs={
         'class': 'sm-form-control',
-        'placeholder': 'email'
+        'placeholder': 'email',
+        'value': "hu@me.com"
     }))
     phone = forms.CharField(widget=forms.TextInput(attrs={
         'class': 'sm-form-control',
-        'placeholder': 'phone'
+        'placeholder': 'phone',
+        'value': "13816321110"
     }))
     postcode = forms.CharField(widget=forms.TextInput(attrs={
         'class': 'sm-form-control',
         'placeholder': 'postcode',
-        "value": "3360031",
+        "value": "336003",
         "id": "postcode"
     }))
 
@@ -43,11 +46,13 @@ class CheckoutForm(forms.Form):
     }))
     address_1 = forms.CharField(widget=forms.TextInput(attrs={
         'class': 'sm-form-control',
-        'placeholder': 'address_1'
+        'placeholder': 'address_1',
+        'value': "address_1"
     }))
     address_2 = forms.CharField(required=False, widget=forms.TextInput(attrs={
         'class': 'sm-form-control',
-        'placeholder': 'address_2'
+        'placeholder': 'address_2',
+        'value': "address_2"
     }))
 
     # same_billing_address = forms.BooleanField(required=False)

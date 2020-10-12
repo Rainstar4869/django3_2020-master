@@ -114,16 +114,16 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                {% for orderitem in order.items.all %}
+                                {% for orderitem in session_cart.items %}
                                 <tr class="cart_item">
                                     <td class="cart-product-thumbnail">
                                         <a href="#"><img width="64" height="64"
-                                                         src="{{orderitem.item.thumbimage.url}}"
+                                                         src="{{orderitem.product.thumbimage.url}}"
                                                          alt="Pink Printed Dress"></a>
                                     </td>
 
                                     <td class="cart-product-name">
-                                        <a href="#">{{orderitem.item.item_name}}</a>
+                                        <a href="#">{{orderitem.product.item_name}}</a>
                                     </td>
 
                                     <td class="cart-product-quantity">
@@ -133,12 +133,7 @@
                                     </td>
 
                                     <td class="cart-product-subtotal">
-                                        {% if orderitem.item.discount_price %}
-                                            <span class="amount">${{ orderitem.get_discount_item_price |intcomma:False}}</span>
-                                            <span class="badge badge-success">Saved ¥{{ orderitem.get_amount_saved |intcomma:False}}</span>
-                                        {% else %}
-                                            <span class="amount">${{ orderitem.get_total_item_price |intcomma:False}}</span>
-                                        {% endif %}
+                                        <span class="amount">¥{{ orderitem.subtotal |intcomma:False}}</span>
                                     </td>
                                 </tr>
                                 {% endfor %}
@@ -153,21 +148,12 @@
                             <table class="table cart">
                                 <tbody>
                                 <tr class="cart_item">
-                                    <td class="border-top-0 cart-product-name">
-                                        <strong>Cart Subtotal</strong>
-                                    </td>
-
-                                    <td class="border-top-0 cart-product-name">
-                                            <span class="amount">¥{{ order.get_total_price |intcomma:False}}</span>
-                                    </td>
-                                </tr>
-                                <tr class="cart_item">
                                     <td class="cart-product-name">
                                         <strong>Total</strong>
                                     </td>
 
                                     <td class="cart-product-name">
-                                            <span class="amount color lead"><strong>¥{{ order.get_total_price |intcomma:False}}</strong></span>
+                                            <span class="amount color lead"><strong>¥{{ session_cart.total |intcomma:False}}</strong></span>
                                     </td>
                                 </tr>
                                 </tbody>
