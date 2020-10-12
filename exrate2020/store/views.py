@@ -45,7 +45,7 @@ logger = logging.getLogger("error_logger")
 
 
 @login_required(login_url="/webauth/login/")
-def export_pdf_order(request, pk):
+def export_pdf_order(request, slug):
     current_site = get_current_site(request)
     register_url = 'http://' + current_site.domain + "/webauth/register/?introcode=" + str(request.user.introcode)
 
@@ -60,7 +60,7 @@ def export_pdf_order(request, pk):
     response["Content-Disposition"] = "inline;attachment;filename=Expenses" + str(datetime.datetime.now()) + '.pdf'
     response["Content-Transfer-Encoding"] = "binary"
 
-    order = Order.objects.get(pk=pk)
+    order = Order.objects.get(slug=slug)
 
     if order.user == request.user:
         html_string = render_to_string("shop/pdfs/invoice_pdf.html", {

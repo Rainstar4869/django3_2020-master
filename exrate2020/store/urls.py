@@ -37,7 +37,7 @@ urlpatterns = [
     path('account/orders/', OrderListView.as_view(), name="my_orders"),
     path('account/dashboard/', show_dashboard, name="my_dashboard"),
 
-    path('export_pdf/<int:pk>/', export_pdf_order, name="export_order_pdf"),
+    path('export_pdf/<uuid:slug>/', export_pdf_order, name="export_order_pdf"),
 
 
 ]

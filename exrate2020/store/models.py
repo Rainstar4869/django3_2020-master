@@ -136,7 +136,7 @@ class OrderItem(models.Model):
 
 class Order(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="orders")
-    uuid = models.UUIDField(default=uuid.uuid4(), editable=False)
+    slug = models.UUIDField(default=uuid.uuid4, unique=True)
     status = models.CharField(choices=ORDER_STATUS, max_length=10, default="NEW")
     start_date = models.DateTimeField(auto_now_add=True)
     ordered_date = models.DateTimeField(auto_now_add=True)
