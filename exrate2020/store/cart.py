@@ -24,6 +24,13 @@ class CartItem(object):
 
     def to_dict(self):
         return {
+            'product': {
+                "id": self.product.id,
+                "name": self.product.item_name,
+                "discount_price": self.product.discount_price,
+                "price": self.product.price,
+                "thumbimage": self.product.thumbimage.url,
+            },
             'product_id': self.product.id,
             'quantity': self.quantity,
             'price': str(self.price),

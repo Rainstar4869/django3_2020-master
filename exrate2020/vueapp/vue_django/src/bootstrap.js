@@ -8,9 +8,6 @@ window.axios.defaults.headers.common = {
 };
 
 let jwt_token =getCookie("accessToken");
-console.log("bootstrap jwt_token");
-console.log(jwt_token);
-
 
 if(jwt_token !==""){
 	window.axios.defaults.headers = {

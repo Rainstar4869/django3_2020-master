@@ -26,112 +26,11 @@
 		============================================= -->
 		<section id="content">
 			<div class="content-wrap">
-                <div class="container">
-
-                {% if session_cart.count %}
-                    <div class="table-responsive mb-5 cartcontent">
-                        <table class="table cart">
-                            <thead>
-                            <tr>
-                                <th class="cart-product-remove">&nbsp;</th>
-                                <th class="cart-product-thumbnail">&nbsp;</th>
-                                <th class="cart-product-name">Product</th>
-                                <th class="cart-product-price">Unit Price</th>
-                                <th class="cart-product-quantity">Quantity</th>
-                                <th class="cart-product-subtotal">Total</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {% for orderitem in session_cart.items %}
-                                <tr class="cart_item cartitem_row_{{ orderitem.product.id }}">
-                                    <td class="cart-product-remove">
-                                        <a href="javascript:void(0);" class="remove btnRemoveItem" product_id="{{ orderitem.product.id }}"
-                                           title="Remove this item"><i class="icon-trash2" product_id="{{ orderitem.product.id }}"></i></a>
-                                    </td>
-
-                                    <td class="cart-product-thumbnail">
-                                        <a href="#"><img width="64" height="64"
-                                                         src="{{ orderitem.product.thumbimage.url }}"
-                                                         alt="Pink Printed Dress"></a>
-                                    </td>
-
-                                    <td class="cart-product-name">
-                                        <a href="#">{{ orderitem.product.item_name }}</a>
-                                    </td>
-
-                                    <td class="cart-product-price">
-                                        {% if orderitem.product.discount_price %}
-                                            <del>¥{{ orderitem.product.price |intcomma:False}}</del>
-                                            <span class="amount">{{ orderitem.product.discount_price |intcomma:False}}</span>
-                                        {% else %}
-                                            <span class="amount">{{ orderitem.product.price |intcomma:False}}</span>
-                                        {% endif %}
-
-                                    </td>
-
-                                    <td class="cart-product-quantity">
-                                        <div class="quantity">
-                                            <a href="javascript:void(0);"  class="btnDecreaseToCart" product_id="{{ orderitem.product.id }}">
-                                                <i class="icon-minus-sign mx-2"  product_id="{{ orderitem.product.id }}"></i>
-                                            </a>
-                                            <span class="orderitem_quantity_{{ orderitem.product.id }}">{{ orderitem.quantity }}</span>
-
-                                            <a href="javascript:void(0);" class="btnAddToCart"  product_id="{{ orderitem.product.id }}">
-                                                <i class="icon-plus-sign mx-2"  product_id="{{ orderitem.product.id }}"></i>
-                                            </a>
-                                        </div>
-                                    </td>
-
-                                    <td class="cart-product-subtotal">
-                                            <span class="amount font-italic order_item_{{ orderitem.product.id }}_subtotal">¥{{ orderitem.subtotal |intcomma:False}}</span>
-                                    </td>
-                                </tr>
-                                {% empty %}
-                                <tr>
-                                    <td colspan="6">Your Cart Empity</td>
-                                </tr>
-
-                                <tr>
-                                    <td colspan="6">
-                                        <a href="{% url 'store:home' %}" class="btn btn-primary float-right">Continue Shopping</a>
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                            </tbody>
-
-                        </table>
-                    </div>
-                    <div class="row col-mb-30 cartcontent">
-                        <div class="col-lg-6">
-                            <h4>Cart Totals</h4>
-                            <div class="table-responsive">
-                                <table class="table cart">
-                                    <tbody>
-                                    <tr class="cart_item">
-                                        <td class="cart-product-name">
-                                            <strong>Total</strong>
-                                        </td>
-
-                                        <td class="cart-product-name">
-                                            <span class="amount color lead"><strong class="order_total">¥{{ session_cart.total |intcomma:False}}</strong></span>
-                                        </td>
-                                    </tr>
-                                    </tbody>
-
-                                </table>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <a href="{% url 'store:checkout' %}"
-                               class="button button-3d mt-0 float-right">Proceed to
-                                Checkout</a>
-                        </div>
-                    </div>
-                {% endif %}
+                <div class="container" id="cart">
+                    <cart></cart>
                 </div>
 			</div>
 		</section><!-- #content end -->
-
 {% endblock content%}
 
 {% block footerscript_last %}

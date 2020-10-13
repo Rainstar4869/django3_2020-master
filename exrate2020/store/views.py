@@ -149,8 +149,8 @@ class OrderListView(ListView):
         # orders = cache.get(user_orders_cache_key)
         # if not orders:
         orders = Order.objects.filter(user=self.request.user, ordered=True).select_related("user").prefetch_related(
-                "orderitems")
-            # cache.set(user_orders_cache_key, orders, CACHE_TTL)
+            "orderitems")
+        # cache.set(user_orders_cache_key, orders, CACHE_TTL)
         return orders
 
 
@@ -312,23 +312,37 @@ def show_dashboard(request):
 
 class ProductAPIView(View):
     def post(self, request):
-        data = json.loads(request.body)
-        pk = data["product_id"]
+        # data = json.loads(request.body)
+        pk = request.POST.get("product_id")
 
-        item = get_object_or_404(Item, pk=pk)
-        serializer = ItemSerializer(instance=item, many=False)
+        if pk:
+            item = get_object_or_404(Item, pk=pk)
+            serializer = ItemSerializer(instance=item, many=False)
+        else:
+            items = Item.objects.all()
+            serializer = ItemSerializer(instance=items, many=True)
 
         return JsonResponse({
             "result": "OK",
-            "product": serializer.data,
+            "products": serializer.data,
         })
 
 
 class ShoppingCartOperation(View):
+    def get(self, request):
+        cart = _Cart(request.session, request.user.id)
+        return JsonResponse({
+            "result": "OK",
+            "cart": cart.cart_serializable
+        })
+
     def post(self, request):
         data = json.loads(request.body)
         pk = data["product_id"]
         action = data["action"]
+        logger.error("update shopping cart")
+        logger.error(pk)
+        logger.error(action)
 
         try:
             product = Item.objects.get(pk=pk)
@@ -336,15 +350,14 @@ class ShoppingCartOperation(View):
 
             if action == "remove_cartitem":
                 cart.remove(product)
-                return JsonResponse({
-                    "result": "OK",
-                    "message": "decrease successfully",
-                    "product_id": data["product_id"],
-                    "order_count": cart.count,
-                    "order_total": cart.total,
-                    "action": action
-                    # "cart": cart.cart_serializable()
-                })
+                # return JsonResponse({
+                #     "result": "OK",
+                #     "message": "decrease successfully",
+                #     "product_id": data["product_id"],
+                #     "order_count": cart.count,
+                #     "order_total": cart.total,
+                #     "action": action
+                # })
 
             if action == "add_cartitem":
                 cart.add(product, price=product.price)
@@ -353,21 +366,21 @@ class ShoppingCartOperation(View):
 
             return JsonResponse({
                 "result": "OK",
-                "message": "decrease successfully",
-                "product_id": data["product_id"],
-                "product_count": cart.product_count(product),
-                "product_subtotal": cart.product_subtotal(product),
-                "order_count": cart.count,
-                "order_total": cart.total,
-                "action": action
+                "type": action,
+                "cart": cart.cart_serializable
             })
+            # return JsonResponse({
+            #     "result": "OK",
+            #     "message": "decrease successfully",
+            #     "product_id": data["product_id"],
+            #     "product_count": cart.product_count(product),
+            #     "product_subtotal": cart.product_subtotal(product),
+            #     "order_count": cart.count,
+            #     "order_total": cart.total,
+            #     "action": action
+            # })
         except ObjectDoesNotExist:
             return JsonResponse({
                 "result": "NG",
-                "message": "no such product exists",
-                "product_id": data["product_id"],
-                "order_count": 0,
-                "action": action,
                 "cart": {}
             })
-

@@ -13,5 +13,10 @@ class ItemSerializer(serializers.ModelSerializer):
         model = Item
         # exclude = ('buy_price','buy_price','buy_price',)
         # fields = "__all__"
-        fields = ("item_name", "category", "image", "inventory", "is_valid", "price",
+        fields = ("id", "item_name", "category", "image", "inventory", "is_valid", "price",
                   "discount_price", "label", "description")
+
+    def to_representation(self, instance):
+        result = super().to_representation(instance)
+        result["thumbimage"] = instance.thumbimage.url
+        return result

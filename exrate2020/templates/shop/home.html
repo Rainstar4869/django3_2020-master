@@ -57,56 +57,8 @@
                         {% endif %}
                         <!-- Shop
                         ============================================= -->
-                        <div id="shop" class="shop row grid-container gutter-20" data-layout="fitRows">
-                            {# {% cache 900 homepage_store_products %} #}
-                                {% for product in products %}
-                                    <div class="product col-md-4 col-sm-6 {{ product.category }}">
-                                        <div class="grid-inner">
-                                            <div class="product-image">
-                                                {#											<a href="#"><img src="images/shop/dress/1.jpg" alt="Checked Short Dress"></a>#}
-                                                <a href="#"><img src="{{ product.thumbimage.url }}"
-                                                                 alt="Checked Short Dress"></a>
-
-                                                {% if  product.inventory == 0 or not product.is_valid %}
-                                                    <div class="sale-flash badge badge-secondary p-2">Out of Stock</div>
-                                                {% endif %}
-                                                <div class="bg-overlay">
-                                                    <div class="bg-overlay-content align-items-end justify-content-between"
-                                                         data-hover-animate="fadeIn" data-hover-speed="400">
-                                                        {% if user.is_authenticated %}
-                                                            <a href="javascript:void(0);"
-                                                               class="btn btn-dark mr-2  btnAddToCart" product_id="{{ product.id }}">
-                                                                <i class="icon-shopping-cart " product_id="{{ product.id }}"></i>
-                                                            </a>
-                                                        {% endif %}
-                                                        <a href="javascript:void(0);"
-                                                           class="btn btn-dark btnShowProduct"><i
-                                                                class="icon-line-expand"
-                                                                product_id="{{ product.id }}"></i></a>
-                                                    </div>
-                                                    <div class="bg-overlay-bg bg-transparent"></div>
-                                                </div>
-                                            </div>
-                                            <div class="product-desc">
-                                                <div class="product-title"><h3><a
-                                                        href="#">{{ product.item_name }} {{ product.is_valid }}</a></h3>
-                                                </div>
-                                                <div class="product-price">
-                                                    <del>¥{{ product.price |intcomma:False}}</del>
-                                                    <ins>¥{{ product.discount_price |intcomma:False}}</ins>
-                                                </div>
-                                                <div class="product-rating">
-                                                    <i class="icon-star3"></i>
-                                                    <i class="icon-star3"></i>
-                                                    <i class="icon-star3"></i>
-                                                    <i class="icon-star3"></i>
-                                                    <i class="icon-star-half-full"></i>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                {% endfor %}
-                            {# {% endcache %} #}
+                        <div id="products">
+                            <products></products>
                         </div><!-- #shop end -->
 
                         <div class="d-block d-sm-none">

@@ -2,8 +2,6 @@ import axios from 'axios';
 import {getCookie} from "./utils/common.js";
 
 let jwt_token =getCookie("accessToken");
-
-console.log(jwt_token);
 const getAPI = axios.create({
     baseURL: 'http://localhost',
     timeout: 1000,
