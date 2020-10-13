@@ -32,7 +32,6 @@ urlpatterns = [
     path('api/shoppingcart/', csrf_exempt(ShoppingCartOperation.as_view()), name='api-shoppingcart'),
     path('api/product/get/', csrf_exempt(ProductAPIView.as_view()), name='api-get-product'),
 
-
     # account related
     path('account/orders/', OrderListView.as_view(), name="my_orders"),
     path('account/dashboard/', show_dashboard, name="my_dashboard"),

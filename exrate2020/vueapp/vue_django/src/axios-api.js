@@ -1,7 +1,9 @@
 import axios from 'axios';
+import {getCookie} from "./utils/common.js";
 
-const localAccessToken =localStorage.getItem("accessToken");
-console.log(localAccessToken);
+let jwt_token =getCookie("accessToken");
+
+console.log(jwt_token);
 const getAPI = axios.create({
     baseURL: 'http://localhost',
     timeout: 1000,
@@ -10,7 +12,7 @@ const getAPI = axios.create({
 const getAPI_tokenized = axios.create({
     baseURL: 'http://localhost',
     timeout: 1000,
-    headers:{Authorization: localAccessToken?"Bearer "+localAccessToken:""}
+    headers:{Authorization: jwt_token?jwt_token:""}
 });
 
 export { getAPI,getAPI_tokenized };
