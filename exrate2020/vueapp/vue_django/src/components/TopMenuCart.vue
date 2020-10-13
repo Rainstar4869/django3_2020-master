@@ -43,6 +43,8 @@
             }
         },
         mounted() {
+
+            this.$store.dispatch("shoppingcart/get_categories");
             this.$store.dispatch("shoppingcart/get_shoppingcart");
         },
         methods:{

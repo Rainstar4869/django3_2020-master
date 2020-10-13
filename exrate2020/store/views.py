@@ -6,19 +6,18 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http import JsonResponse, HttpResponse
 from django.template.loader import render_to_string
 from django.utils.decorators import method_decorator
-from rest_framework.response import Response
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView, DetailView, View
-from django.utils import timezone
 import logging
 import json
-from weasyprint import HTML, CSS, default_url_fetcher
+from weasyprint import HTML, CSS
 import tempfile
 import datetime
 from django.conf import settings
 from django.core import serializers
 from .forms import CheckoutForm
-from .serializers import OrderSerializer, ItemSerializer
+from .models import Category
+from .serializers import OrderSerializer, ItemSerializer, CategorySerializer
 from authentication.models import User
 from django.core.cache.backends.base import DEFAULT_TIMEOUT
 from django.views.decorators.cache import cache_page
@@ -314,6 +313,8 @@ class ProductAPIView(View):
     def post(self, request):
         # data = json.loads(request.body)
         pk = request.POST.get("product_id")
+        cat_first = Category.objects.filter(parent=None)
+        cat_serializer = CategorySerializer(instance=cat_first, many=True)
 
         if pk:
             item = get_object_or_404(Item, pk=pk)
@@ -325,7 +326,26 @@ class ProductAPIView(View):
         return JsonResponse({
             "result": "OK",
             "products": serializer.data,
+            "cats": cat_serializer.data
         })
+
+
+class CategoryAPIView(View):
+    def post(self, request):
+        cats = Category.objects.filter(parent=None)
+
+        if cats.exists():
+            cat_serializer = CategorySerializer(instance=cats, many=True)
+
+            return JsonResponse({
+                "result": "OK",
+                "categories": cat_serializer.data
+            })
+        else:
+            return JsonResponse({
+                "result": "NG",
+                "categories": []
+            })
 
 
 class ShoppingCartOperation(View):

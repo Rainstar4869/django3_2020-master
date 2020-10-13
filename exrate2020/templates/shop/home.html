@@ -12,23 +12,22 @@
 
         <div class="container clearfix">
             <h1>Shop</h1>
-            <ul class="sub-menu-container root">
-
-            {% cache 900 homepage_store_categories %}
-                {% recursetree store_categories %}
-                    <li class="menu-item">
-                        <a class="menu-link" href="#">
-                            <div><i class="icon-stack"></i>{{ node.name }}</div>
-                        </a>
-                        {% if not node.is_leaf_node %}
-                            <ul class="sub-menu-container children">
-                                {{ children }}
-                            </ul>
-                        {% endif %}
-                    </li>
-                {% endrecursetree %}
-            {% endcache %}
-            </ul>
+{#            <ul class="sub-menu-container root">#}
+{#            {% cache 900 homepage_store_categories %}#}
+{#                {% recursetree store_categories %}#}
+{#                    <li class="menu-item">#}
+{#                        <a class="menu-link" href="#">#}
+{#                            <div><i class="icon-stack"></i>{{ node.name }}</div>#}
+{#                        </a>#}
+{#                        {% if not node.is_leaf_node %}#}
+{#                            <ul class="sub-menu-container children">#}
+{#                                {{ children }}#}
+{#                            </ul>#}
+{#                        {% endif %}#}
+{#                    </li>#}
+{#                {% endrecursetree %}#}
+{#            {% endcache %}#}
+{#            </ul>#}
         </div>
 
     </section><!-- #page-title end -->
@@ -39,6 +38,9 @@
         <div class="content-wrap">
             <div class="container clearfix">
 
+                        <div id="menunavi">
+                            <Menunavi></Menunavi>
+                        </div>
                 <div class="row gutter-40 col-mb-80" id="productlist">
                     <!-- Post Content
                     ============================================= -->
@@ -61,53 +63,53 @@
                             <products></products>
                         </div><!-- #shop end -->
 
-                        <div class="d-block d-sm-none">
-
-                            <h3 class="successmsg">Categories</h3>
-                            <ul class="sub-menu-container root">
-                                {% recursetree store_categories %}
-                                    <li class="menu-item">
-                                        <a class="menu-link" href="#">
-                                            <div><i class="icon-stack"></i>{{ node.name }}</div>
-                                        </a>
-                                        {% if not node.is_leaf_node %}
-                                            <ul class="sub-menu-container children">
-                                                {{ children }}
-                                            </ul>
-                                        {% endif %}
-                                    </li>
-                                {% endrecursetree %}
-
-                            </ul>
-                        </div>
+{#                        <div class="d-block d-sm-none">#}
+{##}
+{#                            <h3 class="successmsg">Categories</h3>#}
+{#                            <ul class="sub-menu-container root">#}
+{#                                {% recursetree store_categories %}#}
+{#                                    <li class="menu-item">#}
+{#                                        <a class="menu-link" href="#">#}
+{#                                            <div><i class="icon-stack"></i>{{ node.name }}</div>#}
+{#                                        </a>#}
+{#                                        {% if not node.is_leaf_node %}#}
+{#                                            <ul class="sub-menu-container children">#}
+{#                                                {{ children }}#}
+{#                                            </ul>#}
+{#                                        {% endif %}#}
+{#                                    </li>#}
+{#                                {% endrecursetree %}#}
+{##}
+{#                            </ul>#}
+{#                        </div>#}
                     </div><!-- .postcontent end -->
 
                     <!-- Sidebar
                     ============================================= -->
                     <div class="sidebar col-lg-3 d-none d-md-block">
-                        <div class="sidebar-widgets-wrap">
-                        {% recursetree store_categories %}
-                            {% if node.is_root_node %}
-                                <div class="widget widget-filter-links root">
-                                <h4>{{ node.name }}</h4>
-                            {% else %}
-                                <li><a href="#" data-filter=".{{ node.name }}">{{ node.name }}</a></li>
-                            {% endif %}
-
-
-                        {% if not node.is_leaf_node %}
-                            <ul class="custom-filter pl-2 children" data-container="#shop"
-                                data-active-class="active-filter">
-                                <li class="widget-filter-reset active-filter"><a href="#" data-filter="*">Clear</a></li>
-                                {{ children }}
-                            </ul>
-                        {% endif %}
-                        {% if node.is_root_node %}
-
-                            </div>
-                            {% endif %}
-                        {% endrecursetree %}
-                        </div>
+{#                        <div class="sidebar-widgets-wrap">#}
+{#                        {% recursetree store_categories %}#}
+{#                            {% if node.is_root_node %}#}
+{#                                <div class="widget widget-filter-links root">#}
+{#                                <h4>{{ node.name }}</h4>#}
+{#                            {% else %}#}
+{#                                <li><a href="#" data-filter=".{{ node.name }}">{{ node.name }}</a></li>#}
+{#                            {% endif %}#}
+{##}
+{##}
+{#                        {% if not node.is_leaf_node %}#}
+{#                            <ul class="custom-filter pl-2 children" data-container="#shop"#}
+{#                                data-active-class="active-filter">#}
+{#                                <li class="widget-filter-reset active-filter"><a href="#" data-filter="*">Clear</a></li>#}
+{#                                {{ children }}#}
+{#                            </ul>#}
+{#                        {% endif %}#}
+{#                        {% if node.is_root_node %}#}
+{##}
+{#                            </div>#}
+{#                            {% endif %}#}
+{#                        {% endrecursetree %}#}
+{#                        </div>#}
                     </div><!-- .sidebar end -->
                 </div>
 
@@ -199,5 +201,5 @@
 {% endblock %}
 
 {% block footerscript_last %}
-    <script src="{% static 'js/shoppingcart.js' %}" type="module"></script>
+{#    <script src="{% static 'js/shoppingcart.js' %}" type="module"></script>#}
 {% endblock %}

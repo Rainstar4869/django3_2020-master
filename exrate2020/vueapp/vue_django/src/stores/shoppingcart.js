@@ -4,8 +4,10 @@ const state = {
     accessToken: null,
     cart:null,
     products:null,
+    categories:[],
     shoppingcart_url: "/store/api/shoppingcart/",
-    product_url:"/store/api/product/get/"
+    product_url:"/store/api/product/get/",
+    categories_url:"/store/api/categories/",
 };
 
 const mutations = {
@@ -14,8 +16,9 @@ const mutations = {
     },
     update_products(state,products){
         state.products=products
-        console.log("state.products mutations");
-        console.log(state.products);
+    },
+    update_categories(state,categories){
+        state.categories=categories;
     }
 };
 
@@ -30,7 +33,6 @@ const actions = {
         });
     },
     update_shoppingcart({commit, state}, {actionType, product_id}) {
-        console.log("update_shoppingcart product_id:"+product_id)
         axios.post(state.shoppingcart_url, JSON.stringify({
             product_id: product_id,
             action: actionType
@@ -44,17 +46,24 @@ const actions = {
         });
     },
     get_store_active_products({commit, state}) {
-        console.log("get_store_active_products");
         axios.post(state.product_url).then((res) => {
-            console.log(res.data);
             if(res.data.result=="OK"){
                 commit("update_products",res.data.products)
             }
         }).catch(function (error) {
             console.log(error)
         });
+    },
+    get_categories({commit}){
+        console.log("get_categories");
+        axios.post(state.categories_url).then((res) => {
+            if(res.data.result=="OK"){
+                commit("update_categories",res.data.categories)
+            }
+        }).catch(function (error) {
+            console.log(error)
+        });
     }
-
 };
 
 const getters = {

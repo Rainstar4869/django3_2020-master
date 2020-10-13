@@ -3,6 +3,7 @@ import Vue from 'vue';
 import Cart from './components/Cart.vue';
 import Topmenucart from './components/TopMenuCart.vue';
 import Products from './components/Product.vue';
+import Menunavi from './components/MenuNavi.vue';
 import store from "./stores.js";
 import msaFilters from './utils/filters.js';
 Vue.filter('currency', msaFilters.currency);
@@ -14,6 +15,18 @@ Vue.filter('filterUsername', msaFilters.filterUsername);
 const elCartComponent = document.getElementById("cart");
 const elTopMenuCartComponent = document.getElementById("topmenucart");
 const elProductsComponent = document.getElementById("products");
+const elMenuNaviComponent = document.getElementById("menunavi");
+
+if (elMenuNaviComponent) {
+    const MenuNaviComponent = new Vue({
+        el: '#menunavi',
+        store,
+        components: {
+            Menunavi
+        }
+    });
+}
+
 
 if (elCartComponent) {
     const CartComponent = new Vue({

@@ -12,6 +12,7 @@ from .views import (
     ShoppingCartOperation,
     ProductAPIView,
     OrderListView,
+    CategoryAPIView,
 
     show_dashboard,
     export_pdf_order,
@@ -31,6 +32,7 @@ urlpatterns = [
 
     path('api/shoppingcart/', csrf_exempt(ShoppingCartOperation.as_view()), name='api-shoppingcart'),
     path('api/product/get/', csrf_exempt(ProductAPIView.as_view()), name='api-get-product'),
+    path('api/categories/', csrf_exempt(CategoryAPIView.as_view()), name='api-get-categories'),
 
     # account related
     path('account/orders/', OrderListView.as_view(), name="my_orders"),

@@ -44,6 +44,10 @@ class Category(MPTTModel):
     def __str__(self):
         return "{}".format(self.name)
 
+    def get_group_count(self):
+        cats = self.get_descendants(include_self=False)
+        return cats.count()
+
 
 def image_path(instance, filename):
     ext = filename.split(".")[-1]

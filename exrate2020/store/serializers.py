@@ -1,5 +1,9 @@
+from abc import ABC
+
 from rest_framework import serializers
-from .models import Order, OrderItem, Item
+from rest_framework.fields import SerializerMethodField
+
+from .models import Order, OrderItem, Item, Category
 
 
 class OrderSerializer(serializers.ModelSerializer):
@@ -20,3 +24,26 @@ class ItemSerializer(serializers.ModelSerializer):
         result = super().to_representation(instance)
         result["thumbimage"] = instance.thumbimage.url
         return result
+
+
+class CategorySerializer(serializers.ModelSerializer):
+    full_name = SerializerMethodField("get_full_name")
+
+    class Meta:
+        model = Category
+        fields = ('id', 'name', 'children', 'full_name')
+
+    def get_full_name(self, obj):
+        name = obj.name
+
+        if "parent" in self.context:
+            parent = self.context["parent"]
+
+            parent_name = self.context["parent_serializer"].get_full_name(parent)
+
+            name = "%s - %s" % (parent_name, name,)
+
+        return name
+
+
+CategorySerializer._declared_fields['children'] = CategorySerializer(many=True, source='get_children', )
