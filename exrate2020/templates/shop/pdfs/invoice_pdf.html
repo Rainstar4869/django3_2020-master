@@ -51,9 +51,9 @@
       {% for orderitem in order.orderitems.all %}
         <tr>
           <td>{{ orderitem.item.item_name }}</td>
-          <td>{{ orderitem.get_final_item_price |intcomma:False}}</td>
+          <td>¥{{ orderitem.get_final_item_price |intcomma:False}}</td>
           <td>{{ orderitem.quantity }}</td>
-          <td>{{ orderitem.get_final_price |intcomma:False }}</td>
+          <td>¥{{ orderitem.get_final_price |intcomma:False }}</td>
         </tr>
       {% endfor %}
       </tbody>
@@ -68,10 +68,10 @@
       <tbody>
         <tr>
           <td>
-              {% qr_for_contact qrcode size='S' %}
+              <img src="{% qr_url_from_text qrcode_introcode.url size='S' %}" alt="Hello World!">
           </td>
           <td>{{order.ordered_date}}</td>
-          <td>{{ order.get_total_price|intcomma:False }}</td>
+          <td>¥{{ order.get_total_price|intcomma:False }}</td>
         </tr>
       </tbody>
     </table>

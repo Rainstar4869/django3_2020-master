@@ -53,7 +53,7 @@
                                         <td>{{ order.status }}</td>
                                         <td>{{ order.get_total_quantity }}</td>
                                         {#                                        <td>{{ order.get_total_quantity | multiply5:5 }},{%  multiply6 order.get_total_quantity 6  %}</td>#}
-                                        <td>{{ order.get_total_price|intcomma:False }}</td>
+                                        <td>¥{{ order.get_total_price|intcomma:False }}</td>
                                         <td><a href="{% url 'store:export_order_pdf' slug=order.slug %}">Download</a></td>
                                     </tr>
                                 {% endfor %}

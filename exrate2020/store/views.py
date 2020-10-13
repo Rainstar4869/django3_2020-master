@@ -299,13 +299,12 @@ def show_dashboard(request):
 
     contact_detail = ContactDetail(
         first_name=request.user.username,
-        # tel=request.user.phone,
         email=request.user.email,
         url=register_url
     )
 
     context = {
-        "qrcode_introcode": contact_detail,
+        "qrcode_introcode": contact_detail.url,
         "membertree": request.user.profile.get_descendants(include_self=True)
     }
     return render(request, "shop/accounts/dashboard.html", context)

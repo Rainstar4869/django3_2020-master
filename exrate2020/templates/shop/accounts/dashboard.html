@@ -109,7 +109,9 @@
                             <div class="card">
                                 <div class="card-header">Introcode</div>
                                 <div class="card-body text-center">
-                                    {% qr_for_contact qrcode_introcode size='S' %}
+                                    <img src="{% qr_url_from_text qrcode_introcode.url size='S' %}" alt="Hello World!">
+{#                                    {% qrcode_url_from_text qrcode_introcode size='S' %}#}
+                                    <p>{{ qrcode_introcode.url }}</p>
                                 </div>
                             </div>
                         </div>
