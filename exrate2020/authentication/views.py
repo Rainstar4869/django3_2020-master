@@ -1,15 +1,17 @@
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
+from django.http import JsonResponse
 from django.shortcuts import render
 from django.utils.encoding import smart_bytes, smart_str, DjangoUnicodeDecodeError
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from rest_framework import generics, status, views
 from .renders import UserRenderer
 from .serializers import RegisterSerializer, EmailVerificationSerializer, LoginSerializer, \
-    ResetPasswordEmailRequestSerializer, SetNewPasswordSerializer
+    ResetPasswordEmailRequestSerializer, SetNewPasswordSerializer, ProfileSerializer
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
-from .models import User
+from .models import User, Profile
 from .utils import Util
+from django.views.generic import View
 from django.contrib.sites.shortcuts import get_current_site
 from django.urls import reverse
 import jwt
@@ -119,6 +121,24 @@ class PasswordTokenCheckAPI(generics.GenericAPIView):
             if not PasswordResetTokenGenerator().check_token(user, token):
                 return Response({'error': 'Token is not valid, please request a new one'},
                                 status=status.HTTP_401_UNAUTHORIZED)
+
+
+class ProfileAPIView(View):
+    def post(self, request):
+        profiles = Profile.objects.filter(parent=None)
+
+        if profiles.exists():
+            profile_serializer = ProfileSerializer(instance=profiles, many=True)
+
+            return JsonResponse({
+                "result": "OK",
+                "profiles": profile_serializer.data
+            })
+        else:
+            return JsonResponse({
+                "result": "NG",
+                "profiles": []
+            })
 
 
 def error_500(request):

@@ -12,22 +12,6 @@
 
         <div class="container clearfix">
             <h1>Shop</h1>
-{#            <ul class="sub-menu-container root">#}
-{#            {% cache 900 homepage_store_categories %}#}
-{#                {% recursetree store_categories %}#}
-{#                    <li class="menu-item">#}
-{#                        <a class="menu-link" href="#">#}
-{#                            <div><i class="icon-stack"></i>{{ node.name }}</div>#}
-{#                        </a>#}
-{#                        {% if not node.is_leaf_node %}#}
-{#                            <ul class="sub-menu-container children">#}
-{#                                {{ children }}#}
-{#                            </ul>#}
-{#                        {% endif %}#}
-{#                    </li>#}
-{#                {% endrecursetree %}#}
-{#            {% endcache %}#}
-{#            </ul>#}
         </div>
 
     </section><!-- #page-title end -->
@@ -37,80 +21,18 @@
     <section id="content">
         <div class="content-wrap">
             <div class="container clearfix">
-
-                        <div id="menunavi">
+                <div class="row gutter-40 col-mb-80" id="productlist">
+                    <!-- Sidebar
+                    ============================================= -->
+                    <div class="sidebar col-lg-3">
+                        <div id="menunavi" class="mb-3">
                             <Menunavi></Menunavi>
                         </div>
-                <div class="row gutter-40 col-mb-80" id="productlist">
-                    <!-- Post Content
-                    ============================================= -->
-                    <div class="postcontent col-lg-9 order-lg-last">
-                        {% if keyval and not products %}
-                            <div class="style-msg errormsg">
-								<div class="sb-msg d-inline-block"><i class="icon-remove"></i><strong>Oh snap!</strong> {{keyval}} not found!</div>
-                                <a href="{% url 'store:home' %}" class="d-inline-block float-right alertmsg sb-msg">Finish Search</a>
-							</div>
-                        {% elif keyval and products %}
-
-                            <div class="style-msg successmsg">
-								<div class="sb-msg d-inline-block"><i class="icon-thumbs-up"></i><strong>Well done!</strong> Found {{ products.count }} Products contains " {{ keyval }} " are found!</div>
-                                <a href="{% url 'store:home' %}" class="d-inline-block float-right alertmsg sb-msg">Finish Search</a>
-							</div>
-                        {% endif %}
-                        <!-- Shop
-                        ============================================= -->
-                        <div id="products">
+                    </div><!-- .sidebar end -->
+                        <div id="products"  class="postcontent col-lg-9">
                             <products></products>
                         </div><!-- #shop end -->
 
-{#                        <div class="d-block d-sm-none">#}
-{##}
-{#                            <h3 class="successmsg">Categories</h3>#}
-{#                            <ul class="sub-menu-container root">#}
-{#                                {% recursetree store_categories %}#}
-{#                                    <li class="menu-item">#}
-{#                                        <a class="menu-link" href="#">#}
-{#                                            <div><i class="icon-stack"></i>{{ node.name }}</div>#}
-{#                                        </a>#}
-{#                                        {% if not node.is_leaf_node %}#}
-{#                                            <ul class="sub-menu-container children">#}
-{#                                                {{ children }}#}
-{#                                            </ul>#}
-{#                                        {% endif %}#}
-{#                                    </li>#}
-{#                                {% endrecursetree %}#}
-{##}
-{#                            </ul>#}
-{#                        </div>#}
-                    </div><!-- .postcontent end -->
-
-                    <!-- Sidebar
-                    ============================================= -->
-                    <div class="sidebar col-lg-3 d-none d-md-block">
-{#                        <div class="sidebar-widgets-wrap">#}
-{#                        {% recursetree store_categories %}#}
-{#                            {% if node.is_root_node %}#}
-{#                                <div class="widget widget-filter-links root">#}
-{#                                <h4>{{ node.name }}</h4>#}
-{#                            {% else %}#}
-{#                                <li><a href="#" data-filter=".{{ node.name }}">{{ node.name }}</a></li>#}
-{#                            {% endif %}#}
-{##}
-{##}
-{#                        {% if not node.is_leaf_node %}#}
-{#                            <ul class="custom-filter pl-2 children" data-container="#shop"#}
-{#                                data-active-class="active-filter">#}
-{#                                <li class="widget-filter-reset active-filter"><a href="#" data-filter="*">Clear</a></li>#}
-{#                                {{ children }}#}
-{#                            </ul>#}
-{#                        {% endif %}#}
-{#                        {% if node.is_root_node %}#}
-{##}
-{#                            </div>#}
-{#                            {% endif %}#}
-{#                        {% endrecursetree %}#}
-{#                        </div>#}
-                    </div><!-- .sidebar end -->
                 </div>
 
             </div>

@@ -1,8 +1,9 @@
 from django.urls import path, include
+from django.views.decorators.csrf import csrf_exempt
 from rest_framework_simplejwt.views import TokenRefreshView
 
 from . import views
-from .views import RequestPasswordResetEmail, PasswordTokenCheckAPI, SetNewPasswordAPIView
+from .views import RequestPasswordResetEmail, PasswordTokenCheckAPI, SetNewPasswordAPIView, ProfileAPIView
 
 urlpatterns = [
     path("register/", views.RegisterView.as_view(), name="register"),
@@ -15,5 +16,7 @@ urlpatterns = [
          PasswordTokenCheckAPI.as_view(), name='password-reset-confirm'),
     path('password-reset-complete', SetNewPasswordAPIView.as_view(),
          name='password-reset-complete'),
-    path('treewidget/', include('treewidget.urls'))
+    path('treewidget/', include('treewidget.urls')),
+
+    path('api/profiles/', csrf_exempt(ProfileAPIView.as_view()), name='api-get-profiles'),
 ]

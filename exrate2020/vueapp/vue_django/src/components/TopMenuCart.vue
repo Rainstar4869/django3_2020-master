@@ -46,6 +46,10 @@
 
             this.$store.dispatch("shoppingcart/get_categories");
             this.$store.dispatch("shoppingcart/get_shoppingcart");
+
+
+            this.$store.dispatch("auth/get_membertree_node");
+
         },
         methods:{
         }

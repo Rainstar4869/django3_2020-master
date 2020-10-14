@@ -1,10 +1,11 @@
-import {getAPI} from "../axios-api";
+import {sweetalert_toast} from "../utils/common.js";
 
 const state = {
     accessToken: null,
     cart:null,
-    products:null,
+    products:[],
     categories:[],
+    category_products:[],
     shoppingcart_url: "/store/api/shoppingcart/",
     product_url:"/store/api/product/get/",
     categories_url:"/store/api/categories/",
@@ -19,6 +20,9 @@ const mutations = {
     },
     update_categories(state,categories){
         state.categories=categories;
+    },
+    update_category_products(state,products){
+        state.category_products=products;
     }
 };
 
@@ -37,17 +41,20 @@ const actions = {
             product_id: product_id,
             action: actionType
         })).then((res) => {
-            console.log(res.data);
+            // console.log(res.data);
             if(res.data.result=="OK"){
-                commit("update_cart",res.data.cart)
+                commit("update_cart",res.data.cart);
+                sweetalert_toast("success","top-end","successfully updated!");
             }
         }).catch(function (error) {
+            sweetalert_toast("error","top-end","Something Wrong!");
             console.log(error)
         });
     },
     get_store_active_products({commit, state}) {
         axios.post(state.product_url).then((res) => {
             if(res.data.result=="OK"){
+                console.log(res.data)
                 commit("update_products",res.data.products)
             }
         }).catch(function (error) {
@@ -55,10 +62,23 @@ const actions = {
         });
     },
     get_categories({commit}){
-        console.log("get_categories");
+        // console.log("get_categories");
+
         axios.post(state.categories_url).then((res) => {
             if(res.data.result=="OK"){
-                commit("update_categories",res.data.categories)
+                // console.log(res.data.categories);
+                commit("update_categories",res.data.categories);
+            }
+        }).catch(function (error) {
+            console.log(error)
+        });
+    },
+    load_category_products({commit},category_id){
+        const url = "/store/api/category/products/";
+        axios.post(url,JSON.stringify({category_id:category_id})).then((res) => {
+            if(res.data.result=="OK"){
+                console.log(res.data.category_products);
+                commit("update_products",res.data.category_products);
             }
         }).catch(function (error) {
             console.log(error)

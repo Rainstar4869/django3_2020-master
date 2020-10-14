@@ -316,15 +316,24 @@ class ProductAPIView(View):
         cat_first = Category.objects.filter(parent=None)
         cat_serializer = CategorySerializer(instance=cat_first, many=True)
 
+        logger.error("ProductAPIView pk: ".format(pk))
+
         if pk:
             item = get_object_or_404(Item, pk=pk)
             serializer = ItemSerializer(instance=item, many=False)
         else:
+            # first_category = Category.objects.first()
+            # logger.error("first_category: ")
+            # logger.error(first_category)
+            # items = Item.objects.filter(category=first_category)
             items = Item.objects.all()
+            # logger.error("items: ")
+            # logger.error(items)
             serializer = ItemSerializer(instance=items, many=True)
 
         return JsonResponse({
             "result": "OK",
+            "function": "ProductAPIView post",
             "products": serializer.data,
             "cats": cat_serializer.data
         })
@@ -348,6 +357,30 @@ class CategoryAPIView(View):
             })
 
 
+class CategoryProductAPIView(View):
+    def post(self, request):
+
+        data = json.loads(request.body)
+        category_id = data["category_id"]
+        category = Category.objects.get(pk=category_id)
+        categories = category.get_descendants(include_self=True)
+
+        products = Item.objects.filter(category__in=categories)
+
+        if products.exists():
+            products_serializer = ItemSerializer(instance=products, many=True)
+
+            return JsonResponse({
+                "result": "OK",
+                "category_products": products_serializer.data
+            })
+        else:
+            return JsonResponse({
+                "result": "NG",
+                "category_products": []
+            })
+
+
 class ShoppingCartOperation(View):
     def get(self, request):
         cart = _Cart(request.session, request.user.id)
@@ -365,40 +398,25 @@ class ShoppingCartOperation(View):
         logger.error(action)
 
         try:
-            product = Item.objects.get(pk=pk)
+            cache_product = cache.get("product_{}".format(pk))
+            if cache_product is None:
+                cache_product = Item.objects.get(pk=pk)
+                cache.set("product_{}".format(pk), cache_product, settings.CACHE_TTL)
+
             cart = _Cart(request.session, request.user.id)
 
             if action == "remove_cartitem":
-                cart.remove(product)
-                # return JsonResponse({
-                #     "result": "OK",
-                #     "message": "decrease successfully",
-                #     "product_id": data["product_id"],
-                #     "order_count": cart.count,
-                #     "order_total": cart.total,
-                #     "action": action
-                # })
-
+                cart.remove(cache_product)
             if action == "add_cartitem":
-                cart.add(product, price=product.price)
+                cart.add(cache_product, price=cache_product.price)
             elif action == "decrease_cartitem":
-                cart.remove_single(product)
+                cart.remove_single(cache_product)
 
             return JsonResponse({
                 "result": "OK",
                 "type": action,
                 "cart": cart.cart_serializable
             })
-            # return JsonResponse({
-            #     "result": "OK",
-            #     "message": "decrease successfully",
-            #     "product_id": data["product_id"],
-            #     "product_count": cart.product_count(product),
-            #     "product_subtotal": cart.product_subtotal(product),
-            #     "order_count": cart.count,
-            #     "order_total": cart.total,
-            #     "action": action
-            # })
         except ObjectDoesNotExist:
             return JsonResponse({
                 "result": "NG",

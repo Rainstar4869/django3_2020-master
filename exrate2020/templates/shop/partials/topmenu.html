@@ -70,12 +70,14 @@
                             class="icon-call"></i></span><span class="ts-text">0487086883</span></a></li>
                     <li><a href="mailto:info@canvas.com" class="si-email3"><span class="ts-icon"><i
                             class="icon-email3"></i></span><span class="ts-text">crs@nichiei.services</span></a></li>
-                        <li class="d-block d-sm-none"><a href="{% url 'store:order-summary' %}"
-                                                         class="si-dribbble"><span class="ts-icon"><i
-                                class="icon-shopping-cart"></i></span>
-                            <span class="top-cart-number"
-                                  style="top: 13px!important;">{{ session_cart.count }}</span>
-                        </a></li>
+{#                        <li class="d-block d-sm-none"><a href="{% url 'store:order-summary' %}"#}
+{#                                                         class="si-dribbble"><span class="ts-icon"><i#}
+{#                                class="icon-shopping-cart"></i></span>#}
+{#                            <span class="top-cart-number" style="top: 13px!important;">{{ session_cart.count }}</span>#}
+{#                        </a></li>#}
+                    <div id="topsocialcart">
+                        <Topsocialcart></Topsocialcart>
+                    </div>
                 </ul><!-- #top-social end -->
 
             </div>
@@ -91,9 +93,6 @@
     <div id="header-wrap">
         <div class="container">
             <div class="header-row">
-
-                <!-- Logo
-                ============================================= -->
                 <div id="logo">
                     <a href="{% url 'store:home' %}" class="standard-logo" data-dark-logo="images/logo-dark.png">
                         <img src="{% static 'nichiei/canvas/images/nichiei_with_text_black.png' %}"></a>

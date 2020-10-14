@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import createPersistedState from "vuex-persistedstate";
-import auth from "./modules/auth";
+import auth from "./stores/auth";
 import shoppingcart from "./stores/shoppingcart.js";
 
 Vue.use(Vuex);

@@ -4689,7 +4689,7 @@ body:not(.top-search-open) .top-search-parent .header-misc > *:not(#top-search) 
 	position: fixed;
 	top: 0;
 	left: auto;
-	width: 260px;
+	width: 360px;
 	background-color: #FFF;
 	border-left: 1px solid #EEE;
 	box-shadow: 0px 20px 50px 10px rgba(0, 0, 0, 0.05);
@@ -4828,7 +4828,7 @@ body:not(.top-search-open) .top-search-parent .header-misc > *:not(#top-search) 
 	.top-cart-content {
 		opacity: 0;
 		position: absolute;
-		width: 280px;
+		/*width: 280px;*/
 		border: 1px solid #EEE;
 		border-top: 2px solid #1ABC9C;
 		top: calc( 100% + 20px );

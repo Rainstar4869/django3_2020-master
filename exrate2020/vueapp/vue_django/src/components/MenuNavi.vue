@@ -1,7 +1,11 @@
 <template>
     <div id="_menunavi">
         <h1>Categories</h1>
-        <el-tree :data="tree" :props="defaultProps" accordion @node-click="handleNodeClick" ></el-tree>
+        <el-tree :data="tree" :props="defaultProps"
+                 highlight-current
+                 accordion
+                 @node-click="handleNodeClick" >
+        </el-tree>
 
     </div>
 </template>
@@ -18,7 +22,7 @@
             return {
                 defaultProps: {
                     children: 'children',
-                    label: 'name'
+                    label: 'label'
                 }
             }
         },
@@ -28,14 +32,16 @@
             }
         },
         mounted() {
-            console.log("top menunavi");
-            console.log(this.tree);
             // this.$store.dispatch("shoppingcart/get_shoppingcart");
         },
         methods: {
-            handleNodeClick(data,node) {
-                console.log(data);
-                console.log(node.isLeaf);
+            handleNodeClick(data,node,object) {
+                // if(node.isLeaf){
+                    this.$store.dispatch("shoppingcart/load_category_products",data.id);
+                // }
+                // console.log(data.id);
+                // console.log(node.isLeaf);
+                // console.log(this.$store.state.shoppingcart.products);
             }
         }
     }

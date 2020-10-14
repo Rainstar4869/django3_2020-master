@@ -1,5 +1,3 @@
-from abc import ABC
-
 from rest_framework import serializers
 from rest_framework.fields import SerializerMethodField
 
@@ -17,7 +15,7 @@ class ItemSerializer(serializers.ModelSerializer):
         model = Item
         # exclude = ('buy_price','buy_price','buy_price',)
         # fields = "__all__"
-        fields = ("id", "item_name", "category", "image", "inventory", "is_valid", "price",
+        fields = ("id", "item_name", "category", "image", "inventory", "is_valid", "price", "rate",
                   "discount_price", "label", "description")
 
     def to_representation(self, instance):
@@ -32,17 +30,25 @@ class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = ('id', 'name', 'children', 'full_name')
+        # fields = ('id', 'name', 'children', 'full_name')
+
+    def to_representation(self, instance):
+        children_nodes = instance.get_descendants(include_self=True)
+        product_count = Item.objects.filter(category__in=children_nodes).count()
+
+        result = super().to_representation(instance)
+        result["label"] = "{} ({})".format(instance.name, product_count)
+        result["show"] = True if product_count else False
+        return result
 
     def get_full_name(self, obj):
         name = obj.name
-
         if "parent" in self.context:
             parent = self.context["parent"]
 
             parent_name = self.context["parent_serializer"].get_full_name(parent)
 
             name = "%s - %s" % (parent_name, name,)
-
         return name
 
 

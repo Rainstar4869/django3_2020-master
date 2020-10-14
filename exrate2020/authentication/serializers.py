@@ -6,7 +6,7 @@ from django.utils.http import urlsafe_base64_decode
 from rest_framework import serializers
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from .models import User
+from .models import User, Profile
 from django.contrib import auth
 from rest_framework.exceptions import AuthenticationFailed
 
@@ -22,7 +22,7 @@ class EmailVerificationSerializer(serializers.ModelSerializer):
 class LoginSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(max_length=255, min_length=3)
     password = serializers.CharField(max_length=68, min_length=6, write_only=True)
-    username = serializers.CharField(max_length=255, min_length=3,read_only=True)
+    username = serializers.CharField(max_length=255, min_length=3, read_only=True)
     # tokens = serializers.CharField(max_length=68, min_length=6, read_only=True)
     tokens = serializers.SerializerMethodField()
 
@@ -116,3 +116,15 @@ class SetNewPasswordSerializer(serializers.Serializer):
             raise AuthenticationFailed('The reset link is invalid', 401)
 
         return super().validate(attrs)
+
+
+class ProfileSerializer(serializers.ModelSerializer):
+    username = serializers.ReadOnlyField(source="user.username")
+    user_id = serializers.ReadOnlyField(source="user.id")
+
+    class Meta:
+        model = Profile
+        fields = ('user_id', 'username', 'children')
+
+
+ProfileSerializer._declared_fields['children'] = ProfileSerializer(many=True, source='get_children', )

@@ -110,61 +110,64 @@
                         </div>
                         <div class="col-lg-6">
                             <h4>Your Orders</h4>
-                            <div class="table-responsive">
-                                <table class="table cart">
-                                    <thead>
-                                    <tr>
-                                        <th class="cart-product-thumbnail">&nbsp;</th>
-                                        <th class="cart-product-name">Product</th>
-                                        <th class="cart-product-quantity">Quantity</th>
-                                        <th class="cart-product-subtotal">Total</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    {% for orderitem in session_cart.items %}
-                                        <tr class="cart_item">
-                                            <td class="cart-product-thumbnail">
-                                                <a href="#"><img width="64" height="64"
-                                                                 src="{{ orderitem.product.thumbimage.url }}"
-                                                                 alt="Pink Printed Dress"></a>
-                                            </td>
-
-                                            <td class="cart-product-name">
-                                                <a href="#">{{ orderitem.product.item_name }}</a>
-                                            </td>
-
-                                            <td class="cart-product-quantity">
-                                                <div class="quantity clearfix">
-                                                    1x{{ orderitem.quantity }}
-                                                </div>
-                                            </td>
-
-                                            <td class="cart-product-subtotal">
-                                                <span class="amount">¥{{ orderitem.subtotal |intcomma:False}}</span>
-                                            </td>
-                                        </tr>
-                                    {% endfor %}
-                                    </tbody>
-                                </table>
+                            <div id="cart">
+                                <cart></cart>
                             </div>
-
-                            <h4>Cart Totals</h4>
-
-                            <div class="table-responsive">
-                                <table class="table cart">
-                                    <tbody>
-                                    <tr class="cart_item">
-                                        <td class="cart-product-name">
-                                            <strong>Total</strong>
-                                        </td>
-
-                                        <td class="cart-product-name">
-                                            <span class="amount color lead"><strong>¥{{ session_cart.total |intcomma:False}}</strong></span>
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+{#                            <div class="table-responsive">#}
+{#                                <table class="table cart">#}
+{#                                    <thead>#}
+{#                                    <tr>#}
+{#                                        <th class="cart-product-thumbnail">&nbsp;</th>#}
+{#                                        <th class="cart-product-name">Product</th>#}
+{#                                        <th class="cart-product-quantity">Quantity</th>#}
+{#                                        <th class="cart-product-subtotal">Total</th>#}
+{#                                    </tr>#}
+{#                                    </thead>#}
+{#                                    <tbody>#}
+{#                                    {% for orderitem in session_cart.items %}#}
+{#                                        <tr class="cart_item">#}
+{#                                            <td class="cart-product-thumbnail">#}
+{#                                                <a href="#"><img width="64" height="64"#}
+{#                                                                 src="{{ orderitem.product.thumbimage.url }}"#}
+{#                                                                 alt="Pink Printed Dress"></a>#}
+{#                                            </td>#}
+{##}
+{#                                            <td class="cart-product-name">#}
+{#                                                <a href="#">{{ orderitem.product.item_name }}</a>#}
+{#                                            </td>#}
+{##}
+{#                                            <td class="cart-product-quantity">#}
+{#                                                <div class="quantity clearfix">#}
+{#                                                    1x{{ orderitem.quantity }}#}
+{#                                                </div>#}
+{#                                            </td>#}
+{##}
+{#                                            <td class="cart-product-subtotal">#}
+{#                                                <span class="amount">¥{{ orderitem.subtotal |intcomma:False}}</span>#}
+{#                                            </td>#}
+{#                                        </tr>#}
+{#                                    {% endfor %}#}
+{#                                    </tbody>#}
+{#                                </table>#}
+{#                            </div>#}
+{##}
+{#                            <h4>Cart Totals</h4>#}
+{##}
+{#                            <div class="table-responsive">#}
+{#                                <table class="table cart">#}
+{#                                    <tbody>#}
+{#                                    <tr class="cart_item">#}
+{#                                        <td class="cart-product-name">#}
+{#                                            <strong>Total</strong>#}
+{#                                        </td>#}
+{##}
+{#                                        <td class="cart-product-name">#}
+{#                                            <span class="amount color lead"><strong>¥{{ session_cart.total |intcomma:False}}</strong></span>#}
+{#                                        </td>#}
+{#                                    </tr>#}
+{#                                    </tbody>#}
+{#                                </table>#}
+{#                            </div>#}
                             {#                        <a href="#" class="button button-3d float-right">Place Order</a>#}
                         </div>
                     {% else %}

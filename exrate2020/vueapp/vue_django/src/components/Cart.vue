@@ -1,6 +1,5 @@
 <template>
     <div>
-
         <div class="table-responsive mb-5 cartcontent">
             <table class="table cart">
                 <thead>
@@ -29,7 +28,7 @@
 
                     <td class="cart-product-price" v-if="orderitem.product.discount_price">
                         <del>¥{{ orderitem.product.price | currency}}</del>
-                        <span class="amount">¥{{ orderitem.product.discount_price| currency}}</span>
+                        <span class="amount">{{ orderitem.product.discount_price| currency}}</span>
                     </td>
                     <td class="cart-product-price" v-else>
                         <span class="amount">{{ orderitem.product.price | currency}}</span>
@@ -49,20 +48,10 @@
                     </td>
 
                     <td class="cart-product-subtotal">
-                        <span  v-if="orderitem.product.discount_price">¥{{ orderitem.quantity* orderitem.product.discount_price | currency}}</span>
-                        <span  v-else>¥{{ orderitem.quantity* orderitem.product.price | currency}}</span>
+                        <span  v-if="orderitem.product.discount_price">{{ orderitem.quantity* orderitem.product.discount_price | currency_jpy}}</span>
+                        <span  v-else>{{ orderitem.quantity* orderitem.product.price | currency_jpy}}</span>
                     </td>
                 </tr>
-<!--                {% empty %}-->
-<!--                <tr v-if="cart.Qty <1">-->
-<!--                    <td colspan="6">Your Cart Empity</td>-->
-<!--                </tr>-->
-
-<!--                <tr>-->
-<!--                    <td colspan="6">-->
-<!--                        <a href="{% url 'store:home' %}" class="btn btn-primary float-right">Continue Shopping</a>-->
-<!--                    </td>-->
-<!--                </tr>-->
                 </tbody>
 
             </table>
@@ -79,7 +68,7 @@
                             </td>
 
                             <td class="cart-product-name">
-                                <span class="amount color lead"><strong class="order_total">¥{{ cart.Total | currency_jpy}}</strong></span>
+                                <span class="amount color lead"><strong class="order_total">{{ cart.Total | currency_jpy}}</strong></span>
                             </td>
                         </tr>
                         </tbody>
@@ -88,7 +77,7 @@
                 </div>
             </div>
             <div class="col-lg-6">
-                <a href="{% url 'store:checkout' %}"
+                <a href="/store/checkout/"
                    class="button button-3d mt-0 float-right">Proceed to
                     Checkout</a>
             </div>

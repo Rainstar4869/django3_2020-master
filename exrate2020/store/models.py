@@ -61,10 +61,10 @@ class Item(models.Model):
     discount_price = models.IntegerField(blank=True, null=True)
     distributor_price = models.IntegerField(blank=True, null=True)
     buy_price = models.IntegerField(blank=True, null=True)
-
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     label = models.CharField(choices=LABEL, max_length=2)
-    description = models.TextField()
+    description = models.TextField(default="",blank=True,null=True)
+    rate = models.IntegerField(default=5)
     image = models.ImageField(null=True, upload_to=image_path)
     thumbimage = ImageSpecField(  # 注意：ImageSpecField 不会生成数据库表的字段
         source='image',

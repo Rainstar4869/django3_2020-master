@@ -36,81 +36,18 @@
                         <div class="postcontent col-lg-6">
                             <h1>My Family Tree</h1>
 
-                            <nav class="primary-menu sub-title">
-
-                                <ul class="menu-container">
-                                    <li class="menu-item root">
-                                        <a class="menu-link" href="#">
-                                            <div><i class="fab fa-pagelines text-success"></i>{{ user.username }}</div>
-                                            <span>My Team</span></a>
-
-                                        <ul class="sub-menu-container root">
-
-                                            {% recursetree membertree %}
-                                                <li class="menu-item">
-                                                    <a class="menu-link" href="#">
-                                                        <div>
-                                                            {% if not node.is_leaf_node %}
-                                                                <i class="icon-users text-success"></i>
-                                                            {% else %}
-                                                                <i class="icon-user text-warning"></i>
-                                                            {% endif %}
-                                                            {{ node.user.username }}
-                                                            {% if node.user.orders.count %}(
-                                                                {{ node.user.orders.count |orderpluarl }} )
-                                                            {% endif %}
-                                                        </div>
-                                                    </a>
-                                                    {% if not node.is_leaf_node %}
-                                                        <ul class="sub-menu-container children">
-                                                            {{ children }}
-                                                        </ul>
-                                                    {% endif %}
-                                                </li>
-                                            {% endrecursetree %}
-                                        </ul>
-                                    </li>
-                                </ul>
-
-
-                            </nav><!-- #primary-menu end -->
-
-                            <div class="">
-                                    <ul class="sub-menu-container root">
-                                        {% recursetree membertree %}
-                                            <li class="menu-item">
-                                                <a class="menu-link" href="#">
-                                                    <div>
-                                                        {% if not node.is_leaf_node %}
-                                                                <i class="icon-users text-success"></i>
-                                                            {% else %}
-                                                                <i class="icon-user text-warning"></i>
-                                                            {% endif %}
-                                                            {{ node.user.username }}
-                                                            {% if node.user.orders.count %}(
-                                                                {{ node.user.orders.count |orderpluarl }} )
-                                                            {% endif %}
-                                                    </div>
-                                                </a>
-                                                {% if not node.is_leaf_node %}
-                                                    <ul class="sub-menu-container children">
-                                                        {{ children }}
-                                                    </ul>
-                                                {% endif %}
-                                            </li>
-                                        {% endrecursetree %}
-
-                                    </ul>
-                                </div>
+                            <div id="membertree">
+                                <MemberTree></MemberTree>
+                            </div>
                         </div>
 
                         <div class="col-lg-6">
                             <div class="card">
                                 <div class="card-header">Introcode</div>
                                 <div class="card-body text-center">
-                                    <img src="{% qr_url_from_text qrcode_introcode.url size='S' %}" alt="Hello World!">
+                                    <img src="{% qr_url_from_text qrcode_introcode size='S' %}" alt="Hello World!">
 {#                                    {% qrcode_url_from_text qrcode_introcode size='S' %}#}
-                                    <p>{{ qrcode_introcode.url }}</p>
+                                    <p>{{ qrcode_introcode }}</p>
                                 </div>
                             </div>
                         </div>
