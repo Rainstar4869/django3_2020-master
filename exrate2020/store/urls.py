@@ -12,6 +12,8 @@ from .views import (
     ShoppingCartOperation,
     ProductAPIView,
     OrderListView,
+    MarginListView,
+
     CategoryAPIView,
     CategoryProductAPIView,
 
@@ -38,6 +40,7 @@ urlpatterns = [
 
     # account related
     path('account/orders/', OrderListView.as_view(), name="my_orders"),
+    path('account/margins/', MarginListView.as_view(), name="my_margins"),
     path('account/dashboard/', show_dashboard, name="my_dashboard"),
 
     path('export_pdf/<uuid:slug>/', export_pdf_order, name="export_order_pdf"),

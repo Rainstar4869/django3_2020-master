@@ -11,7 +11,7 @@
 		<section id="page-title">
 
 			<div class="container clearfix">
-				<h1>Shop</h1>
+				<h1>Margin History</h1>
 				<span>Products with Filter Functionality</span>
 				<ol class="breadcrumb">
 					<li class="breadcrumb-item"><a href="#">Home</a></li>
@@ -33,28 +33,27 @@
 						============================================= -->
                         <div class="postcontent col-lg-12">
 
-                            {% if orders.count %}
+                            {% if margins.count %}
                             <table class="table table-striped">
                                 <thead>
                                 <tr>
                                     <th>ID</th>
                                     <th>Date</th>
-                                    <th>STATUS</th>
-                                    <th>Qty</th>
-                                    <th>Total</th>
-                                    <th></th>
+                                    <th>LEVEl</th>
+                                    <th>AMOUNT</th>
+                                    <th>REFOUND</th>
+                                    <th>PAID DATE</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                {% for order in orders %}
+                                {% for margin in margins %}
                                     <tr>
                                         <td>{{ forloop.counter }}</td>
-                                        <td>{{ order.ordered_date|naturalday }}</td>
-                                        <td>{{ order.status }}</td>
-                                        <td>{{ order.get_total_quantity }}</td>
-                                        {#                                        <td>{{ order.get_total_quantity | multiply5:5 }},{%  multiply6 order.get_total_quantity 6  %}</td>#}
-                                        <td>¥{{ order.get_total_price|intcomma:False }}</td>
-                                        <td><a href="{% url 'store:export_order_pdf' slug=order.slug %}">Download</a></td>
+                                        <td>{{ margin.order.ordered_date|naturalday }}</td>
+                                        <td>{{ margin.level }}</td>
+                                        <td>{{ margin.amount |intcomma:False  }}</td>
+                                        <td>{{ margin.is_refound }}</td>
+                                        <td>{{ margin.paid_at |naturalday }}</td>
                                     </tr>
                                 {% endfor %}
                                 </tbody>
@@ -91,7 +90,7 @@
                                     <i class="icon-warning-sign"></i><strong>Warning!</strong> You have no orders!
                                 </div>
                             {% endif %}
-                        </div><!-- .postcontent end -->
+                        </div>
 					</div>
 
 				</div>

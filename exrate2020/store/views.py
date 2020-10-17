@@ -170,10 +170,7 @@ class CheckoutView(LoginRequiredMixin, View):
 
     def get(self, *args, **kwargs):
         form = CheckoutForm()
-
-        # order = Order.objects.get(user=self.request.user, ordered=False)
         context = {
-            # "order": order,
             "form": form
         }
         return render(self.request, "shop/checkout.html", context)
@@ -188,6 +185,9 @@ class CheckoutView(LoginRequiredMixin, View):
                 user=self.request.user,
                 json_orderitems=json.dumps(session_cart.cart_serializable)
             )
+            logger.error("create order from session cart")
+            logger.error(order)
+
             for item in session_cart.items:
                 OrderItem.objects.create(
                     order=order,
@@ -196,7 +196,7 @@ class CheckoutView(LoginRequiredMixin, View):
                 )
 
             if form.is_valid():
-                logger.error(" form is_valid")
+                logger.error("checkout:  form.is_valid")
                 logger.error(str(form.cleaned_data))
                 name = form.cleaned_data.get('name')
                 email = form.cleaned_data.get('email')
@@ -235,6 +235,7 @@ class CheckoutView(LoginRequiredMixin, View):
             return redirect('store:checkout')
 
         else:
+            logger.error("checkout:  form.is_valid failed")
             messages.error(self.request, "You do not have an order")
             return redirect("store:checkout")
 
@@ -289,6 +290,19 @@ class CheckoutView(LoginRequiredMixin, View):
                     level=100,
                     amount=margin_left,
                 )
+
+
+@method_decorator(login_required(login_url='/webauth/login/'), name="dispatch")
+class MarginListView(ListView):
+    model = Margin
+    template_name = "shop/accounts/margins.html"
+    context_object_name = "margins"
+    paginate_by = 10
+
+    def get_queryset(self):
+        query_kwards = settings.VALID_USER_MARGIN_LOOKUP
+        margins = Margin.objects.filter(user=self.request.user, **query_kwards).select_related("order")
+        return margins
 
 
 @login_required(login_url="/webauth/login/")

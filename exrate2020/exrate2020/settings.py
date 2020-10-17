@@ -323,7 +323,9 @@ CART_PRODUCT_MODEL = "store.models.Item"
 #     'published': True,
 #     'status': 'A',
 # }
-
+VALID_USER_MARGIN_LOOKUP = {
+    'is_valid': True,
+}
 
 ADMIN_NAME = "admin"
 ADMIN_INTROCODE = "51fa7641-e634-44ac-a963-33675c967e5c"

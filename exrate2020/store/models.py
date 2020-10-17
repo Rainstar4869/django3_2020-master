@@ -4,16 +4,12 @@ from django.shortcuts import reverse
 import jsonfield
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
 from mptt.models import MPTTModel, TreeForeignKey
 import uuid
 import os
 import logging
-import json
-from authentication.models import User, Profile
-from django.utils.translation import ugettext_lazy as _
-from django.core import serializers
 
 logger = logging.getLogger("error")
 
@@ -63,7 +59,7 @@ class Item(models.Model):
     buy_price = models.IntegerField(blank=True, null=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     label = models.CharField(choices=LABEL, max_length=2)
-    description = models.TextField(default="",blank=True,null=True)
+    description = models.TextField(default="", blank=True, null=True)
     rate = models.IntegerField(default=5)
     image = models.ImageField(null=True, upload_to=image_path)
     thumbimage = ImageSpecField(  # 注意：ImageSpecField 不会生成数据库表的字段
@@ -145,6 +141,7 @@ class Order(models.Model):
     start_date = models.DateTimeField(auto_now_add=True)
     ordered_date = models.DateTimeField(auto_now_add=True)
     ordered = models.BooleanField(default=False)
+    is_paid = models.BooleanField(default=False)
     shippingaddress = models.ForeignKey("ShippingAddress", on_delete=models.CASCADE, blank=True, null=True,
                                         default=None)
     json_orderitems = jsonfield.JSONField(blank=True, null=True, default=None)
@@ -198,11 +195,12 @@ class Margin(models.Model):
     level = models.IntegerField(default=1)
     amount = models.IntegerField(default=0)
     is_valid = models.BooleanField(default=False)
-    is_paid = models.BooleanField(default=False)
+    is_refound = models.BooleanField(default=False)
     paid_at = models.DateTimeField(blank=True, null=True)
 
     def __str__(self):
         return "margin to {} from order {}".format(self.user.username, self.order.id)
+
 
 # class Cart(models.Model):
 #     creation_date = models.DateTimeField(verbose_name=_('creation date'))
@@ -218,21 +216,33 @@ class Margin(models.Model):
 #         return str(self.creation_date)
 
 
-# @receiver(post_save, sender=Order)
-# def post_save(sender, instance, created, update_fields, **kwargs):
-#     print("print update_fields: ".format(str(update_fields)))
-#     print("print kwargs: ".format(str(kwargs)))
-#     print("print created: ".format(str(created)))
-#     print("print instance: ".format(str(kwargs)))
+@receiver(post_save, sender=Order)
+def post_save(sender, instance, created, *args, **kwargs):
+    print("pre_save Order: ")
+    if not created:
+        print("pre_save Order created: ")
+        print(kwargs)
+        if kwargs is not None:
+
+            print("pre_save Order kwargs: ")
+            print(instance.is_paid)
+            print("is_paid" in kwargs['update_fields'])
+            print(instance.is_paid)
+            print("is_paid" in kwargs['update_fields'] and instance.is_paid)
+            if "is_paid" in kwargs['update_fields'] and instance.is_paid:
+                print("pre_save Order is_paid: ")
+                margins = Margin.objects.filter(order=instance)
+                if margins.exists():
+                    print("pre_save margins.exists: ")
+                    margins.update(is_valid=True)
+
 #
-#     if not created:
-#         if instance.status == "COMPLETED":
-#             json_order = serializers.serialize('json', Order.objects.filter(pk=instance.id))
-# serializer just one object should add []
-# get model object from json_order as following
-#     orderobj = None
-#     for obj in serializers.deserialize('json', order.json_order):
-#         orderobj = obj.object
-#     Order.objects.filter(pk=instance.id).update(json_order=json_order)
-# else:
-#     Order.objects.filter(pk=instance.id).update(json_order=None)
+#
+# @receiver(pre_save, sender=Order)
+# def pre_save(sender, *args, **kwargs):
+#     # s.save(update_fields=['name2', 'name3'])
+#     print("pre_save print kwargs: ".format(str(kwargs)))
+#     print(kwargs.keys())
+#     print(kwargs.values())
+#     print("pre_save args: ")
+#     print(args)
