@@ -218,23 +218,12 @@ class Margin(models.Model):
 
 @receiver(post_save, sender=Order)
 def post_save(sender, instance, created, *args, **kwargs):
-    print("pre_save Order: ")
+    print("post_save Order: ")
     if not created:
-        print("pre_save Order created: ")
-        print(kwargs)
-        if kwargs is not None:
-
-            print("pre_save Order kwargs: ")
-            print(instance.is_paid)
-            print("is_paid" in kwargs['update_fields'])
-            print(instance.is_paid)
-            print("is_paid" in kwargs['update_fields'] and instance.is_paid)
-            if "is_paid" in kwargs['update_fields'] and instance.is_paid:
-                print("pre_save Order is_paid: ")
-                margins = Margin.objects.filter(order=instance)
-                if margins.exists():
-                    print("pre_save margins.exists: ")
-                    margins.update(is_valid=True)
+        if kwargs is not None and "is_paid" in kwargs['update_fields']:
+            margins = Margin.objects.filter(order=instance)
+            if margins.exists():
+                margins.update(is_valid=instance.is_paid)
 
 #
 #

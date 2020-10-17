@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.exceptions import ObjectDoesNotExist
+from django.db.models import Count, Sum
 from django.http import JsonResponse, HttpResponse
 from django.template.loader import render_to_string
 from django.utils.decorators import method_decorator
@@ -144,12 +145,8 @@ class OrderListView(ListView):
     paginate_by = 10
 
     def get_queryset(self):
-        # user_orders_cache_key = "user_{}_orders".format(self.request.user.id)
-        # orders = cache.get(user_orders_cache_key)
-        # if not orders:
         orders = Order.objects.filter(user=self.request.user, ordered=True).select_related("user").prefetch_related(
             "orderitems")
-        # cache.set(user_orders_cache_key, orders, CACHE_TTL)
         return orders
 
 
@@ -303,6 +300,13 @@ class MarginListView(ListView):
         query_kwards = settings.VALID_USER_MARGIN_LOOKUP
         margins = Margin.objects.filter(user=self.request.user, **query_kwards).select_related("order")
         return margins
+
+    def get_context_data(self, *args, object_list=None, **kwargs):
+        context = super(MarginListView, self).get_context_data(*args, **kwargs)
+        margin_summary = Margin.objects.filter(is_valid=True).aggregate(total_amount=Sum("amount"),
+                                                                        total_count=Count("id"))
+        context["margin_summary"] = margin_summary
+        return context
 
 
 @login_required(login_url="/webauth/login/")
