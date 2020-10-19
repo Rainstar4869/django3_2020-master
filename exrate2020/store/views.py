@@ -220,7 +220,7 @@ class CheckoutView(LoginRequiredMixin, View):
 
                 order.shippingaddress = checkout_address
                 order.ordered = True
-                order.save(update_fields=[])
+                order.save(update_fields=["ordered", "shippingaddress"])
 
                 self.caculate_margins(order)
                 session_cart.clear()
