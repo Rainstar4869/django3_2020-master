@@ -54,7 +54,6 @@ const actions = {
     get_store_active_products({commit, state}) {
         axios.post(state.product_url).then((res) => {
             if(res.data.result=="OK"){
-                console.log(res.data)
                 commit("update_products",res.data.products)
             }
         }).catch(function (error) {
@@ -62,11 +61,8 @@ const actions = {
         });
     },
     get_categories({commit}){
-        // console.log("get_categories");
-
         axios.post(state.categories_url).then((res) => {
             if(res.data.result=="OK"){
-                // console.log(res.data.categories);
                 commit("update_categories",res.data.categories);
             }
         }).catch(function (error) {
@@ -77,7 +73,6 @@ const actions = {
         const url = "/store/api/category/products/";
         axios.post(url,JSON.stringify({category_id:category_id})).then((res) => {
             if(res.data.result=="OK"){
-                console.log(res.data.category_products);
                 commit("update_products",res.data.category_products);
             }
         }).catch(function (error) {
