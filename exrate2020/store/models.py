@@ -175,6 +175,7 @@ class Order(models.Model):
 
 
 class ShippingAddress(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="shippingaddress",blank=True,null=True)
     name = models.CharField(max_length=56)
     email = models.EmailField(max_length=128)
     phone = models.CharField(max_length=56)
@@ -202,20 +203,6 @@ class Margin(models.Model):
         return "margin to {} from order {}".format(self.user.username, self.order.id)
 
 
-# class Cart(models.Model):
-#     creation_date = models.DateTimeField(verbose_name=_('creation date'))
-#     checked_out = models.BooleanField(default=False, verbose_name=_('checked out'))
-#     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="cart", default=None)
-#
-#     class Meta:
-#         verbose_name = _('cart')
-#         verbose_name_plural = _('carts')
-#         ordering = ('-creation_date',)
-#
-#     def __str__(self):
-#         return str(self.creation_date)
-
-
 @receiver(post_save, sender=Order)
 def post_save(sender, instance, created, *args, **kwargs):
     print("post_save Order: ")
@@ -224,14 +211,3 @@ def post_save(sender, instance, created, *args, **kwargs):
             margins = Margin.objects.filter(order=instance)
             if margins.exists():
                 margins.update(is_valid=instance.is_paid)
-
-#
-#
-# @receiver(pre_save, sender=Order)
-# def pre_save(sender, *args, **kwargs):
-#     # s.save(update_fields=['name2', 'name3'])
-#     print("pre_save print kwargs: ".format(str(kwargs)))
-#     print(kwargs.keys())
-#     print(kwargs.values())
-#     print("pre_save args: ")
-#     print(args)

@@ -4,7 +4,7 @@
             <table class="table cart">
                 <thead>
                 <tr>
-                    <th class="cart-product-remove">&nbsp;</th>
+                    <th class="cart-product-remove" v-if="cart_mode!=='checkout'">&nbsp;</th>
                     <th class="cart-product-thumbnail">&nbsp;</th>
                     <th class="cart-product-name">Product</th>
                     <th class="cart-product-price">Unit Price</th>
@@ -14,7 +14,7 @@
                 </thead>
                 <tbody>
                 <tr  v-for=" orderitem in cart.orderitems">
-                    <td class="cart-product-remove">
+                    <td class="cart-product-remove"  v-if="cart_mode!=='checkout'">
                         <a href="javascript:void(0);" class="remove"  @click="shoppingcart_operation('remove_cartitem',orderitem.product.id)"><i class="icon-trash2"></i></a>
                     </td>
 
@@ -36,12 +36,12 @@
 
                     <td class="cart-product-quantity">
                         <div class="quantity">
-                            <a href="javascript:void(0);" @click="shoppingcart_operation('decrease_cartitem',orderitem.product.id)">
+                            <a href="javascript:void(0);" @click="shoppingcart_operation('decrease_cartitem',orderitem.product.id)"  v-if="cart_mode!=='checkout'">
                                 <i class="icon-minus-sign mx-2"></i>
                             </a>
                             <span>{{ orderitem.quantity }}</span>
 
-                            <a href="javascript:void(0);" @click="shoppingcart_operation('add_cartitem',orderitem.product.id)">
+                            <a href="javascript:void(0);" @click="shoppingcart_operation('add_cartitem',orderitem.product.id)"  v-if="cart_mode!=='checkout'">
                                 <i class="icon-plus-sign mx-2"></i>
                             </a>
                         </div>
@@ -78,7 +78,7 @@
             </div>
             <div class="col-lg-6">
                 <a href="/store/checkout/"
-                   class="button button-3d mt-0 float-right">Proceed to
+                   class="button button-3d mt-0 float-right"  v-if="cart_mode!=='checkout'">Proceed to
                     Checkout</a>
             </div>
         </div>
@@ -86,11 +86,9 @@
 </template>
 
 <script>
-    import {mapState} from "vuex"
-    import shoppingcart from "../stores/shoppingcart";
-
     export default {
         name: 'cart',
+        props:["cart_mode"],
         data() {
             return {
                 // cart: {},
@@ -102,7 +100,7 @@
             }
         },
         mounted() {
-            // this.$store.dispatch("shoppingcart/get_shoppingcart");
+            console.log(this.cart_mode)
         },
         methods:{
             shoppingcart_operation(actionType, product_id) {

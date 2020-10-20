@@ -6,6 +6,7 @@ import Products from './components/Product.vue';
 import Menunavi from './components/MenuNavi.vue';
 import Membertree from './components/MemberTree.vue';
 import Topsocialcart from './components/TopSocialCart.vue';
+import Shippingaddress from './components/ShippingAddress.vue';
 import store from "./stores.js";
 import msaFilters from './utils/filters.js';
 Vue.filter('currency', msaFilters.currency);
@@ -20,6 +21,8 @@ const elProductsComponent = document.getElementById("products");
 const elMenuNaviComponent = document.getElementById("menunavi");
 const elMemberTreeComponent = document.getElementById("membertree");
 const elTopSocialCartComponent = document.getElementById("topsocialcart");
+const elShippingAddressComponent = document.getElementById("shippingaddressbook");
+
 
 if (elTopSocialCartComponent) {
     const TopSocialCartComponent = new Vue({
@@ -30,6 +33,18 @@ if (elTopSocialCartComponent) {
         }
     });
 }
+
+
+if (elShippingAddressComponent) {
+    const ShippingAddressComponent = new Vue({
+        el: '#shippingaddressbook',
+        store,
+        components: {
+            Shippingaddress
+        }
+    });
+}
+
 if (elMemberTreeComponent) {
     const MemberTreeComponent = new Vue({
         el: '#membertree',

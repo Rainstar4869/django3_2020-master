@@ -6,6 +6,7 @@ const state = {
     products:[],
     categories:[],
     category_products:[],
+    shippingaddress:[],
     shoppingcart_url: "/store/api/shoppingcart/",
     product_url:"/store/api/product/get/",
     categories_url:"/store/api/categories/",
@@ -21,8 +22,8 @@ const mutations = {
     update_categories(state,categories){
         state.categories=categories;
     },
-    update_category_products(state,products){
-        state.category_products=products;
+    update_shippingaddress(state,shippingaddress){
+        state.shippingaddress=shippingaddress;
     }
 };
 
@@ -74,6 +75,16 @@ const actions = {
         axios.post(url,JSON.stringify({category_id:category_id})).then((res) => {
             if(res.data.result=="OK"){
                 commit("update_products",res.data.category_products);
+            }
+        }).catch(function (error) {
+            console.log(error)
+        });
+    },
+    load_shippingaddress({commit}){
+        var baseUrl = "/store/account/shippingaddress/";
+        axios.get(baseUrl).then((res) => {
+            if(res.data.result=="OK"){
+                commit("update_shippingaddress",res.data.shippingaddress);
             }
         }).catch(function (error) {
             console.log(error)

@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from rest_framework.fields import SerializerMethodField
 
-from .models import Order, OrderItem, Item, Category
+from .models import Order, OrderItem, Item, Category,ShippingAddress
 
 
 class OrderSerializer(serializers.ModelSerializer):
@@ -22,6 +22,12 @@ class ItemSerializer(serializers.ModelSerializer):
         result = super().to_representation(instance)
         result["thumbimage"] = instance.thumbimage.url
         return result
+
+
+class ShippingAddressSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ShippingAddress
+        exclude = ("user",)
 
 
 class CategorySerializer(serializers.ModelSerializer):

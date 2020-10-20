@@ -18,7 +18,7 @@ from django.conf import settings
 from django.core import serializers
 from .forms import CheckoutForm
 from .models import Category
-from .serializers import OrderSerializer, ItemSerializer, CategorySerializer
+from .serializers import OrderSerializer, ItemSerializer, CategorySerializer, ShippingAddressSerializer
 from authentication.models import User
 from django.core.cache.backends.base import DEFAULT_TIMEOUT
 from django.views.decorators.cache import cache_page
@@ -396,6 +396,25 @@ class CategoryProductAPIView(View):
             return JsonResponse({
                 "result": "NG",
                 "category_products": []
+            })
+
+
+class ShippingAddressAPIView(View):
+    def get(self, request):
+
+        shippingaddress = ShippingAddress.objects.filter(user=request.user)
+
+        if shippingaddress.exists():
+            shippingaddress_serializer = ShippingAddressSerializer(instance=shippingaddress, many=True)
+
+            return JsonResponse({
+                "result": "OK",
+                "shippingaddress": shippingaddress_serializer.data
+            })
+        else:
+            return JsonResponse({
+                "result": "NG",
+                "shippingaddress": []
             })
 
 
