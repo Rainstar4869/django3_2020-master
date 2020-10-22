@@ -23,14 +23,16 @@
         19-17 103号
       </address>
 
-      <address id="to">
-        TO: {{order.shippingaddress.name}}
-        EMAIL: {{order.shippingaddress.email}}
-        PHONE: {{order.shippingaddress.phone}}
-        ADDRESS: 〒 {{order.shippingaddress.postcode}}　
-        {{ order.shippingaddress.state }}{{ order.shippingaddress.town }}{{ order.shippingaddress.street }} {{ order.shippingaddress.address_1 }}
-          {{ order.shippingaddress.address_2 }}
-      </address>
+        <address id="to">
+            TO: {{ json_shippingaddress.name }}
+            EMAIL: {{ json_shippingaddress.email }}
+            PHONE: {{ json_shippingaddress.phone }}
+            ADDRESS:
+            〒 {{ json_shippingaddress.postcode }}　
+            <span class="indent_address">{{ json_shippingaddress.state }}{{ json_shippingaddress.town }}</span>
+            <span class="indent_address">{{ json_shippingaddress.street }}{{ json_shippingaddress.address_1 }}</span>
+            <span class="indent_address">{{ json_shippingaddress.address_2 }}</span>
+        </address>
     </aside>
 
     <dl id="informations">
@@ -48,12 +50,13 @@
         <th>Subtotal</th>
       </thead>
       <tbody>
+
       {% for orderitem in order.orderitems.all %}
         <tr>
           <td>{{ orderitem.item.item_name }}</td>
-          <td>¥{{ orderitem.get_final_item_price |intcomma:False}}</td>
+          <td>¥{{ orderitem.final_price |intcomma:False}}</td>
           <td>{{ orderitem.quantity }}</td>
-          <td>¥{{ orderitem.get_final_price |intcomma:False }}</td>
+          <td>¥{{ orderitem.final_subtotal |intcomma:False }}</td>
         </tr>
       {% endfor %}
       </tbody>
@@ -61,17 +64,17 @@
 
     <table id="total">
       <thead>
-        <th>Order</th>
+        <th>Order Qty</th>
         <th>Due by</th>
         <th>Total due</th>
       </thead>
       <tbody>
         <tr>
           <td>
-              <img src="{% qr_url_from_text qrcode_introcode.url size='S' %}" alt="Hello World!">
+              {{order.Qty}} pcs
           </td>
           <td>{{order.ordered_date}}</td>
-          <td>¥{{ order.get_total_price|intcomma:False }}</td>
+          <td>¥{{ order.Total|intcomma:False }}</td>
         </tr>
       </tbody>
     </table>

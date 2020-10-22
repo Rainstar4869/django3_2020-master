@@ -26,6 +26,7 @@ from django.core.cache import cache
 from qr_code.qrcode.utils import ContactDetail
 from . import settings as carton_settings
 from .cart import Cart as _Cart
+from django.forms.models import model_to_dict
 from .models import (
     Item,
     Order,
@@ -49,13 +50,6 @@ def export_pdf_order(request, slug):
     current_site = get_current_site(request)
     register_url = 'http://' + current_site.domain + "/webauth/register/?introcode=" + str(request.user.introcode)
 
-    contact_detail = ContactDetail(
-        first_name=request.user.username,
-        # tel=request.user.phone,
-        email=request.user.email,
-        url=register_url
-    )
-
     response = HttpResponse(content_type="application/pdf")
     response["Content-Disposition"] = "inline;attachment;filename=Expenses" + str(datetime.datetime.now()) + '.pdf'
     response["Content-Transfer-Encoding"] = "binary"
@@ -65,14 +59,12 @@ def export_pdf_order(request, slug):
     if order.user == request.user:
         html_string = render_to_string("shop/pdfs/invoice_pdf.html", {
             "order": order,
-            "qrcode": contact_detail
+            "json_shippingaddress": json.loads(order.json_shippingaddress)
         })
         result = HTML(string=html_string, base_url=request.build_absolute_uri()).write_pdf(
             stylesheets=[
                 CSS('staticfiles/css/invoice_pdf.css')
             ])
-
-        # result = html.write_pdf()
 
         with tempfile.NamedTemporaryFile(delete=True) as output:
             output.write(result)
@@ -173,39 +165,44 @@ class CheckoutView(LoginRequiredMixin, View):
         return render(self.request, "shop/checkout.html", context)
 
     def post(self, *args, **kwargs):
-        form = CheckoutForm(self.request.POST or None)
+        # form = CheckoutForm(self.request.POST or None)
 
         session_cart = _Cart(self.request.session, self.request.user.id)
 
         if session_cart:
             order = Order.objects.create(
                 user=self.request.user,
-                json_orderitems=json.dumps(session_cart.cart_serializable)
+                json_orderitems=session_cart.cart_serializable,
+                Qty=session_cart.count,
+                Total=session_cart.total
             )
-            logger.error("create order from session cart")
-            logger.error(order)
 
             for item in session_cart.items:
+                final_price = item.product.discount_price if item.product.discount_price < item.product.price else item.product.price
+                final_subtotal = final_price * item.quantity
                 OrderItem.objects.create(
                     order=order,
                     item=item.product,
-                    quantity=item.quantity
-                )
+                    quantity=item.quantity,
+                    final_subtotal=final_subtotal,
+                    final_price=final_price)
 
-            if form.is_valid():
-                logger.error("checkout:  form.is_valid")
-                logger.error(str(form.cleaned_data))
-                name = form.cleaned_data.get('name')
-                email = form.cleaned_data.get('email')
-                phone = form.cleaned_data.get('phone')
-                postcode = form.cleaned_data.get('postcode')
-                state = form.cleaned_data.get('state')
-                town = form.cleaned_data.get('town')
-                street = form.cleaned_data.get('street')
-                address_1 = form.cleaned_data.get('address_1')
-                address_2 = form.cleaned_data.get('address_2')
+            try:
+                existed_address_id = self.request.POST.get('existed_address_id', 0)
+                checkout_address = ShippingAddress.objects.get(pk=existed_address_id)
+            except ObjectDoesNotExist:
+                name = self.request.POST.get('name')
+                email = self.request.POST.get('email')
+                phone = self.request.POST.get('phone')
+                postcode = self.request.POST.get('postcode')
+                state = self.request.POST.get('state')
+                town = self.request.POST.get('town')
+                street = self.request.POST.get('street')
+                address_1 = self.request.POST.get('address_1')
+                address_2 = self.request.POST.get('address_2')
 
                 checkout_address = ShippingAddress(
+                    user=self.request.user,
                     name=name,
                     email=email,
                     phone=phone,
@@ -216,23 +213,61 @@ class CheckoutView(LoginRequiredMixin, View):
                     address_1=address_1,
                     address_2=address_2,
                 )
-                checkout_address.save()
 
-                order.shippingaddress = checkout_address
-                order.ordered = True
-                order.save(update_fields=["ordered", "shippingaddress"])
+            checkout_address.save()
 
-                self.caculate_margins(order)
-                session_cart.clear()
+            order.shippingaddress = checkout_address
+            order.json_shippingaddress = model_to_dict(checkout_address)
+            order.ordered = True
+            order.save(update_fields=["ordered", "shippingaddress", "json_shippingaddress"])
 
-                messages.success(self.request, "Place Order successfully!")
-                return redirect('store:checkout')
+            self.caculate_margins(order)
+            session_cart.clear()
+
+            messages.success(self.request, "Place Order successfully!")
+            return redirect('store:checkout')
+
+            # if form.is_valid():
+            #     logger.error("checkout:  form.is_valid")
+            #     logger.error(str(form.cleaned_data))
+            #     name = form.cleaned_data.get('name')
+            #     email = form.cleaned_data.get('email')
+            #     phone = form.cleaned_data.get('phone')
+            #     postcode = form.cleaned_data.get('postcode')
+            #     state = form.cleaned_data.get('state')
+            #     town = form.cleaned_data.get('town')
+            #     street = form.cleaned_data.get('street')
+            #     address_1 = form.cleaned_data.get('address_1')
+            #     address_2 = form.cleaned_data.get('address_2')
+            #
+            #     checkout_address = ShippingAddress(
+            #         name=name,
+            #         email=email,
+            #         phone=phone,
+            #         postcode=postcode,
+            #         state=state,
+            #         town=town,
+            #         street=street,
+            #         address_1=address_1,
+            #         address_2=address_2,
+            #     )
+            #     checkout_address.save()
+            #
+            #     order.shippingaddress = checkout_address
+            #     order.json_shippingaddress = model_to_dict(checkout_address)
+            #     order.ordered = True
+            #     order.save(update_fields=["ordered", "shippingaddress", "json_shippingaddress"])
+            #
+            #     self.caculate_margins(order)
+            #     session_cart.clear()
+            #
+            #     messages.success(self.request, "Place Order successfully!")
+            #     return redirect('store:checkout')
 
             messages.warning(self.request, "Failed Chekout")
             return redirect('store:checkout')
 
         else:
-            logger.error("checkout:  form.is_valid failed")
             messages.error(self.request, "You do not have an order")
             return redirect("store:checkout")
 
@@ -243,12 +278,8 @@ class CheckoutView(LoginRequiredMixin, View):
             ancestors = user_profile.get_ancestors(ascending=True, include_self=False)
             ancestors_list = list(ancestors)
 
-            # logger.error("before pop root: len {} ".format(len(ancestors_list)))
-
             if len(ancestors_list) >= 1:
                 ancestors_list.pop()  # remove last root element
-
-            # logger.error("after pop root: len {} ".format(len(ancestors_list)))
 
             margin_left = order.get_total_distributor_margin()
 
@@ -260,12 +291,6 @@ class CheckoutView(LoginRequiredMixin, View):
                     level_rate = settings.MARGIN_RATES[str(level + 1)]
                     level_margin = int(margin_left_loop * level_rate)
                     user = ancestors_list[level].user
-
-                    logger.error("order_{}, distibute to {} with margin {} at level:{}, level_rate {}".format(order.id,
-                                                                                                              user.username,
-                                                                                                              level_margin,
-                                                                                                              level,
-                                                                                                              level_rate))
 
                     if user.orders.count() >= settings.MARGIN_CRITERIA_ORDERS:
                         Margin.objects.create(

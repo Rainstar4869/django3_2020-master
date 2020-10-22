@@ -51,9 +51,14 @@ html aside address#from {
 }
 
 html aside address#to {
-    text-align: right;
+    text-align: left;
+    width: 50%;
+    flex: 1;
 }
 
+html aside address#to span.indent_address{
+    text-indent: 15px;
+}
 html dl {
     text-align: right;
     position: absolute;

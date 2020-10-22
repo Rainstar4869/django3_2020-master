@@ -246,12 +246,15 @@ class LoginView(View):
         username = request.POST['username']
         password = request.POST['password']
         redirect_url = request.POST.get("redirect", "top")
-
-        logger.error("take user to {}".format(redirect_url))
+        logger.error("login form POST:".format(request.POST))
+        logger.error("login form username:".format(username))
+        logger.error("login form password:".format(password))
+        logger.error("login form redirect_url:".format(redirect_url))
 
         if username and password:
+            logger.error("login username:".format(username))
             user = auth.authenticate(username=username, password=password)
-
+            logger.error(user)
             if user:
                 if user.is_active:
                     auth.login(request, user)

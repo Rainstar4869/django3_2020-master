@@ -96,6 +96,8 @@ class OrderItem(models.Model):
     ordered = models.BooleanField(default=False)
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
     quantity = models.IntegerField(default=1)
+    final_price = models.IntegerField(null=True, blank=True)
+    final_subtotal = models.IntegerField(null=True, blank=True)
 
     def __str__(self):
         return f"{self.quantity} of {self.item.item_name}"
@@ -145,6 +147,9 @@ class Order(models.Model):
     shippingaddress = models.ForeignKey("ShippingAddress", on_delete=models.CASCADE, blank=True, null=True,
                                         default=None)
     json_orderitems = jsonfield.JSONField(blank=True, null=True, default=None)
+    json_shippingaddress = jsonfield.JSONField(blank=True, null=True, default=None)
+    Qty = models.IntegerField(blank=True, null=True)
+    Total = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
         return self.user.username
@@ -175,7 +180,8 @@ class Order(models.Model):
 
 
 class ShippingAddress(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="shippingaddress",blank=True,null=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="shippingaddress",
+                             blank=True, null=True)
     name = models.CharField(max_length=56)
     email = models.EmailField(max_length=128)
     phone = models.CharField(max_length=56)

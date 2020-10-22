@@ -58,17 +58,17 @@ class Cart(object):
         if self.session_key in self.session:
             # rebuild the cart object from that serialized representation.
             cart_representation = self.session[self.session_key]
-            logger.error("cart_representation")
-            logger.error(cart_representation)
+            # logger.error("cart_representation")
+            # logger.error(cart_representation)
             ids_in_cart = cart_representation["orderitems"].keys()
-            logger.error("ids_in_cart")
-            logger.error(ids_in_cart)
+            # logger.error("ids_in_cart")
+            # logger.error(ids_in_cart)
             products_queryset = self.get_queryset().filter(pk__in=ids_in_cart)
             for product in products_queryset:
-                logger.error("product ids_in_cart")
-                logger.error(product)
-                logger.error("cart_representation ids_in_cart")
-                logger.error(cart_representation)
+                # logger.error("product ids_in_cart")
+                # logger.error(product)
+                # logger.error("cart_representation ids_in_cart")
+                # logger.error(cart_representation)
                 item = cart_representation["orderitems"][str(product.id)]
                 self._items_dict[product.id] = CartItem(
                     product, item['quantity'], Decimal(item['price'])
