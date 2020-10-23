@@ -48,7 +48,7 @@
                                 <tbody>
                                 {% for order in orders %}
                                     <tr>
-                                        <td>{{ forloop.counter }}</td>
+                                        <td>{{ forloop.counter }}-({{ order.id }})</td>
                                         <td>{{ order.ordered_date|naturalday }}</td>
                                         <td>{{ order.status }}</td>
                                         <td>{{ order.get_total_quantity }}</td>
