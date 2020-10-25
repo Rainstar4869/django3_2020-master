@@ -138,6 +138,7 @@ TEMPLATES = [
                 'django_settings_export.settings_export',
                 "store.context_processors.store_categories",
                 "store.context_processors.session_cart",
+                "store.context_processors.accessToken",
             ],
         },
     },

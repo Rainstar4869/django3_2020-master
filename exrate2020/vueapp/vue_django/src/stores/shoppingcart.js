@@ -1,4 +1,5 @@
 import {sweetalert_toast} from "../utils/common.js";
+import {getCookie} from "../utils/common";
 
 const state = {
     accessToken: null,
@@ -24,6 +25,9 @@ const mutations = {
     },
     update_shippingaddress(state,shippingaddress){
         state.shippingaddress=shippingaddress;
+    },
+    update_accessToken(state){
+        state.accessToken=getCookie("accessToken");
     }
 };
 
@@ -36,6 +40,8 @@ const actions = {
         }).catch(function (error) {
             console.log(error)
         });
+        commit("update_accessToken");
+
     },
     update_shoppingcart({commit, state}, {actionType, product_id}) {
         axios.post(state.shoppingcart_url, JSON.stringify({

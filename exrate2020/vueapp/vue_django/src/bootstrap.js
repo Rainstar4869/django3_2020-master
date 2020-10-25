@@ -4,16 +4,14 @@ window.axios = require('axios');
 
 window.axios.defaults.headers.common = {
 	'X-Requested-With': 'XMLHttpRequest',
-    'Content-Type': 'application/json'
+	'X-CSRFTOKEN': document.querySelector('meta[name="csrf_token"]').content,
+	'Content-Type': 'application/json'
 };
+window.axios.defaults.headers.Accept='application/json';
 
-let jwt_token =getCookie("accessToken");
+let jwt_token =document.querySelector('meta[name="access_token"]').content;
+
 if(jwt_token !==""){
-	window.axios.defaults.headers = {
-		'X-CSRFTOKEN' : getCookie("csrftoken"),
-	    'accept': 'application/json',
-	    'Authorization': jwt_token
-	};
-}else{
-	window.axios.defaults.headers.Accept='application/json';
+	window.axios.defaults.headers.Authorization=jwt_token;
 }
+console.log(axios.defaults.headers.Authorization);

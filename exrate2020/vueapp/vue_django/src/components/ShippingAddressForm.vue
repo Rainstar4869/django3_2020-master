@@ -182,11 +182,11 @@
                 this.$store.dispatch("shoppingcart/update_shoppingcart", {actionType, product_id});
             },
             load_shippingaddress() {
-                var baseUrl = "/store/account/shippingaddress/";
-                console.log(window.axios.defaults.headers);
+                var baseUrl = "/store/api/shippingadress/";
+                console.log(document.querySelector('meta[name="access_token"]').content);
                 axios.get(baseUrl).then((res) => {
                     if (res.data.result == "OK") {
-                        this.addressbook=res.data.shippingaddress
+                        this.addressbook=res.data.addressbook
                         $("#AddressBookModal").modal('show');
                     }
 
@@ -211,21 +211,37 @@
                 }).then((result) => {
                     /* Read more about isConfirmed, isDenied below */
                     if (result.isConfirmed) {
-                        var baseUrl = "/store/account/shippingaddress/";
 
-                        axios.post(baseUrl,{id:id}).then((res) => {
-                            console.log(res)
+                        // var baseUrl = "/store/account/shippingaddress/";
+                        var baseUrl = "/store/api/shippingadress/"+id+"/";
+                        axios.delete(baseUrl).then((res)=>{
                             if (res.data.result == "OK") {
-                                var itemIndex = this.addressbook.findIndex(item=>item.id == res.data.id)
-                                if(itemIndex>-1){
-                                    this.addressbook.splice(itemIndex,1)
+                                var itemIndex = this.addressbook.findIndex(item => item.id == res.data.id)
+                                if (itemIndex > -1) {
+                                    this.addressbook.splice(itemIndex, 1)
                                     Swal.fire('Deleted!', '', 'success')
 
                                 }
                             }
-                        }).catch(function (error) {
-                            console.log(error)
-                        });
+                        }).catch((error)=>{
+                            console.log(error);
+                        })
+
+
+
+                        // axios.post(baseUrl,{id:id}).then((res) => {
+                        //     console.log(res)
+                        //     if (res.data.result == "OK") {
+                        //         var itemIndex = this.addressbook.findIndex(item=>item.id == res.data.id)
+                        //         if(itemIndex>-1){
+                        //             this.addressbook.splice(itemIndex,1)
+                        //             Swal.fire('Deleted!', '', 'success')
+                        //
+                        //         }
+                        //     }
+                        // }).catch(function (error) {
+                        //     console.log(error)
+                        // });
                     } else if (result.isDenied) {
                         Swal.fire('Illegal operation', '', 'info')
                     }

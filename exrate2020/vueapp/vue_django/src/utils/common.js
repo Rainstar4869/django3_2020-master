@@ -1,5 +1,5 @@
 
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2';
 
 export function getCookie  (cookie_name) {
   var cookies=document.cookie.split(";");

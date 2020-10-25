@@ -21,3 +21,7 @@ def store_categories(request):
 
 def session_cart(request):
     return {"session_cart": _Cart(request.session, request.user.id)}
+
+
+def accessToken(request):
+    return {"accessToken": "Bearer " + request.user.tokens()["access"]}
