@@ -126,6 +126,8 @@
                                             </p>
                                             <button class="btn btn-primary" @click="select_address(address.id)">Select
                                             </button>
+                                            <button class="btn btn-danger" @click="delete_address(address.id)">Delete
+                                            </button>
 
                                         </td>
                                     </tr>
@@ -181,6 +183,7 @@
             },
             load_shippingaddress() {
                 var baseUrl = "/store/account/shippingaddress/";
+                console.log(window.axios.defaults.headers);
                 axios.get(baseUrl).then((res) => {
                     if (res.data.result == "OK") {
                         this.addressbook=res.data.shippingaddress
@@ -199,6 +202,34 @@
                     this.existed_address_id=id;
                     $("#AddressBookModal").modal('hide');
                 }
+            },
+            delete_address(id) {
+                Swal.fire({
+                    title: 'Do you really want delete this address?',
+                    showCancelButton: true,
+                    confirmButtonText: `Delete`,
+                }).then((result) => {
+                    /* Read more about isConfirmed, isDenied below */
+                    if (result.isConfirmed) {
+                        var baseUrl = "/store/account/shippingaddress/";
+
+                        axios.post(baseUrl,{id:id}).then((res) => {
+                            console.log(res)
+                            if (res.data.result == "OK") {
+                                var itemIndex = this.addressbook.findIndex(item=>item.id == res.data.id)
+                                if(itemIndex>-1){
+                                    this.addressbook.splice(itemIndex,1)
+                                    Swal.fire('Deleted!', '', 'success')
+
+                                }
+                            }
+                        }).catch(function (error) {
+                            console.log(error)
+                        });
+                    } else if (result.isDenied) {
+                        Swal.fire('Illegal operation', '', 'info')
+                    }
+                })
             },
             input_new_address(){
                     this.shippingaddress = {};

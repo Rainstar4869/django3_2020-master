@@ -442,6 +442,26 @@ class ShippingAddressAPIView(View):
                 "shippingaddress": []
             })
 
+    def post(self, request, *args, **kwargs):
+        data = json.loads(request.body)
+        id=data["id"]
+
+        try:
+            shippingaddress = ShippingAddress.objects.get(pk=id)
+            shippingaddress.delete()
+            return JsonResponse({
+                "result": "OK",
+                "message": "shippingaddress deleted",
+                "id": id
+            })
+        except ObjectDoesNotExist:
+            return JsonResponse({
+                "result": "OK",
+                "message": "shippingaddress doesn't exist",
+                "id": id
+            })
+
+
 
 class ShoppingCartOperation(View):
     def get(self, request):

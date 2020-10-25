@@ -8,10 +8,9 @@ window.axios.defaults.headers.common = {
 };
 
 let jwt_token =getCookie("accessToken");
-
 if(jwt_token !==""){
 	window.axios.defaults.headers = {
-		'X-CSRFToken': getCookie("csrftoken"),
+		'X-CSRFTOKEN' : getCookie("csrftoken"),
 	    'accept': 'application/json',
 	    'Authorization': jwt_token
 	};
