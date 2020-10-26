@@ -27,8 +27,8 @@
                     </td>
 
                     <td class="cart-product-price" v-if="orderitem.product.discount_price">
-                        <del>¥{{ orderitem.product.price | currency}}</del>
-                        <span class="amount">{{ orderitem.product.discount_price| currency}}</span>
+                        <del v-if="cart_mode!=='checkout'">¥{{ orderitem.product.price | currency}}</del>
+                        <span class="amount">¥{{ orderitem.product.discount_price| currency}}</span>
                     </td>
                     <td class="cart-product-price" v-else>
                         <span class="amount">{{ orderitem.product.price | currency}}</span>
@@ -100,7 +100,6 @@
             }
         },
         mounted() {
-            console.log(this.cart_mode)
         },
         methods:{
             shoppingcart_operation(actionType, product_id) {

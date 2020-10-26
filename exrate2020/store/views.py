@@ -165,8 +165,6 @@ class CheckoutView(LoginRequiredMixin, View):
         return render(self.request, "shop/checkout.html", context)
 
     def post(self, *args, **kwargs):
-        # form = CheckoutForm(self.request.POST or None)
-
         session_cart = _Cart(self.request.session, self.request.user.id)
 
         if session_cart:
@@ -225,48 +223,7 @@ class CheckoutView(LoginRequiredMixin, View):
             session_cart.clear()
 
             messages.success(self.request, "Place Order successfully!")
-            return redirect('store:checkout')
-
-            # if form.is_valid():
-            #     logger.error("checkout:  form.is_valid")
-            #     logger.error(str(form.cleaned_data))
-            #     name = form.cleaned_data.get('name')
-            #     email = form.cleaned_data.get('email')
-            #     phone = form.cleaned_data.get('phone')
-            #     postcode = form.cleaned_data.get('postcode')
-            #     state = form.cleaned_data.get('state')
-            #     town = form.cleaned_data.get('town')
-            #     street = form.cleaned_data.get('street')
-            #     address_1 = form.cleaned_data.get('address_1')
-            #     address_2 = form.cleaned_data.get('address_2')
-            #
-            #     checkout_address = ShippingAddress(
-            #         name=name,
-            #         email=email,
-            #         phone=phone,
-            #         postcode=postcode,
-            #         state=state,
-            #         town=town,
-            #         street=street,
-            #         address_1=address_1,
-            #         address_2=address_2,
-            #     )
-            #     checkout_address.save()
-            #
-            #     order.shippingaddress = checkout_address
-            #     order.json_shippingaddress = model_to_dict(checkout_address)
-            #     order.ordered = True
-            #     order.save(update_fields=["ordered", "shippingaddress", "json_shippingaddress"])
-            #
-            #     self.caculate_margins(order)
-            #     session_cart.clear()
-            #
-            #     messages.success(self.request, "Place Order successfully!")
-            #     return redirect('store:checkout')
-
-            messages.warning(self.request, "Failed Chekout")
-            return redirect('store:checkout')
-
+            return render(self.request, "shop/checkout_completed.html", {"order": order})
         else:
             messages.error(self.request, "You do not have an order")
             return redirect("store:checkout")
@@ -444,7 +401,7 @@ class ShippingAddressAPIView(View):
 
     def post(self, request, *args, **kwargs):
         data = json.loads(request.body)
-        id=data["id"]
+        id = data["id"]
 
         try:
             shippingaddress = ShippingAddress.objects.get(pk=id)
@@ -460,7 +417,6 @@ class ShippingAddressAPIView(View):
                 "message": "shippingaddress doesn't exist",
                 "id": id
             })
-
 
 
 class ShoppingCartOperation(View):

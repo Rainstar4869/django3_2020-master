@@ -14,4 +14,3 @@ let jwt_token =document.querySelector('meta[name="access_token"]').content;
 if(jwt_token !==""){
 	window.axios.defaults.headers.Authorization=jwt_token;
 }
-console.log(axios.defaults.headers.Authorization);

@@ -175,7 +175,6 @@
             }
         },
         mounted() {
-            console.log(this.csrf_token)
         },
         methods: {
             shoppingcart_operation(actionType, product_id) {
@@ -183,7 +182,6 @@
             },
             load_shippingaddress() {
                 var baseUrl = "/store/api/shippingadress/";
-                console.log(document.querySelector('meta[name="access_token"]').content);
                 axios.get(baseUrl).then((res) => {
                     if (res.data.result == "OK") {
                         this.addressbook=res.data.addressbook

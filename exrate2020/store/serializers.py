@@ -1,12 +1,18 @@
 from rest_framework import serializers
 from rest_framework.fields import SerializerMethodField
 
-from .models import Order, OrderItem, Item, Category,ShippingAddress
+from .models import Order, OrderItem, Item, Category, ShippingAddress, Margin
 
 
 class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
+        fields = "__all__"
+
+
+class MarginSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Margin
         fields = "__all__"
 
 

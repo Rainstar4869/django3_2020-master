@@ -3,8 +3,9 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.cache import cache_page
 from django.core.cache.backends.base import DEFAULT_TIMEOUT
 from django.conf import settings
+from django.views.generic import TemplateView
 from rest_framework.routers import DefaultRouter
-from .viewsets import ShippingAddressViewSet
+from .viewsets import ShippingAddressViewSet, OrderViewSet,MarginViewSet
 
 from .views import (
     ProductView,
@@ -27,6 +28,8 @@ from .views import (
 
 router = DefaultRouter()
 router.register("shippingadress", ShippingAddressViewSet, basename="shippingaddress")
+router.register("orders", OrderViewSet, basename="orders")
+router.register("margins", MarginViewSet, basename="margins")
 
 app_name = 'store'
 CACHE_TTL = getattr(settings, 'CACHE_TTL', DEFAULT_TIMEOUT)

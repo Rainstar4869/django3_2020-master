@@ -6,6 +6,7 @@ const state = {
     cart:null,
     products:[],
     categories:[],
+    margins:[],
     category_products:[],
     shippingaddress:[],
     shoppingcart_url: "/store/api/shoppingcart/",
@@ -22,6 +23,9 @@ const mutations = {
     },
     update_categories(state,categories){
         state.categories=categories;
+    },
+    update_margins(state,margins){
+        state.margins=margins;
     },
     update_shippingaddress(state,shippingaddress){
         state.shippingaddress=shippingaddress;
@@ -91,6 +95,17 @@ const actions = {
         axios.get(baseUrl).then((res) => {
             if(res.data.result=="OK"){
                 commit("update_shippingaddress",res.data.shippingaddress);
+            }
+        }).catch(function (error) {
+            console.log(error)
+        });
+    },
+    load_margins({commit}){
+        var baseUrl = "/store/api/margins/";
+        axios.get(baseUrl).then((res) => {
+            console.log(res.data)
+            if(res.data.result=="OK"){
+                commit("update_margins",res.data.margins);
             }
         }).catch(function (error) {
             console.log(error)
