@@ -6,7 +6,7 @@ import Products from './components/Product.vue';
 import Menunavi from './components/MenuNavi.vue';
 import Membertree from './components/MemberTree.vue';
 import Topsocialcart from './components/TopSocialCart.vue';
-// import Shippingaddress from './components/ShippingAddress.vue';
+import Shippingaddressedit from './components/ShippingAddressEdit.vue';
 import Shippingaddressform from './components/ShippingAddressForm.vue';
 import store from "./stores.js";
 import msaFilters from './utils/filters.js';
@@ -22,7 +22,7 @@ const elProductsComponent = document.getElementById("products");
 const elMenuNaviComponent = document.getElementById("menunavi");
 const elMemberTreeComponent = document.getElementById("membertree");
 const elTopSocialCartComponent = document.getElementById("topsocialcart");
-// const elShippingAddressComponent = document.getElementById("shippingaddressbook");
+const elShippingAddressEditComponent = document.getElementById("shippingaddress_edit");
 const elShippingAddressFormComponent = document.getElementById("shippingaddressform");
 
 
@@ -46,16 +46,16 @@ if (elTopSocialCartComponent) {
     });
 }
 
-//
-// if (elShippingAddressComponent) {
-//     const ShippingAddressComponent = new Vue({
-//         el: '#shippingaddressbook',
-//         store,
-//         components: {
-//             Shippingaddress
-//         }
-//     });
-// }
+if (elShippingAddressEditComponent) {
+    const ShippingAddressEditComponent = new Vue({
+        el: '#shippingaddress_edit',
+        store,
+        components: {
+            Shippingaddressedit
+        }
+    });
+}
+
 
 if (elMemberTreeComponent) {
     const MemberTreeComponent = new Vue({

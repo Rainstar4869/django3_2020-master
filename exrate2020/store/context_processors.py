@@ -24,4 +24,7 @@ def session_cart(request):
 
 
 def accessToken(request):
-    return {"accessToken": "Bearer " + request.user.tokens()["access"]}
+    if request.user.is_authenticated:
+        return {"accessToken": "Bearer " + request.user.tokens()["access"]}
+    else:
+        return {"accessToken": ""}

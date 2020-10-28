@@ -54,6 +54,70 @@ class ShippingAddressViewSet(GenericViewSet):
                 "id": pk
             }, status=status.HTTP_200_OK)
 
+    def retrieve(self, request, pk=None, *args, **kwargs):
+        try:
+            address = ShippingAddress.objects.get(pk=pk, user=self.request.user)
+            address_serializer = ShippingAddressSerializer(instance=address, many=False)
+
+            return Response({
+                "result": "OK",
+                "operation": "get address of pk={}".format(pk),
+                "message": "successfully retrieved!",
+                "address": address_serializer.data
+            }, status=status.HTTP_200_OK)
+
+        except ObjectDoesNotExist:
+            return Response({
+                "result": "NG",
+                "operation": "get address of pk={}".format(pk),
+                "message": "Retrieved failed!",
+                "address": {}
+            }, status=status.HTTP_200_OK)
+
+    def update(self, request, *args, **kwargs):
+        data = json.loads(request.body)
+        pk = data['id']
+        name = data['name']
+        email = data['email']
+        phone = data['phone']
+        postcode = data['postcode']
+        state = data['state']
+        town = data['town']
+        street = data['street']
+        address_1 = data['address_1']
+        address_2 = data['address_2']
+
+        try:
+            address = ShippingAddress.objects.get(pk=pk, user=self.request.user)
+            address.name = name
+            address.phone = phone
+            address.postcode = postcode
+            address.email = email
+            address.state = state
+            address.town = town
+            address.street = street
+            address.address_1 = address_1
+            address.address_2 = address_2
+
+            address.save()
+
+            address_serializer = ShippingAddressSerializer(instance=address, many=False)
+
+            return Response({
+                "result": "OK",
+                "operation": "get address of pk={}".format(pk),
+                "message": "successfully retrieved!",
+                "address": address_serializer.data
+            }, status=status.HTTP_200_OK)
+
+        except ObjectDoesNotExist:
+            return Response({
+                "result": "NG",
+                "operation": "get address of pk={}".format(pk),
+                "message": "Retrieved failed!",
+                "address": {}
+            }, status=status.HTTP_200_OK)
+
 
 class OrderViewSet(GenericViewSet):
     serializer_class = OrderSerializer

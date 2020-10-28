@@ -77,6 +77,19 @@ def export_pdf_order(request, slug):
     return redirect("store:home")
 
 
+@method_decorator(login_required(login_url='/webauth/login/'), name="dispatch")
+class AddressBookListView(ListView):
+    model = Margin
+    template_name = "shop/accounts/addressbook.html"
+    context_object_name = "addressbook"
+    paginate_by = 10
+
+    def get_queryset(self):
+        logger.error(self.request.user)
+        margins = ShippingAddress.objects.filter(user=self.request.user)
+        return margins
+
+
 class SearchProductView(ListView):
     model = Item
     template_name = "shop/home.html"
@@ -138,7 +151,7 @@ class OrderListView(ListView):
 
     def get_queryset(self):
         orders = Order.objects.filter(user=self.request.user, ordered=True).select_related("user").prefetch_related(
-            "orderitems")
+            "orderitems").order_by("-id")
         return orders
 
 

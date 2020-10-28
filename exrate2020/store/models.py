@@ -144,7 +144,7 @@ class Order(models.Model):
     ordered_date = models.DateTimeField(auto_now_add=True)
     ordered = models.BooleanField(default=False)
     is_paid = models.BooleanField(default=False)
-    shippingaddress = models.ForeignKey("ShippingAddress", on_delete=models.CASCADE, blank=True, null=True,
+    shippingaddress = models.ForeignKey("ShippingAddress", on_delete=models.SET_NULL, blank=True, null=True,
                                         default=None)
     json_orderitems = jsonfield.JSONField(blank=True, null=True, default=None)
     json_shippingaddress = jsonfield.JSONField(blank=True, null=True, default=None)

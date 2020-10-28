@@ -18,6 +18,7 @@ from .views import (
     ProductAPIView,
     OrderListView,
     MarginListView,
+    AddressBookListView,
 
     CategoryAPIView,
     CategoryProductAPIView,
@@ -50,10 +51,11 @@ urlpatterns = [
     path('api/category/products/', csrf_exempt(CategoryProductAPIView.as_view()), name='api-get-category_products'),
 
     # account related
-    path('account/shippingaddress/', ShippingAddressAPIView.as_view(), name="my_shippingaddress"),
+    # path('account/shippingaddress/', ShippingAddressAPIView.as_view(), name="my_shippingaddress"),
     path('account/orders/', OrderListView.as_view(), name="my_orders"),
     path('account/margins/', MarginListView.as_view(), name="my_margins"),
     path('account/dashboard/', show_dashboard, name="my_dashboard"),
+    path('account/addressbook/', AddressBookListView.as_view(), name="my_addressbook"),
 
     path('export_pdf/<uuid:slug>/', export_pdf_order, name="export_order_pdf"),
 

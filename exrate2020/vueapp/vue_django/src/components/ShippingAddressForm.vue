@@ -1,9 +1,9 @@
 <template>
     <div>
-        <button class="btn btn-primary" data-toggle="modal" @click="load_shippingaddress" data-target="#AddressBookModal">
+        <button class="btn btn-primary" data-toggle="modal" v-if="addressbook.length" data-target="#AddressBookModal">
             <i class="icon-address-book"></i> Address Book
         </button>
-        <button class="btn btn-warning" @click="input_new_address">
+        <button class="btn btn-warning" @click="input_new_address"  v-if="addressbook.length" >
             <i class="icon-address-card"></i> New Address
         </button>
         <form id="shipping-form" name="shipping-form" class="row mb-0"
@@ -60,7 +60,7 @@
 
             <div class="col-6 form-group">
                 <label for="street">Street:</label>
-                <input type="text" name="street" class="sm-form-control" v-model="shippingaddress.state"
+                <input type="text" name="street" class="sm-form-control" v-model="shippingaddress.street"
                        placeholder="street" id="street" required="true" :readonly="existed">
             </div>
 
@@ -175,6 +175,7 @@
             }
         },
         mounted() {
+            this.load_shippingaddress();
         },
         methods: {
             shoppingcart_operation(actionType, product_id) {
@@ -196,6 +197,7 @@
                 var index = this.addressbook.findIndex(item => item.id == id)
                 if (index > -1) {
                     this.shippingaddress = this.addressbook[index];
+                    console.log("existed: "+this.existed)
                     this.existed = true;
                     this.existed_address_id=id;
                     $("#AddressBookModal").modal('hide');

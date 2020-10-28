@@ -39,8 +39,6 @@
             }
         },
         mounted() {
-            console.log("top membertree");
-            console.log(this.tree);
             // this.$store.dispatch("shoppingcart/get_shoppingcart");
         },
         methods: {
@@ -60,9 +58,6 @@
                 // console.log('tree drag end: ', dropNode && dropNode.label, dropType);
             },
             handleDrop(draggingNode, dropNode, dropType, ev) {
-                console.log('tree draggingNode: ', draggingNode.label);
-                console.log('tree dropNode: ', dropNode.label);
-                console.log('tree dropType: ', dropType);
             },
             allowDrop(draggingNode, dropNode, type) {
                 // var isAllowed = type !== 'prev' && type !== "next"
