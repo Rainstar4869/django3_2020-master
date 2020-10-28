@@ -5,7 +5,7 @@ from django.core.cache.backends.base import DEFAULT_TIMEOUT
 from django.conf import settings
 from django.views.generic import TemplateView
 from rest_framework.routers import DefaultRouter
-from .viewsets import ShippingAddressViewSet, OrderViewSet,MarginViewSet
+from .viewsets import ShippingAddressViewSet, OrderViewSet,MarginViewSet,ProductViewSet
 
 from .views import (
     ProductView,
@@ -21,19 +21,21 @@ from .views import (
     AddressBookListView,
 
     CategoryAPIView,
-    CategoryProductAPIView,
+    # CategoryProductAPIView,
 
     show_dashboard,
     export_pdf_order,
 )
 
+app_name = 'store'
+CACHE_TTL = getattr(settings, 'CACHE_TTL', DEFAULT_TIMEOUT)
+
 router = DefaultRouter()
 router.register("shippingadress", ShippingAddressViewSet, basename="shippingaddress")
 router.register("orders", OrderViewSet, basename="orders")
 router.register("margins", MarginViewSet, basename="margins")
+router.register("products", ProductViewSet, basename="products")
 
-app_name = 'store'
-CACHE_TTL = getattr(settings, 'CACHE_TTL', DEFAULT_TIMEOUT)
 
 urlpatterns = [
     path("api/", include((router.urls, "store"), namespace="nishiei_ship")),
@@ -48,7 +50,7 @@ urlpatterns = [
     path('api/shoppingcart/', csrf_exempt(ShoppingCartOperation.as_view()), name='api-shoppingcart'),
     path('api/product/get/', csrf_exempt(ProductAPIView.as_view()), name='api-get-product'),
     path('api/categories/', csrf_exempt(CategoryAPIView.as_view()), name='api-get-categories'),
-    path('api/category/products/', csrf_exempt(CategoryProductAPIView.as_view()), name='api-get-category_products'),
+    # path('api/category/products/', csrf_exempt(CategoryProductAPIView.as_view()), name='api-get-category_products'),
 
     # account related
     # path('account/shippingaddress/', ShippingAddressAPIView.as_view(), name="my_shippingaddress"),

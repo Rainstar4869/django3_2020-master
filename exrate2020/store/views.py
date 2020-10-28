@@ -370,28 +370,28 @@ class CategoryAPIView(View):
             })
 
 
-class CategoryProductAPIView(View):
-    def post(self, request):
-
-        data = json.loads(request.body)
-        category_id = data["category_id"]
-        category = Category.objects.get(pk=category_id)
-        categories = category.get_descendants(include_self=True)
-
-        products = Item.objects.filter(category__in=categories)
-
-        if products.exists():
-            products_serializer = ItemSerializer(instance=products, many=True)
-
-            return JsonResponse({
-                "result": "OK",
-                "category_products": products_serializer.data
-            })
-        else:
-            return JsonResponse({
-                "result": "NG",
-                "category_products": []
-            })
+# class CategoryProductAPIView(View):
+#     def post(self, request):
+#
+#         data = json.loads(request.body)
+#         category_id = data["category_id"]
+#         category = Category.objects.get(pk=category_id)
+#         categories = category.get_descendants(include_self=True)
+#
+#         products = Item.objects.filter(category__in=categories)
+#
+#         if products.exists():
+#             products_serializer = ItemSerializer(instance=products, many=True)
+#
+#             return JsonResponse({
+#                 "result": "OK",
+#                 "category_products": products_serializer.data
+#             })
+#         else:
+#             return JsonResponse({
+#                 "result": "NG",
+#                 "category_products": []
+#             })
 
 
 class ShippingAddressAPIView(View):

@@ -81,10 +81,12 @@ const actions = {
         });
     },
     load_category_products({commit},category_id){
-        const url = "/store/api/category/products/";
-        axios.post(url,JSON.stringify({category_id:category_id})).then((res) => {
+        // const url = "/store/api/category/products/";
+
+        const url = "/store/api/products/list_by_category/";
+        axios.post(url,{category_id:category_id}).then((res) => {
             if(res.data.result=="OK"){
-                commit("update_products",res.data.category_products);
+                commit("update_products",res.data.products);
             }
         }).catch(function (error) {
             console.log(error)

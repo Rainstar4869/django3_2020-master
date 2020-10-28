@@ -79,7 +79,6 @@
         },
         methods:{
             shoppingcart_operation(actionType, product_id) {
-                console.log("shoppingcart_operation: "+actionType);
                 this.$store.dispatch("shoppingcart/update_shoppingcart",{actionType,product_id});
             }
         }

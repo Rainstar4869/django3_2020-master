@@ -1,18 +1,22 @@
 from django.forms import model_to_dict
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
+from rest_framework.decorators import action
 from rest_framework.response import Response
-from .serializers import ShippingAddressSerializer, OrderSerializer, MarginSerializer
-from .models import ShippingAddress, Order, OrderItem, Margin
+from .serializers import ShippingAddressSerializer, OrderSerializer, MarginSerializer, ItemSerializer
+from .models import ShippingAddress, Order, OrderItem, Margin, Item, Category
 from .cart import Cart as _Cart
 from authentication.models import User
 import logging
 from rest_framework import status
+from django.core.cache import cache
+from django.core.cache.backends.base import DEFAULT_TIMEOUT
 from django.core.exceptions import ObjectDoesNotExist
 import json
 from django.conf import settings
 
 logger = logging.getLevelName("error_logger")
+CACHE_TTL = getattr(settings, 'CACHE_TTL', DEFAULT_TIMEOUT)
 
 
 class ShippingAddressViewSet(GenericViewSet):
@@ -292,4 +296,64 @@ class MarginViewSet(GenericViewSet):
             "operation": "list",
             "count": 0,
             "margins": []
+        }, status=status.HTTP_200_OK)
+
+
+class ProductViewSet(GenericViewSet):
+    serializer_class = ItemSerializer
+    permission_classes = (IsAuthenticated,)
+
+    # @action(detail=False, methods=['post'])
+    def list(self, request):
+
+        products = cache.get("nichiei_store_all_products")
+
+        if products is None:
+            products = Item.objects.all().defer("buy_price", "discount_price", "distributor_price")
+            cache.set("nichiei_store_all_products", products, CACHE_TTL)
+
+        if products.exists():
+            product_serializer = ItemSerializer(instance=products, many=True)
+
+            return Response({
+                "result": "OK",
+                "operation": "list all products",
+                "count": products.count(),
+                "products": product_serializer.data
+            }, status=status.HTTP_200_OK)
+
+        return Response({
+            "result": "NG",
+            "operation": "list all products",
+            "count": 0,
+            "products": []
+        }, status=status.HTTP_200_OK)
+
+    @action(detail=False, methods=['post'])
+    def list_by_category(self, request):
+        data = json.loads(request.body)
+        category_id = data["category_id"]
+
+        print("category_id: {}".format(category_id))
+        # logger.error("category_id: {}".format(category_id))
+        category = Category.objects.get(pk=category_id)
+        categories = category.get_descendants(include_self=True)
+
+        products = Item.objects.filter(category__in=categories)
+
+        if products.exists():
+            products_serializer = ItemSerializer(instance=products, many=True)
+
+            return Response({
+                "result": "OK",
+                "operation": "list products by category",
+                "count": products.count(),
+                "products": products_serializer.data
+            }, status=status.HTTP_200_OK)
+
+        return Response({
+            "result": "NG",
+            "operation": "list products by category",
+            "count": 0,
+            "products": []
         }, status=status.HTTP_200_OK)
