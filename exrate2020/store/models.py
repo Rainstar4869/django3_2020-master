@@ -150,6 +150,7 @@ class Order(models.Model):
     json_shippingaddress = jsonfield.JSONField(blank=True, null=True, default=None)
     Qty = models.IntegerField(blank=True, null=True)
     Total = models.IntegerField(blank=True, null=True)
+    message = models.TextField(blank=True, null=True, default="")
 
     def __str__(self):
         return self.user.username
@@ -207,6 +208,36 @@ class Margin(models.Model):
 
     def __str__(self):
         return "margin to {} from order {}".format(self.user.username, self.order.id)
+
+
+class PingoItem(models.Model):
+    item = models.ForeignKey("Item", on_delete=models.CASCADE, related_name="pingo_items")
+    price = models.IntegerField(default=0)
+    targetNum = models.IntegerField(default=0)
+    currentNum = models.IntegerField(default=0)
+    discount = models.IntegerField(default=0)
+    is_active = models.BooleanField(default=False)
+    until_at = models.DateTimeField(blank=True, null=True)
+    description = models.TextField(blank=True, default="description", null=True)
+
+    def __str__(self):
+        return "{}, target: {}".format(self.item.item_name, self.targetNum)
+
+
+class PingoOrder(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="pingo_orders")
+    product = models.ForeignKey(PingoItem, on_delete=models.CASCADE, related_name="pingo_orders")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now_add=True)
+    qty = models.IntegerField(default=0)
+    price = models.IntegerField(default=0)
+    status = models.CharField(default="new", max_length=28)
+    paid_at = models.DateTimeField(blank=True, null=True)
+    paid_info = models.TextField(blank=True, null=True)
+    memo = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return "{}, product: {}".format(self.user.username, self.product.product.item_name)
 
 
 @receiver(post_save, sender=Order)

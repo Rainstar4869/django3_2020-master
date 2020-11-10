@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@chenfengyuan/vue-countdown": "^1.1.5",
     "@fortawesome/fontawesome-svg-core": "^1.2.30",
     "@fortawesome/free-brands-svg-icons": "^5.14.0",
     "@fortawesome/free-regular-svg-icons": "^5.14.0",
@@ -50,6 +51,7 @@
     "vee-validate": "^2.2.15",
     "vue-apexcharts": "^1.6.0",
     "vue-authenticate": "^1.4.1",
+    "vue-awesome-countdown": "^1.1.2",
     "vue-axios": "^2.1.5",
     "vue-carousel": "^0.18.0",
     "vue-circle-menu": "^1.1.1",
@@ -64,6 +66,7 @@
     "vue-style-loader": "^4.1.2",
     "vue-template-compiler": "^2.6.12",
     "vue2-flip-countdown": "^0.9.3",
+    "vuejs-countdown": "^0.2.1",
     "vuejs-datepicker": "^1.6.2",
     "vuex": "^3.5.1",
     "vuex-persistedstate": "^2.7.1",

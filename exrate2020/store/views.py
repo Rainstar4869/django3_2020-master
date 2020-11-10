@@ -157,7 +157,7 @@ class OrderListView(ListView):
 
 class ProductView(DetailView):
     model = Item
-    template_name = "shop/product.html"
+    template_name = "shop/single_product.html"
 
 
 class OrderSummaryView(LoginRequiredMixin, View):
@@ -181,11 +181,14 @@ class CheckoutView(LoginRequiredMixin, View):
         session_cart = _Cart(self.request.session, self.request.user.id)
 
         if session_cart:
+            order_message = self.request.POST.get('shipping-form-message')
+            logger.error(order_message)
             order = Order.objects.create(
                 user=self.request.user,
                 json_orderitems=session_cart.cart_serializable,
                 Qty=session_cart.count,
-                Total=session_cart.total
+                Total=session_cart.total,
+                message=order_message
             )
 
             for item in session_cart.items:
@@ -368,30 +371,6 @@ class CategoryAPIView(View):
                 "result": "NG",
                 "categories": []
             })
-
-
-# class CategoryProductAPIView(View):
-#     def post(self, request):
-#
-#         data = json.loads(request.body)
-#         category_id = data["category_id"]
-#         category = Category.objects.get(pk=category_id)
-#         categories = category.get_descendants(include_self=True)
-#
-#         products = Item.objects.filter(category__in=categories)
-#
-#         if products.exists():
-#             products_serializer = ItemSerializer(instance=products, many=True)
-#
-#             return JsonResponse({
-#                 "result": "OK",
-#                 "category_products": products_serializer.data
-#             })
-#         else:
-#             return JsonResponse({
-#                 "result": "NG",
-#                 "category_products": []
-#             })
 
 
 class ShippingAddressAPIView(View):

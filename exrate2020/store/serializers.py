@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from rest_framework.fields import SerializerMethodField
 
-from .models import Order, OrderItem, Item, Category, ShippingAddress, Margin
+from .models import Order, OrderItem, Item, Category, ShippingAddress, Margin, PingoOrder, PingoItem
 
 
 class OrderSerializer(serializers.ModelSerializer):
@@ -16,13 +16,21 @@ class MarginSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
+class PingoItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PingoItem
+        fields = "__all__"
+
+
 class ItemSerializer(serializers.ModelSerializer):
+    pingo_items = PingoItemSerializer(many=True, read_only=True)
+
     class Meta:
         model = Item
         # exclude = ('buy_price','buy_price','buy_price',)
         # fields = "__all__"
         fields = ("id", "item_name", "category", "image", "inventory", "is_valid", "price", "rate",
-                  "discount_price", "label", "description")
+                  "discount_price", "label", "description","pingo_items")
 
     def to_representation(self, instance):
         result = super().to_representation(instance)
