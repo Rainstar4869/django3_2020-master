@@ -3,8 +3,9 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticate
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from .serializers import ShippingAddressSerializer, OrderSerializer, MarginSerializer, ItemSerializer
-from .models import ShippingAddress, Order, OrderItem, Margin, Item, Category
+from .serializers import ShippingAddressSerializer, OrderSerializer, MarginSerializer, ItemSerializer, \
+    PingoOrderSerializer
+from .models import ShippingAddress, Order, OrderItem, Margin, Item, Category, PingoItem, PingoOrder
 from .cart import Cart as _Cart
 from authentication.models import User
 import logging
@@ -14,6 +15,7 @@ from django.core.cache.backends.base import DEFAULT_TIMEOUT
 from django.core.exceptions import ObjectDoesNotExist
 import json
 from django.conf import settings
+from django.db.models import Count, Sum
 
 logger = logging.getLevelName("error_logger")
 CACHE_TTL = getattr(settings, 'CACHE_TTL', DEFAULT_TIMEOUT)
@@ -357,3 +359,42 @@ class ProductViewSet(GenericViewSet):
             "count": 0,
             "products": []
         }, status=status.HTTP_200_OK)
+
+
+class PingoOrderViewSet(GenericViewSet):
+    serializer_class = PingoOrderSerializer
+    permission_classes = (IsAuthenticated,)
+
+    def create(self, request, *args, **kwargs):
+        data = json.loads(request.body)
+        pingoitem_id = data["id"]
+        pingoitem_qty = data["qty"]
+        user = request.user
+
+        try:
+            pingoitem = PingoItem.objects.get(pk=pingoitem_id)
+
+            pingo_order = PingoOrder.objects.create(
+                user=user,
+                product=pingoitem,
+                qty=pingoitem_qty,
+                price=pingoitem.price,
+            )
+
+            pingoitem_currentNum = PingoOrder.objects.filter(product=pingoitem).aggregate(qty=Sum('qty'))["qty"]
+            pingoitem.currentNum = pingoitem_currentNum
+            pingoitem.save()
+
+            return Response({
+                "result": "OK",
+                "operation": "create",
+                "request": str(data),
+                "currentNum": pingoitem_currentNum,
+            }, status=status.HTTP_200_OK)
+
+        except ObjectDoesNotExist:
+            return Response({
+                "result": "NG",
+                "operation": "create",
+                "message": "no pingo item exists",
+            }, status=status.HTTP_200_OK)

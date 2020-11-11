@@ -5,7 +5,7 @@ from django.core.cache.backends.base import DEFAULT_TIMEOUT
 from django.conf import settings
 from django.views.generic import TemplateView
 from rest_framework.routers import DefaultRouter
-from .viewsets import ShippingAddressViewSet, OrderViewSet,MarginViewSet,ProductViewSet
+from .viewsets import ShippingAddressViewSet, OrderViewSet, MarginViewSet, ProductViewSet, PingoOrderViewSet
 
 from .views import (
     ProductView,
@@ -35,7 +35,7 @@ router.register("shippingadress", ShippingAddressViewSet, basename="shippingaddr
 router.register("orders", OrderViewSet, basename="orders")
 router.register("margins", MarginViewSet, basename="margins")
 router.register("products", ProductViewSet, basename="products")
-
+router.register("pingo_orders", PingoOrderViewSet, basename="pingo_orders")
 
 urlpatterns = [
     path("api/", include((router.urls, "store"), namespace="nishiei_ship")),

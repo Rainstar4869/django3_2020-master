@@ -4,6 +4,12 @@ from rest_framework.fields import SerializerMethodField
 from .models import Order, OrderItem, Item, Category, ShippingAddress, Margin, PingoOrder, PingoItem
 
 
+class PingoOrderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PingoOrder
+        fields = "__all__"
+
+
 class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
@@ -30,7 +36,7 @@ class ItemSerializer(serializers.ModelSerializer):
         # exclude = ('buy_price','buy_price','buy_price',)
         # fields = "__all__"
         fields = ("id", "item_name", "category", "image", "inventory", "is_valid", "price", "rate",
-                  "discount_price", "label", "description","pingo_items")
+                  "discount_price", "label", "description", "pingo_items")
 
     def to_representation(self, instance):
         result = super().to_representation(instance)

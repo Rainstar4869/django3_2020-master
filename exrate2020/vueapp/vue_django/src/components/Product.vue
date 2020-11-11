@@ -8,19 +8,24 @@
                 <div class="product-image">
                     <a :href="'/store/product/'+product.id+'/'"><img :src="product.thumbimage"></a>
 
-                    <div class="sale-flash badge badge-secondary p-2" v-if="product.inventory==0">Out of Stock</div>
-                </div>
-                <div class="product-desc">
-                    <div class="product-rating mb-3 text-right" style="margin-top: -50px;">
-                        <a href="javascript:void(0);" class="btn btn-success mr-2 "
+                    <div class="bg-overlay-content align-items-end justify-content-between"
+                         style="margin-top: -50px;position: relative!important;padding: 0;">
+                        <a href="javascript:void(0);" class="btn btn-dark mr-2 "
                            @click="shoppingcart_operation('add_cartitem',product.id)">
                             <i class="icon-shopping-cart "></i>
                         </a>
+                        <a href="javascript:void(0);" class="btn btn-dark mr-2 " data-toggle="modal"
+                           :data-target="'#ProductModal'+product.id">
+                            <i class="icon-line-expand"></i>
+                        </a>
                     </div>
+                    <div class="sale-flash badge badge-secondary p-2" v-if="product.inventory==0">Out of Stock</div>
+                </div>
+                <div class="product-desc">
 
                     <div class="product-title">
                         <h3><a href="javascript:void(0);" data-toggle="modal"
-                                :data-target="'#ProductModal'+product.id">{{ product.item_name }}</a></h3>
+                               :data-target="'#ProductModal'+product.id">{{ product.item_name }}</a></h3>
                     </div>
                     <div class="product-price" v-if="product.discount_price">
                         <del>¥{{ product.price| currency_jpy}}</del>
@@ -39,7 +44,7 @@
                         </el-rate>
                     </div>
                     <div v-if="product.pingo_items.length">
-                        <pingoitem :pingoitems="product.pingo_items"></pingoitem>
+                        <pingoitem :param_pingoitems="product.pingo_items" v-on:pingoitem_operate="pingoitem_process"></pingoitem>
                     </div>
                 </div>
             </div>
@@ -84,22 +89,10 @@
                                 <div class="clear"></div>
                                 <div class="line"></div>
 
-                                <!-- Product Single - Quantity & Cart Button
-                                ============================================= -->
-<!--                                <div class="quantity">-->
-<!--                                    <input type="button" value="-" class="minus">-->
-<!--                                    <input type="text" step="1" min="1" name="quantity" value="1" title="Qty"-->
-<!--                                           class="qty" size="4"/>-->
-<!--                                    <input type="button" value="+" class="plus">-->
-<!--                                </div>-->
-
-                        <a href="javascript:void(0);" class="add-to-cart button m-0"
-                           @click="shoppingcart_operation('add_cartitem',product.id)">
-                            <i class="icon-shopping-cart "></i>Add to cart
-                        </a>
-
-<!--                                <button type="submit" class="add-to-cart button m-0">Add to cart</button>-->
-
+                                <a href="javascript:void(0);" class="add-to-cart button m-0"
+                                   @click="shoppingcart_operation('add_cartitem',product.id)">
+                                    <i class="icon-shopping-cart "></i>Add to cart
+                                </a>
                                 <div class="clear"></div>
                                 <div class="line"></div>
                                 <p id="product_description"></p>
@@ -162,6 +155,9 @@
         methods: {
             shoppingcart_operation(actionType, product_id) {
                 this.$store.dispatch("shoppingcart/update_shoppingcart", {actionType, product_id});
+            },
+            pingoitem_process(e){
+                console.log(e);
             }
         }
     }
