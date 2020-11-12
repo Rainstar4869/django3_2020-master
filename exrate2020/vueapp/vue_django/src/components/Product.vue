@@ -28,11 +28,11 @@
                                :data-target="'#ProductModal'+product.id">{{ product.item_name }}</a></h3>
                     </div>
                     <div class="product-price" v-if="product.discount_price">
-                        <del>¥{{ product.price| currency_jpy}}</del>
-                        <ins>¥{{ product.discount_price | currency_jpy }}</ins>
+                        <del>{{ product.price| currency_jpy}}</del>
+                        <ins>{{ product.discount_price | currency_jpy }}</ins>
                     </div>
                     <div class="product-price" v-else>
-                        <ins>¥{{ product.price | currency_jpy }}</ins>
+                        <ins>{{ product.price | currency_jpy }}</ins>
                     </div>
                     <div class="product-rating">
                         <el-rate
@@ -71,11 +71,11 @@
                             </div>
                             <div class="col-md-6 product-desc">
                                 <div class="product-price" v-if="product.discount_price">
-                                    <del>¥{{ product.price| currency_jpy}}</del>
-                                    <ins>¥{{ product.discount_price | currency_jpy }}</ins>
+                                    <del>{{ product.price| currency_jpy}}</del>
+                                    <ins>{{ product.discount_price | currency_jpy }}</ins>
                                 </div>
                                 <div class="product-price" v-else>
-                                    <ins>¥{{ product.price | currency_jpy }}</ins>
+                                    <ins>{{ product.price | currency_jpy }}</ins>
                                 </div>
                                 <div class="product-rating">
                                     <el-rate
@@ -97,7 +97,6 @@
                                 <div class="line"></div>
                                 <p id="product_description"></p>
                                 <ul class="iconlist">
-                                    <li><i class="icon-caret-right"></i> Dynamic Color Options</li>
                                     <li><i class="icon-caret-right"></i> Lots of Size Options</li>
                                     <li><i class="icon-caret-right"></i> 30-Day Return Policy</li>
                                 </ul>

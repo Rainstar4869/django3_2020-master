@@ -35,7 +35,8 @@ class ItemSerializer(serializers.ModelSerializer):
         model = Item
         # exclude = ('buy_price','buy_price','buy_price',)
         # fields = "__all__"
-        fields = ("id", "item_name", "category", "image", "inventory", "is_valid", "price", "rate",
+        fields = ("id", "item_name", "manufacturer", "brand", "series", "model", "category", "package",
+                  "image", "inventory", "is_valid", "price", "rate",
                   "discount_price", "label", "description", "pingo_items")
 
     def to_representation(self, instance):

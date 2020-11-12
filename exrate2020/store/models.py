@@ -53,13 +53,20 @@ def image_path(instance, filename):
 
 class Item(models.Model):
     item_name = models.CharField(max_length=100)
+    manufacturer = models.CharField(null=True,blank=True, max_length=50)
+    brand = models.CharField(null=True,blank=True, max_length=50)
+    series = models.CharField(null=True,blank=True, max_length=50)
+    model = models.CharField(null=True,blank=True, max_length=50)
+    
     price = models.IntegerField()
     discount_price = models.IntegerField(blank=True, null=True)
     distributor_price = models.IntegerField(blank=True, null=True)
     buy_price = models.IntegerField(blank=True, null=True)
+    
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     label = models.CharField(choices=LABEL, max_length=2)
     description = models.TextField(default="", blank=True, null=True)
+    package = models.TextField(default="", blank=True, null=True)
     rate = models.IntegerField(default=5)
     image = models.ImageField(null=True, upload_to=image_path)
     thumbimage = ImageSpecField(  # 注意：ImageSpecField 不会生成数据库表的字段
