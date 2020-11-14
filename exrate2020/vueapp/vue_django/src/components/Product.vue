@@ -150,6 +150,7 @@
         },
         mounted() {
             this.$store.dispatch("shoppingcart/load_category_products", 4);
+            console.log(this.products)
         },
         methods: {
             shoppingcart_operation(actionType, product_id) {

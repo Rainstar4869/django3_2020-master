@@ -13,6 +13,7 @@ import os
 from pathlib import Path
 import datetime
 from django.contrib.messages import constants as messages
+from django.utils.translation import ugettext_lazy as _
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -62,6 +63,7 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'treewidget',
     'qr_code',
+    'user_g11n',
 
     "expenses",
     "income",
@@ -80,6 +82,7 @@ MIDDLEWARE = [
     'django.middleware.cache.UpdateCacheMiddleware',  # This must be first on the list
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'corsheaders.middleware.CorsMiddleware',
@@ -87,8 +90,11 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'middlewares.setAccessToken.SimpleMiddleware',
-    'django.middleware.cache.FetchFromCacheMiddleware',  # This must be last
     'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'user_g11n.middleware.UserLanguageMiddleware',  # Add
+    'user_g11n.middleware.UserTimeZoneMiddleware',  # Add
+    # 'leapin.libs.multitenancy.SetCurrentTenantFromUser',
+    'django.middleware.cache.FetchFromCacheMiddleware',  # This must be last
 ]
 
 ROOT_URLCONF = 'exrate2020.urls'
@@ -130,6 +136,7 @@ TEMPLATES = [
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
+                'django.template.context_processors.i18n',  # 模版加上 国际化i18n
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
@@ -251,14 +258,23 @@ CELERY_CACHE_BACKEND = 'django-cache'
 CELERY_TIMEZONE = 'Asia/Tokyo'
 DJANGO_CELERY_BEAT_TZ_AWARE = False
 CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
-LANGUAGE_CODE = 'ja'
 
 TIME_ZONE = 'Asia/Tokyo'
 USE_I18N = True
 USE_L10N = True
-USE_TZ = False
+USE_TZ = True
 USE_THOUSAND_SEPARATOR = True
+LOCALE_PATHS = (
+    os.path.join(BASE_DIR, 'locale'),
+)
 
+LANGUAGES = (
+    ('en', _('English')),
+    ('zh-hans', _('中文')),
+    ('ja', _('日本語')),
+)
+
+LANGUAGE_CODE = 'ja'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 

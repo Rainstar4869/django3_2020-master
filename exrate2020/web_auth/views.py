@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.dispatch import receiver
 from django.shortcuts import render, redirect
 from django.views import View
@@ -19,6 +20,7 @@ import logging
 from django.contrib.auth.signals import user_logged_in
 from rolepermissions.roles import assign_role
 from django.conf import settings
+from django.utils import translation
 
 logger = logging.getLogger("error_logger")
 
@@ -279,3 +281,19 @@ class LogoutView(View):
         auth.logout(request)
         messages.success(request, 'You have been logged out')
         return redirect('web_login')
+
+
+@login_required(login_url="/webauth/login/")
+def set_user_language(request, language="ja"):
+    logger.error("set current language: "+language)
+    logger.error("return path: "+request.META.get('HTTP_REFERER', '/'))
+    if any(language in sub for sub in settings.LANGUAGES) :
+        logger.error("language in settings.LANGUAGES")
+        user = request.user
+        user.language = language
+        user.save()
+
+        translation.activate(language)
+        request.session[translation.LANGUAGE_SESSION_KEY] = language
+
+    return redirect(request.META.get('HTTP_REFERER', '/'))

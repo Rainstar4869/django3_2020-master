@@ -12,6 +12,7 @@ class AccountAdmin(BaseUserAdmin):
     fieldsets = (
         (None, {'fields': ('email', 'is_staff', 'is_superuser', 'password')}),
         ('Personal info', {'fields': ('username', 'avatar')}),
+        ('Localization', {'fields': ('language', 'timezone')}),
         ('Introcode info', {'fields': ('introcode', 'parent_introcode')}),
         ('Groups', {'fields': ('groups',)}),
         ('Permissions', {'fields': ('user_permissions',)}),

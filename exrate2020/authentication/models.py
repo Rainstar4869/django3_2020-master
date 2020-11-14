@@ -12,7 +12,7 @@ from imagekit.models import ImageSpecField
 from rest_framework_simplejwt.tokens import RefreshToken
 import logging
 from django.conf import settings
-
+from user_g11n.models import UserLanguageSupportMixin, UserTimeZoneSupportMixin
 from mptt.models import MPTTModel, TreeForeignKey
 
 logger = logging.getLogger("error_logger")
@@ -51,7 +51,10 @@ def user_avatar_path(instance, filename):
     return "avatar/user_{0}/{1}".format(instance.id, filename)
 
 
-class User(AbstractBaseUser, PermissionsMixin):
+class User(UserTimeZoneSupportMixin,
+           UserLanguageSupportMixin,
+           PermissionsMixin,
+           AbstractBaseUser):
     username = models.CharField(max_length=255, unique=True, db_index=True, default=None)
     email = models.EmailField(max_length=255, unique=True, db_index=True)
     introcode = models.UUIDField(default=uuid.uuid4())

@@ -26,6 +26,7 @@ import debug_toolbar
 handler500 = 'authentication.views.error_500'
 
 urlpatterns = [
+    path('i18n/', include("django.conf.urls.i18n")),
     path('__debug__/', include(debug_toolbar.urls)),
     path("", TemplateView.as_view(template_name="nichiei/index.html"), name="top"),
     path("company/", TemplateView.as_view(template_name="nichiei/company.html"), name="company"),

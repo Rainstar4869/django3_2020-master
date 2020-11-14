@@ -4,6 +4,7 @@ from django.views.decorators.csrf import csrf_exempt
 from . import views
 
 urlpatterns = [
+    path('set_user_language/<str:language>/', views.set_user_language, name="set_user_language"),
     path('login/', views.LoginView.as_view(), name="web_login"),
     path('logout/', views.LogoutView.as_view(), name="web_logout"),
     path("register/", views.RegistrationView.as_view(), name="register"),
