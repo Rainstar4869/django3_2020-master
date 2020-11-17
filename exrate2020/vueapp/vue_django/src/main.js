@@ -8,6 +8,7 @@ import Membertree from './components/MemberTree.vue';
 import Topsocialcart from './components/TopSocialCart.vue';
 import Shippingaddressedit from './components/ShippingAddressEdit.vue';
 import Shippingaddressform from './components/ShippingAddressForm.vue';
+import Pingocheckout from './components/Pingo_checkout.vue';
 import store from "./stores.js";
 import msaFilters from './utils/filters.js';
 Vue.filter('currency', msaFilters.currency);
@@ -24,7 +25,18 @@ const elMemberTreeComponent = document.getElementById("membertree");
 const elTopSocialCartComponent = document.getElementById("topsocialcart");
 const elShippingAddressEditComponent = document.getElementById("shippingaddress_edit");
 const elShippingAddressFormComponent = document.getElementById("shippingaddressform");
+const elPingoCheckout = document.getElementById("pingocheckout");
 
+
+if (elPingoCheckout) {
+    const _PingoCheckout = new Vue({
+        el: '#pingocheckout',
+        store,
+        components: {
+            Pingocheckout
+        }
+    });
+}
 
 if (elShippingAddressFormComponent) {
     const ShippingaddressForm = new Vue({

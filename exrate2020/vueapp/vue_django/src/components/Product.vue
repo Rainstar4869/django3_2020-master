@@ -44,7 +44,7 @@
                         </el-rate>
                     </div>
                     <div v-if="product.pingo_items.length">
-                        <pingoitem :param_pingoitems="product.pingo_items" v-on:pingoitem_operate="pingoitem_process"></pingoitem>
+                        <pingoitem :param_pingoitems="product.pingo_items"  v-on:pingoitem_operate="pingoitem_process"></pingoitem>
                     </div>
                 </div>
             </div>

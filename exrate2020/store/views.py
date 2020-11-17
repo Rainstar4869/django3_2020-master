@@ -17,7 +17,6 @@ import datetime
 from django.conf import settings
 from django.core import serializers
 from .forms import CheckoutForm
-from .models import Category
 from .serializers import OrderSerializer, ItemSerializer, CategorySerializer, ShippingAddressSerializer
 from authentication.models import User
 from django.core.cache.backends.base import DEFAULT_TIMEOUT
@@ -29,10 +28,12 @@ from .cart import Cart as _Cart
 from django.forms.models import model_to_dict
 from .models import (
     Item,
+    Category,
     Order,
     OrderItem,
     ShippingAddress,
-    Margin
+    Margin,
+    PingoItem
 )
 
 CACHE_TTL = getattr(settings, 'CACHE_TTL', DEFAULT_TIMEOUT)
@@ -285,6 +286,17 @@ class CheckoutView(LoginRequiredMixin, View):
                     level=100,
                     amount=margin_left,
                 )
+
+
+@login_required(login_url="/webauth/login/")
+def Pingo_Checkout(request, pingoitem_id):
+    context = {
+        "pingoitem_id": pingoitem_id
+    }
+    return render(request, "shop/pingo_checkout.html", context)
+
+
+
 
 
 @method_decorator(login_required(login_url='/webauth/login/'), name="dispatch")

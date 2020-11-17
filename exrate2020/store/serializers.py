@@ -27,6 +27,11 @@ class PingoItemSerializer(serializers.ModelSerializer):
         model = PingoItem
         fields = "__all__"
 
+    def to_representation(self, instance):
+        result = super().to_representation(instance)
+        result["thumbimage"] = instance.item.thumbimage.url
+        return result
+
 
 class ItemSerializer(serializers.ModelSerializer):
     pingo_items = PingoItemSerializer(many=True, read_only=True)

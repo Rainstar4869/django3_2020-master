@@ -3,9 +3,9 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.cache import cache_page
 from django.core.cache.backends.base import DEFAULT_TIMEOUT
 from django.conf import settings
-from django.views.generic import TemplateView
 from rest_framework.routers import DefaultRouter
-from .viewsets import ShippingAddressViewSet, OrderViewSet, MarginViewSet, ProductViewSet, PingoOrderViewSet
+from .viewsets import ShippingAddressViewSet, OrderViewSet, \
+    MarginViewSet, ProductViewSet, PingoOrderViewSet, PingoItemViewSet
 
 from .views import (
     ProductView,
@@ -13,6 +13,7 @@ from .views import (
     HomeView,
     OrderSummaryView,
     CheckoutView,
+    Pingo_Checkout,
     ShoppingCartOperation,
     ShippingAddressAPIView,
     ProductAPIView,
@@ -36,6 +37,8 @@ router.register("orders", OrderViewSet, basename="orders")
 router.register("margins", MarginViewSet, basename="margins")
 router.register("products", ProductViewSet, basename="products")
 router.register("pingo_orders", PingoOrderViewSet, basename="pingo_orders")
+router.register("pingo_items", PingoItemViewSet, basename="pingo_items")
+
 
 urlpatterns = [
     path("api/", include((router.urls, "store"), namespace="nishiei_ship")),
@@ -44,8 +47,8 @@ urlpatterns = [
     path('search-product/', csrf_exempt(SearchProductView.as_view()), name='search-product'),
     path('order-summary/', OrderSummaryView.as_view(),
          name='order-summary'),
-    path('checkout/', CheckoutView.as_view(),
-         name='checkout'),
+    path('checkout/', CheckoutView.as_view(), name='checkout'),
+    path('pingo_checkout/<int:pingoitem_id>/', Pingo_Checkout, name='pingo_checkout'),
 
     path('api/shoppingcart/', csrf_exempt(ShoppingCartOperation.as_view()), name='api-shoppingcart'),
     path('api/product/get/', csrf_exempt(ProductAPIView.as_view()), name='api-get-product'),

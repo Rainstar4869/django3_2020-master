@@ -4,7 +4,7 @@ from rest_framework.viewsets import ModelViewSet, GenericViewSet
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from .serializers import ShippingAddressSerializer, OrderSerializer, MarginSerializer, ItemSerializer, \
-    PingoOrderSerializer
+    PingoOrderSerializer, PingoItemSerializer
 from .models import ShippingAddress, Order, OrderItem, Margin, Item, Category, PingoItem, PingoOrder
 from .cart import Cart as _Cart
 from authentication.models import User
@@ -397,4 +397,24 @@ class PingoOrderViewSet(GenericViewSet):
                 "result": "NG",
                 "operation": "create",
                 "message": "no pingo item exists",
+            }, status=status.HTTP_200_OK)
+
+
+class PingoItemViewSet(GenericViewSet):
+    serializer_class = PingoItemSerializer
+    permission_classes = (IsAuthenticated,)
+
+    def retrieve(self, request, pk=None):
+        try:
+            pingoitem = PingoItem.objects.get(pk=pk)
+            pingoitem_serializer = PingoItemSerializer(instance=pingoitem, many=False)
+            return Response({
+                "result": "OK",
+                "pingoitem": pingoitem_serializer.data,
+                "operation": "get pingo item",
+            }, status=status.HTTP_200_OK)
+        except ObjectDoesNotExist:
+            return Response({
+                "result": "NG",
+                "operation": "not pingo item",
             }, status=status.HTTP_200_OK)

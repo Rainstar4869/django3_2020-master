@@ -18,7 +18,7 @@
                 <div class="col-6 text-right">{{item.currentNum | currency}}/{{item.targetNum| currency}}</div>
                 <div class="clearfix"></div>
                 <div class="col-12 my-3">
-                    <a href="javascript:void(0);" @click="place_pingoitem_order(item.id)">Join!</a>
+                    <a :href="'/store/pingo_checkout/'+item.id+'/'">Join!</a>
                 </div>
             </div>
         </div>
@@ -57,7 +57,7 @@
             }
         },
         mounted() {
-            this.pingoitems=this.param_pingoitems
+            this.pingoitems=this.param_pingoitems;
         },
         methods: {
             pingoitem_qty(opt) {
