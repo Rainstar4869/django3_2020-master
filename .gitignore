@@ -10,5 +10,6 @@ exrate2020/staticfiles/js/bundles/
 system/postgres/init.d/
 system/redis/redis_data/
 exrate2020/supervisord.log
+exrate2020/supervisord.pid
 /exrate2020/celerybeat.pid
 /venv/
