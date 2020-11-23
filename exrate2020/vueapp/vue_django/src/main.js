@@ -1,5 +1,7 @@
 require('./bootstrap');
 import Vue from 'vue';
+import moment from 'moment'
+
 import Cart from './components/Cart.vue';
 import Topmenucart from './components/TopMenuCart.vue';
 import Products from './components/Product.vue';
@@ -16,6 +18,8 @@ Vue.filter('currency_jpy', msaFilters.currency_jpy);
 Vue.filter('currency_rmb', msaFilters.currency_rmb);
 Vue.filter('filterUsername', msaFilters.filterUsername);
 
+Vue.prototype.$moment = moment;
+moment.locale('zh-cn');
 
 const elCartComponent = document.getElementById("cart");
 const elTopMenuCartComponent = document.getElementById("topmenucart");

@@ -1,6 +1,6 @@
 <template>
     <div class="root">
-        <div v-for="item in pingoitems" class="bg-light border-top border-danger text-center mt-3">
+        <div v-for="item in pingoitems" class="bg-light border-top border-danger text-center mt-3" v-if="valid_until_date(item.until_at)">
             <h3>PinGo!</h3>
             <div class="text-right">
                 <vac :time="countdown_deadline" v-if="countdown_deadline" class=" text-danger">
@@ -30,6 +30,7 @@
     import Countdown from 'vuejs-countdown'
     import VueCountdown from '@chenfengyuan/vue-countdown'
     import Swal from "sweetalert2";
+    import moment from "moment";
 
     export default {
         name: 'pingoitems',
@@ -58,6 +59,8 @@
         },
         mounted() {
             this.pingoitems=this.param_pingoitems;
+            console.log(this.pingoitems)
+            console.log(moment(this.pingoitems[0].until_at).isAfter(Date.now()));
         },
         methods: {
             pingoitem_qty(opt) {
@@ -66,6 +69,9 @@
                 } else if (this.pingoitem.qty > 1) {
                     this.pingoitem.qty -= 1;
                 }
+            },
+            valid_until_date(m_date){
+                return moment(this.pingoitems[0].until_at).isAfter(Date.now())
             },
             async place_pingoitem_order(id) {
                 var vm=this;
