@@ -1,17 +1,14 @@
-#nodeイメージをpullする
-FROM node:10.15.3-alpine
+FROM node:lts
+ENV LANG C.UTF-8
+ENV TZ Asia/Tokyo
+WORKDIR /src
 
-#working directory
-WORKDIR /app
+RUN apt-get update && \
+    apt-get install -y vim less git
 
-#vuecliインストール
-RUN npm install -g @vue/cli
+RUN npm install -g npm && \
+    npm install -g @vue/cli @vue/cli-init && \
+    npm install -D webpack webpack-cli babel-loader @babel/core @babel/preset-env
 
-#shファイルをコンテナにコピー
-COPY ./scripts/docker.start.sh /scripts/start.sh
 
-#shフォルダの権限追加（全員実行可）
-RUN chmod +x /scripts/*
-
-#初期実行
-# ENTRYPOINT [ "/scripts/start.sh" ]
+EXPOSE 8080
