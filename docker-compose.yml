@@ -123,7 +123,7 @@ services:
     volumes:
       #node_moduleを入れるボリューム
 #      - ./vue/node_modules:/app/node_modules
-      - ./vue/app.:/app/
+      - ./vue/app:/app/
     #-it
     stdin_open: true
     tty: true
