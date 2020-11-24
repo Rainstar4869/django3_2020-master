@@ -1,0 +1,82 @@
+
+{% load static %}
+{% load humanize %}
+{% load qr_code %}
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Invoice</title>
+    <meta name="description" content="Invoice demo sample">
+    <meta name="author" content="Kozea">
+  </head>
+
+  <body>
+    <h1>Invoice</h1>
+    <small>{{ order.uuid }}</small>
+
+    <aside>
+      <address id="from">
+        日栄株式会社
+        〒3360031
+        埼玉県さいたま市南区鹿手袋７丁目
+        19-17 103号
+      </address>
+
+        <address id="to">
+            TO: {{ json_shippingaddress.name }}
+            EMAIL: {{ json_shippingaddress.email }}
+            PHONE: {{ json_shippingaddress.phone }}
+            ADDRESS:
+            〒 {{ json_shippingaddress.postcode }}　
+            <span class="indent_address">{{ json_shippingaddress.state }}{{ json_shippingaddress.town }}</span>
+            <span class="indent_address">{{ json_shippingaddress.street }}{{ json_shippingaddress.address_1 }}</span>
+            <span class="indent_address">{{ json_shippingaddress.address_2 }}</span>
+        </address>
+    </aside>
+
+    <dl id="informations">
+      <dt>NICHIEI SERVICES</dt>
+      <dd></dd>
+      <dt>Date</dt>
+      <dd>{{order.ordered_date}}</dd>
+    </dl>
+
+    <table>
+      <thead>
+        <th>Description</th>
+        <th>Price</th>
+        <th>Quantity</th>
+        <th>Subtotal</th>
+      </thead>
+      <tbody>
+
+      {% for orderitem in order.orderitems.all %}
+        <tr>
+          <td>{{ orderitem.item.item_name }}</td>
+          <td>¥{{ orderitem.final_price |intcomma:False}}</td>
+          <td>{{ orderitem.quantity }}</td>
+          <td>¥{{ orderitem.final_subtotal |intcomma:False }}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+
+    <table id="total">
+      <thead>
+        <th>Order Qty</th>
+        <th>Due by</th>
+        <th>Total due</th>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+              {{order.Qty}} pcs
+          </td>
+          <td>{{order.ordered_date}}</td>
+          <td>¥{{ order.Total|intcomma:False }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
+</html>

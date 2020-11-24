@@ -1,0 +1,61 @@
+{% load static %}
+{% load i18n %}
+<!DOCTYPE html>
+<html dir="ltr" lang="en-US">
+<head>
+
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <link rel="icon" href="{% static 'canvas/favicon.ico' %}" />
+	<!-- Stylesheets
+	============================================= -->
+	<link rel="stylesheet" href="{% static  'canvas/css/bootstrap.css'%}" type="text/css" />
+	<link rel="stylesheet" href="{% static  'canvas/style.css'%}" type="text/css" />
+	<link rel="stylesheet" href="{% static  'canvas/css/swiper.css'%}" type="text/css" />
+	<link rel="stylesheet" href="{% static  'canvas/css/dark.css'%}" type="text/css" />
+	<link rel="stylesheet" href="{% static  'canvas/css/font-icons.css'%}" type="text/css" />
+	<link rel="stylesheet" href="{% static  'canvas/css/animate.css'%}" type="text/css" />
+	<link rel="stylesheet" href="{% static  'canvas/css/magnific-popup.css'%}" type="text/css" />
+    <script src="https://kit.fontawesome.com/19613bff7e.js" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="{% static  'canvas/css/custom.css'%}" type="text/css" />
+{#    <link rel="stylesheet" href="{% static  'css/element_ui.css'%}">#}
+<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+	<meta name="access_token" content="{{accessToken}}" />
+	<meta name="csrf_token" content="{{csrf_token }}" />
+
+    {% block headerscript %}{% endblock %}
+	<!-- Document Title
+	============================================= -->
+	<title>Nichiei Shop Co.,LTD </title>
+
+</head>
+
+<body class="stretched">
+{#    <h2>{% trans "hello" %}</h2>#}
+{#    <a href="{% url 'set_user_language' 'ja' %}">Japanese</a>#}
+{#    <a href="{% url 'set_user_language' 'en' %}">English</a>#}
+
+
+	<!-- Document Wrapper
+	============================================= -->
+	<div id="wrapper" class="clearfix">
+            {% include "shop/partials/topmenu.html" %}
+            {% block content %}{% endblock %}
+
+	</div><!-- #wrapper end -->
+
+
+    <script src="{% static 'bundles/main.js' %}"></script>
+    <script src="{% static 'bundles/vendor.js' %}"></script>
+
+	<div id="gotoTop" class="icon-angle-up"></div>
+
+	<script src="{% static 'canvas/js/jquery.js' %}"></script>
+	<script src="{% static 'canvas/js/plugins.min.js' %}"></script>
+
+	<script src="{% static 'canvas/js/functions.js' %}"></script>
+    <script src="{% static 'js/sweetalert2.all.min.js' %}"></script>
+    {% block footerscript_last %}{% endblock %}
+</body>
+</html>

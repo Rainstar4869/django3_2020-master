@@ -1,0 +1,48 @@
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <style>
+        {#html { hyphens: auto }#}
+        @page{
+            font-family: Georgia, Cambria, "Times New Roman", Times, serif, serif;
+            size: A4;
+            margin: 2.5cm 1.5cm 3.5cm 1.5cm;
+
+            @top-center {
+                content:"Nichiei Services" ;
+            }
+
+            @bottom-right {
+                content: "page" counter(page) "of" counter(pages);
+            }
+        }
+    </style>
+</head>
+<body>
+    <h4>Hello</h4>
+    {{ total.amount__sum }}
+    <img style="width: 160px;" src="http://www.nichiei.services/img/nichiei_with_text_black.png" alt="">
+
+    <table>
+        <thead>
+        <th style="width: 10%;">No</th>
+        <th style="width: 20%;">Amount</th>
+        <th style="width: 20%;">Category</th>
+        <th style="width: 30%;">Description</th>
+        <th style="width: 20%;">Date</th>
+        </thead>
+        <tbody>
+        {% for expense in expenses %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ expense.amount }}</td>
+                <td>{{ expense.category }}</td>
+                <td>{{ expense.description }}</td>
+                <td>{{ expense.date }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
