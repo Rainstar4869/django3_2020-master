@@ -1,0 +1,98 @@
+{% extends 'nichiei/layouts/base.html' %}
+{% load static %}
+{#{% load cart_tag %}#}
+{% block headerscript %}
+
+{% endblock headerscript%}
+{% block content %}
+
+
+		<!-- Page Title
+		============================================= -->
+		<section id="page-title">
+
+			<div class="container">
+				<h1>Cart</h1>
+				<ol class="breadcrumb">
+					<li class="breadcrumb-item"><a href="#">Home</a></li>
+					<li class="breadcrumb-item"><a href="#">Shop</a></li>
+					<li class="breadcrumb-item active" aria-current="page">Cart</li>
+				</ol>
+			</div>
+
+		</section><!-- #page-title end -->
+
+    <h1>From Session Variable</h1>
+    <h1>{{request.session.lionhu}}</h1>
+    <h1>Cart Item</h1>
+    {{ cart_total_amount }}
+    <p>{{ request.session.nichiei_cart }}</p>
+    <p>Total Length :: {{request.session.nichiei_cart|length}}</p>
+    <p></p>
+		<!-- Content
+		============================================= -->
+		<section id="content">
+			<div class="content-wrap">
+				<div class="container">
+
+					<div class="table-responsive mb-5">
+						<table class="table cart">
+							<thead>
+								<tr>
+									<th class="cart-product-remove">&nbsp;</th>
+									<th class="cart-product-thumbnail">&nbsp;</th>
+									<th class="cart-product-name">Product</th>
+									<th class="cart-product-price">Unit Price</th>
+									<th class="cart-product-quantity">Quantity</th>
+									<th class="cart-product-subtotal">Total</th>
+								</tr>
+							</thead>
+							<tbody>
+                            {% for key,value in request.session.nichiei_cart.items %}
+                                {% if key != "total" and key != "qty" %}
+								    <tr class="cart_item">
+									<td class="cart-product-remove">
+										<a href="#" class="remove" title="Remove this item"><i class="icon-trash2"></i></a>
+									</td>
+
+									<td class="cart-product-thumbnail">
+										<a href="#"><img width="64" height="64" src="images/shop/thumbs/small/dress-3.jpg" alt="Pink Printed Dress"></a>
+									</td>
+
+									<td class="cart-product-name">
+										<a href="#">{{value.name}}</a>
+									</td>
+
+									<td class="cart-product-price">
+										<span class="amount">{{value.price}}</span>
+									</td>
+
+									<td class="cart-product-quantity">
+										<div class="quantity">
+											<input type="button" value="-" class="minus">
+											<input type="text" name="quantity" value="{{value.quantity}}" class="qty" />
+											<input type="button" value="+" class="plus">
+										</div>
+									</td>
+
+									<td class="cart-product-subtotal">
+{#										<span class="amount">${{int(value.price)*int(value.quantity)}}</span>#}
+									</td>
+								</tr>
+                                {% endif %}
+                            {% endfor %}
+							</tbody>
+
+						</table>
+					</div>
+
+
+				</div>
+			</div>
+		</section><!-- #content end -->
+
+{% endblock content%}
+
+{% block footerscript_last %}
+
+{% endblock footerscript_last%}

@@ -1,0 +1,204 @@
+{% load static %}
+{% load i18n %}
+{% load humanize %}
+{% load mptt_tags %}
+{% load cache %}
+
+<!-- Top Bar
+============================================= -->
+<div id="top-bar">
+    <div class="container clearfix">
+
+        <div class="row justify-content-between">
+            <div class="col-12 col-md-auto">
+
+                <!-- Top Links
+                ============================================= -->
+                <div class="top-links on-click">
+                    <ul class="top-links-container">
+                        <li class="top-links-item"><a href="index.html">NICHIEI</a>
+                            <ul class="top-links-sub-menu">
+                                <li class="top-links-item"><a href="{% url 'top' %}">Home</a></li>
+                                <li class="top-links-item"><a href="{% url 'company' %}">About Us</a></li>
+                                <li class="top-links-item"><a href="{% url 'services' %}">Services</a></li>
+                                <li class="top-links-item"><a href="{% url 'contact' %}">Contact</a></li>
+                            </ul>
+                        </li>
+                        {% if user.is_authenticated %}
+                            <li class="top-links-item"><a href="index.html">{{ user.username }}</a>
+                                <ul class="top-links-sub-menu">
+                                    <li class="top-links-item"><a href="{% url 'store:my_dashboard' %}">Dashboard</a></li>
+                                    <li class="top-links-item"><a href="{% url 'web_logout' %}">Logout</a></li>
+                                </ul>
+                            </li>
+                        {% else %}
+                            <li class="top-links-item"><a href="login-register.html">Login</a>
+                                <div class="top-links-section">
+                                    <form id="top-login" action="{% url 'web_login' %}" method="post"
+                                          autocomplete="off">
+                                        <input type="text" name="redirect" value="store:home" hidden>
+                                        {% csrf_token %}
+                                        <div class="form-group">
+                                            <label>Email</label>
+                                            <input type="email" name="username" class="form-control"
+                                                   placeholder="Email address">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Password</label>
+                                            <input type="password" name="password" class="form-control"
+                                                   placeholder="Password" required="">
+                                        </div>
+                                        {#											<div class="form-group form-check">#}
+                                        {#												<input class="form-check-input" type="checkbox" value="" id="top-login-checkbox">#}
+                                        {#												<label class="form-check-label" for="top-login-checkbox">Remember Me</label>#}
+                                        {#											</div>#}
+                                        <button class="btn btn-danger btn-block" type="submit">Sign in</button>
+                                    </form>
+                                </div>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div><!-- .top-links end -->
+
+            </div>
+
+            <div class="col-12 col-md-auto">
+
+                <!-- Top Social
+                ============================================= -->
+                <ul id="top-social">
+                    <li><a href="tel:0487086883" class="si-call"><span class="ts-icon"><i
+                            class="icon-call"></i></span><span class="ts-text">0487086883</span></a></li>
+                    <li><a href="mailto:info@canvas.com" class="si-email3"><span class="ts-icon"><i
+                            class="icon-email3"></i></span><span class="ts-text">crs@nichiei.services</span></a></li>
+                    <li><a href="{% url 'set_user_language' 'ja' %}" class="si-email3"><span class="ts-icon">
+                        <img src="{% static "icons/japan-flag-icon-16.png" %}" alt="">
+                    </span>
+                        <span class="ts-text">日本語</span></a></li>
+                    <li><a href="{% url 'set_user_language' 'zh-hans' %}" class="si-email3"><span class="ts-icon">
+                        <img src="{% static "icons/china-flag-icon-16.png" %}" alt=""></span>
+                        <span class="ts-text">中文</span></a></li>
+
+                    <div id="topsocialcart">
+                        <Topsocialcart></Topsocialcart>
+                    </div>
+                </ul><!-- #top-social end -->
+
+            </div>
+
+        </div>
+
+    </div>
+</div><!-- #top-bar end -->
+
+<!-- Header
+============================================= -->
+<header id="header" class="full-header" data-sticky-logo-height="74" data-menu-padding="32">
+    <div id="header-wrap">
+        <div class="container">
+            <div class="header-row">
+                <div id="logo">
+                    <a href="{% url 'store:home' %}" class="standard-logo" data-dark-logo="images/logo-dark.png">
+                        <img src="{% static 'nichiei/canvas/images/nichiei_with_text_black.png' %}"></a>
+                    <a href="{% url 'store:home' %}" class="retina-logo" data-dark-logo="images/logo-dark@2x.png">
+                        <img src="{% static 'nichiei/canvas/images/nichiei_with_text_black.png' %}"></a>
+                </div><!-- #logo end -->
+
+                <div class="header-misc">
+
+                    <div id="top-search" class="header-misc-icon">
+                        <a href="#" id="top-search-trigger"><i class="icon-line-search"></i><i
+                                class="icon-line-cross"></i></a>
+                    </div>
+                    <div id="topmenucart">
+                        <Topmenucart></Topmenucart>
+                    </div>
+
+                </div>
+
+                <div id="primary-menu-trigger">
+                    <svg class="svg-trigger" viewBox="0 0 100 100">
+                        <path d="m 30,33 h 40 c 3.722839,0 7.5,3.126468 7.5,8.578427 0,5.451959 -2.727029,8.421573 -7.5,8.421573 h -20"></path>
+                        <path d="m 30,50 h 40"></path>
+                        <path d="m 70,67 h -40 c 0,0 -7.5,-0.802118 -7.5,-8.365747 0,-7.563629 7.5,-8.634253 7.5,-8.634253 h 20"></path>
+                    </svg>
+                </div>
+
+                <!-- Primary Navigation
+                ============================================= -->
+                <nav class="primary-menu sub-title">
+
+                    <ul class="menu-container">
+                        <li class="menu-item root">
+                            <a class="menu-link" href="#">
+                                <div>Products</div>
+                                <span>Out of the Box</span></a>
+
+                        {% cache 900 categories_info %}
+                            <ul class="sub-menu-container root">
+
+                                {% recursetree store_categories %}
+                                    <li class="menu-item">
+                                        <a class="menu-link" href="#">
+                                            <div><i class="icon-stack"></i>{{ node.name }}</div>
+                                        </a>
+                                        {% if not node.is_leaf_node %}
+                                            <ul class="sub-menu-container children">
+                                                {{ children }}
+                                            </ul>
+                                        {% endif %}
+                                    </li>
+                                {% endrecursetree %}
+                            </ul>
+                        {% endcache %}
+                        </li>
+                    </ul>
+
+                </nav><!-- #primary-menu end -->
+
+                <form class="top-search-form" action="{% url 'store:search-product' %}" method="get">
+                    <input type="text" name="q" class="form-control" value="" placeholder="Type &amp; Hit Enter.."
+                           autocomplete="off">
+                </form>
+
+            </div>
+        </div>
+    </div>
+    <div class="header-wrap-clone"></div>
+</header><!-- #header end -->
+
+{% if user.is_authenticated %}
+    <div id="page-menu" data-mobile-sticky="true">
+        <div id="page-menu-wrap">
+            <div class="container">
+                <div class="page-menu-row">
+
+                    <div class="page-menu-title">{% trans 'hello' %} <span>{{ user.username }}</span></div>
+
+                    <nav class="page-menu-nav">
+                        <ul class="page-menu-container">
+                            <li class="page-menu-item"><a href="{% url 'store:home' %}">
+                                <div><i class="icon-shop"></i>Store</div>
+                            </a></li>
+                            <li class="page-menu-item"><a href="{% url 'store:my_dashboard' %}">
+                                <div>Dashboard</div>
+                            </a></li>
+                            <li class="page-menu-item"><a href="{% url 'store:my_orders' %}">
+                                <div>Order</div>
+                            </a></li>
+                            <li class="page-menu-item"><a href="{% url 'store:my_addressbook' %}">
+                                <div>Addressbook</div>
+                            </a></li>
+                            <li class="page-menu-item"><a href="{% url 'store:my_margins' %}">
+                                <div>Margin</div>
+                            </a></li>
+                        </ul>
+                    </nav>
+
+                    <div id="page-menu-trigger"><i class="icon-reorder"></i></div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}

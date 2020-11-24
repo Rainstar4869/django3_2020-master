@@ -1,0 +1,4 @@
+python manage.py makemessages -l zh_Hans
+
+
+django-admin compilemessages
