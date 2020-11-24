@@ -1,8 +1,0 @@
-From : {{name|safe}}
-Email: {{email|safe}}
-Message:
-
-{{review|safe}}
-
-
-Thank you!
