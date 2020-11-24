@@ -28,6 +28,7 @@ services:
       - ./exrate2020/system/certs:/etc/nginx/certs
       - ./exrate2020/system/supervisord.conf:/etc/supervisor/conf.d/supervisord.conf
       - ./system/fonts:/usr/share/fonts
+      - ./vue/src/dist:/home/app/web/staticfiles/vue_buldles
     expose:
       - 8000
 #      - 8001
@@ -117,13 +118,12 @@ services:
   vue_app:
     build:
       context: ./vue
-    container_name: vuecli3
-    ports:
-      - "18082:8080"
+    hostname: vue_app
+    container_name: vue_app
     volumes:
-      #node_moduleを入れるボリューム
-#      - ./vue/node_modules:/app/node_modules
-      - ./vue/app:/app/
-    #-it
+      - ./vue/src:/src
+    ports:
+      - 8080:8080
+    tty: true 
     stdin_open: true
-    tty: true
+    command: npm run serve -- --host 0.0.0.0 
