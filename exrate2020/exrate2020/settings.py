@@ -65,11 +65,11 @@ INSTALLED_APPS = [
     'qr_code',
     'user_g11n',
 
-    "expenses",
-    "income",
-    "userstats",
-    "upload",
-    "studydjango",
+    # "expenses",
+    # "income",
+    # "userstats",
+    # "upload",
+    # "studydjango",
     "store",
 
     "chat",

@@ -186,7 +186,7 @@ class CheckoutView(LoginRequiredMixin, View):
             logger.error(order_message)
             order = Order.objects.create(
                 user=self.request.user,
-                json_orderitems=session_cart.cart_serializable,
+                json_orderitems=json.dumps(session_cart.cart_serializable),
                 Qty=session_cart.count,
                 Total=session_cart.total,
                 message=order_message

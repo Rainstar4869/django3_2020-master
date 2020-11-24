@@ -4,7 +4,7 @@ from django.conf.urls.static import static
 from django.conf import settings
 from django.views.generic import TemplateView
 from rest_framework import permissions
-from upload.views import image_upload
+# from upload.views import image_upload
 from nichiei.views import ContactView
 import debug_toolbar
 
@@ -33,16 +33,16 @@ urlpatterns = [
     path("services/", TemplateView.as_view(template_name="nichiei/services.html"), name="services"),
     path("contact/", ContactView.as_view(), name="contact"),
 
-    path("studydjango/", include("studydjango.urls")),
+    # path("studydjango/", include("studydjango.urls")),
 
-    path("upload/", image_upload, name="upload"),
+    # path("upload/", image_upload, name="upload"),
     path('admin/', admin.site.urls),
     path("apiauth/", include("authentication.urls")),
     path("webauth/", include("web_auth.urls")),
     path('accounts/', include('allauth.urls')),
-    path('expenses/', include('expenses.urls')),
-    path('incomes/', include('income.urls')),
-    path('userstats/', include('userstats.urls')),
+    # path('expenses/', include('expenses.urls')),
+    # path('incomes/', include('income.urls')),
+    # path('userstats/', include('userstats.urls')),
     path('store/', include('store.urls')),
     path('chat/', include('chat.urls')),
 

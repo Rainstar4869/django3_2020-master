@@ -1,35 +1,6 @@
 version: '3.2'
 
 services:
-  nginx-proxy:
-    image: jwilder/nginx-proxy:alpine
-    restart: always
-    container_name: nginx-proxy
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - /var/run/docker.sock:/tmp/docker.sock:ro
-      - html:/usr/share/nginx/html
-      - dhparam:/etc/nginx/dhparam
-      - vhost:/etc/nginx/vhost.d
-      - certs:/etc/nginx/certs:ro
-
-  nginx-proxy-letsencrypt:
-    image: jrcs/letsencrypt-nginx-proxy-companion
-    restart: always
-    depends_on:
-      - "nginx-proxy"
-    volumes:
-      - certs:/etc/nginx/certs
-      - vhost:/etc/nginx/vhost.d
-      - html:/usr/share/nginx/html
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-    environment:
-      - ACME_CA_URI=https://acme-staging-v02.api.letsencrypt.org/directory
-      - NGINX_PROXY_CONTAINER=nginx-proxy
-      - DEFAULT_EMAIL=csr@nichiei.services
-
   nginx:
     build: ./system/nginx
     hostname: nginx
@@ -39,24 +10,16 @@ services:
       - ./exrate2020/mediafiles:/home/app/web/mediafiles
       - ./exrate2020/logs/nginx:/var/log/nginx
       - ./system/nginx/nginx.conf:/etc/nginx/conf.d/nginx.conf
-#    ports:
-#      - 80:80
-    environment:
-      - VIRTUAL_HOST=www.nichiei.services
-      - VIRTUAL_NETWORK=nginx-proxy
-      - VIRTUAL_PORT=80
-      - LETSENCRYPT_HOST=www.nichiei.services
-      - LETSENCRYPT_EMAIL=csr@nichiei.services
+    ports:
+      - 80:80
     depends_on:
       - web
 
   web:
     container_name: web
-#    build: ./exrate2020
     build:
       context: ./exrate2020
       dockerfile: Dockerfile.prod
-#    command: gunicorn exrate2020.wsgi:application --bind 0.0.0.0:8000
     volumes:
       - ./exrate2020/:/home/app/web
       - ./exrate2020/staticfiles:/home/app/web/staticfiles
@@ -137,17 +100,6 @@ services:
       depends_on:
         - redis
 
-#  vue_app:
-#    container_name: vue_app
-#    build:
-#      context: ./exrate2020/vueapp
-#    ports:
-#      - 9050:8080
-#    volumes:
-#      - ./exrate2020/vueapp/vue_django:/usr/src/app/
-#    stdin_open: true
-#    tty: true
-#    command: ["npm", "run", "serve"]
 
   rabbitmq:
     container_name: rabbitmq
@@ -161,8 +113,17 @@ services:
       - 5672:5672
       - 15672:15672
 
-volumes:
-  certs:
-  html:
-  vhost:
-  dhparam:
+
+  vue_app:
+    build:
+      context: ./vue
+    container_name: vuecli3
+    ports:
+      - "18082:8080"
+    volumes:
+      #node_moduleを入れるボリューム
+#      - ./vue/node_modules:/app/node_modules
+      - ./vue/app.:/app/
+    #-it
+    stdin_open: true
+    tty: true

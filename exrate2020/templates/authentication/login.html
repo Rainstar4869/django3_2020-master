@@ -1,6 +1,6 @@
 {% extends 'base_auth.html' %}
 {% load static %}
-
+{% load i18n %}
 
 {% block content %}
     <!-- Content
@@ -32,13 +32,13 @@
                                     {% include 'partials/_messages.html' %}
                                     <div class="row">
                                         <div class="col-12 form-group">
-                                            <label for="login-form-username">Email:</label>
+                                            <label for="login-form-username">{% trans 'username' %}:</label>
                                             <input type="text" id="login-form-username" name="username" value=""
                                                    class="form-control not-dark"/>
                                         </div>
 
                                         <div class="col-12 form-group">
-                                            <label for="login-form-password">Password:</label>
+                                            <label for="login-form-password">{% trans 'password' %}:</label>
                                             <input type="password" id="login-form-password" name="password" value=""
                                                    class="form-control not-dark"/>
                                         </div>

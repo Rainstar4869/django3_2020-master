@@ -33,3 +33,10 @@ msgstr ""
 #: exrate2020/templates/shop/base.html:35
 msgid "hello"
 msgstr "你好！"
+
+msgid "username"
+msgstr "用户名"
+
+
+msgid "password"
+msgstr "密码"

@@ -32,3 +32,11 @@ msgstr ""
 #: exrate2020/templates/shop/base.html:35
 msgid "hello"
 msgstr "こんにちは！"
+
+
+msgid "username"
+msgstr "ユーザー名"
+
+
+msgid "password"
+msgstr "パスワード"
