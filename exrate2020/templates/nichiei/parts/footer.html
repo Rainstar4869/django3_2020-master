@@ -1,0 +1,77 @@
+{% load static %}
+
+    <!-- Footer
+    ============================================= -->
+    <footer id="footer" class="dark">
+
+      <div class="container">
+
+        <!-- Footer Widgets
+        ============================================= -->
+        <div class="footer-widgets-wrap clearfix" style="padding:50px 0!important;">
+
+          <div class="row">
+
+            <div class="col-md-4">
+
+              <div class="widget clearfix">
+
+                <img src="{% static  'nichiei/canvas/images/nichiei_with_text.png'%}" style="width:80px" class="footer-logo">
+
+                <p><strong>NICHIEI CO.,Ltd</strong> </p>
+              </div>
+
+            </div>
+
+            <div class="col-md-4">
+                <div style="background: url({% static  'nichiei/canvas/images/world-map.png'%}) no-repeat center center; background-size: 100%;">
+                  <address>
+                    <strong>日栄株式会社</strong><br>
+                    {{ settings.NICHIEI_INFO.SALES_POSTCODE }} <br>
+                    {{ settings.NICHIEI_INFO.SALES_ADD }}
+                  </address>
+                </div>
+                  <abbr title="Phone Number"><strong>Phone:</strong></abbr> {{ settings.NICHIEI_INFO.SALES_PHONE }}<br>
+                  <abbr title="Fax"><strong>Fax:</strong></abbr> {{ settings.NICHIEI_INFO.SALES_PHONE }}<br>
+                  <abbr title="Email Address"><strong>Email:</strong></abbr> {{ settings.NICHIEI_INFO.SALES_EMAIL }}<br>
+                  <abbr title="Email Address"><strong>日本語担当窓口:</strong></abbr> {{ settings.NICHIEI_INFO.SALES_MAN_PHONE }}
+            </div>
+
+            <div class="col-md-4 ">
+              <div class="widget widget_links clearfix">
+
+                <h4>NICHIEI SERVICES</h4>
+
+                <ul class="text-white">
+                  <li><a href="/shop/#/privacy" class="text-white"> プライバシー ポリシー</a></li>
+                  <li><a href="/shop/#/policy" class="text-white"> ご利用規約</a></li>
+                </ul>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div><!-- .footer-widgets-wrap end -->
+
+      </div>
+
+      <!-- Copyrights
+      ============================================= -->
+      <div id="copyrights" style="padding:10px 0!important;">
+
+        <div class="container clearfix">
+
+            <div class="row">
+                <div class="col-12 center">
+                    Copyrights &copy; 2019 All Rights Reserved by Nichiei Service.<br>
+
+                </div>
+
+            </div>
+        </div>
+
+      </div><!-- #copyrights end -->
+
+    </footer><!-- #footer end -->

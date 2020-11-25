@@ -1,0 +1,128 @@
+version: '3.2'
+
+services:
+  nginx:
+    build: ./system/nginx
+    hostname: nginx
+    container_name: nginx
+    volumes:
+      - ./exrate2020/staticfiles:/home/app/web/staticfiles
+      - ./exrate2020/mediafiles:/home/app/web/mediafiles
+      - ./exrate2020/logs/nginx:/var/log/nginx
+      - ./system/nginx/nginx.conf:/etc/nginx/conf.d/nginx.conf
+    ports:
+      - 80:80
+    depends_on:
+      - web
+
+  web:
+    container_name: web
+    build:
+      context: ./exrate2020
+      dockerfile: Dockerfile.prod
+    volumes:
+      - ./exrate2020/:/home/app/web
+      - ./exrate2020/staticfiles:/home/app/web/staticfiles
+      - ./exrate2020/mediafiles:/home/app/web/mediafiles
+      - ./exrate2020/logs:/etc/supervisor/logs
+      - ./exrate2020/system/certs:/etc/nginx/certs
+      - ./exrate2020/system/supervisord.conf:/etc/supervisor/conf.d/supervisord.conf
+      - ./system/fonts:/usr/share/fonts
+    expose:
+      - 8000
+    ports:
+      - 8001:8001
+    env_file:
+      - ./.env.prod
+    depends_on:
+      - postgres
+      - redis
+      - rabbitmq
+
+  postgres:
+    hostname: postgres
+    image: postgres:12.0-alpine
+    container_name: postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - ./system/postgres/init.d:/docker-entrypoint-initdb.d
+      - ./system/postgres/pgdata:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: lionhu
+      POSTGRES_PASSWORD: lionhu
+      POSTGRES_DB: exrate
+      PGTZ: Asia/Tokyo
+      POSTGRES_INITDB_ARGS: "--encoding=UTF-8"
+    restart: always
+    user: root
+
+  pgadmin4:
+    hostname: pgadmin4
+    image: dpage/pgadmin4:4.2
+    container_name: pgadmin4
+    ports:
+      - 8060:80
+    volumes:
+      - ./system/pgadmin4:/var/lib/pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: root
+      PGADMIN_DEFAULT_PASSWORD: root
+    depends_on:
+      - postgres
+    restart: always
+
+  redis:
+    container_name: redis
+    restart: always
+    tty: true
+    build:
+      context: ./system/redis
+    environment:
+      TZ: Asia/Tokyo
+    ports:
+      - 6379:6379
+    volumes:
+      - ./system/redis/redis_data:/var/redis
+      - ./system/redis/conf/6379.conf:/usr/local/etc/redis/redis.conf
+    command: redis-server --appendonly yes
+
+  redis-commander:
+      container_name: redis_commander
+      image: rediscommander/redis-commander:latest
+      environment:
+        - REDIS_HOSTS=local:redis:6379
+        - HTTP_USER=root
+        - HTTP_PASSWORD=Hisshghu3500
+      ports:
+        - 8081:8081
+      depends_on:
+        - redis
+
+
+  rabbitmq:
+    container_name: rabbitmq
+    image:  rabbitmq:3.7.3-management
+    hostname: rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: celery
+      RABBITMQ_DEFAULT_PASS: password123
+      RABBITMQ_DEFAULT_VHOST: my_vhost
+    ports:
+      - 5672:5672
+      - 15672:15672
+
+
+  vue_app:
+    build:
+      context: ./vue
+    hostname: vue_app
+    container_name: vue_app
+    volumes:
+      - ./vue/src:/src
+      - ./exrate2020/staticfiles/vue_bundles:/src/dist
+    ports:
+      - 8080:8080
+    tty: true 
+    stdin_open: true
+    command: npm run serve -- --host 0.0.0.0 

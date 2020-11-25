@@ -1,0 +1,186 @@
+{% extends 'nichiei/layouts/base.html' %}
+{% load static %}
+{% load render_bundle from webpack_loader %}
+
+{% block headerscript %}
+
+{% endblock headerscript%}
+{% block content %}
+
+    <section id="slider" class="slider-element slider-parallax swiper_wrapper min-vh-75 min-vh-md-100 include-header"
+             data-loop="true">
+        <div class="slider-inner">
+
+            <div class="swiper-container swiper-parent">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide dark">
+                        <div class="container">
+                            <div class="slider-caption slider-caption-center">
+                                <h2 data-animate="fadeInUp">あなたの想い、</h2>
+                                <h2 data-animate="fadeInUp">私たちのビジネス！</h2>
+                                <p class="d-none d-sm-block" data-animate="fadeInUp" data-delay="200">Your Royal
+                                    Partner</p>
+                            </div>
+                        </div>
+                        <div class="swiper-slide-bg"
+                             style="background-image: url({% static 'nichiei/canvas/images/sliders/1.jpg' %});"></div>
+                    </div>
+                    <div class="swiper-slide dark">
+                        <div class="swiper-slide-bg"
+                             style="background-image: url({% static 'nichiei/canvas/images/sliders/821_small.jpg' %});"></div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="container">
+                            <div class="slider-caption slider-caption-right">
+                                <h2 data-animate="fadeInUp text-white">スピーディ、高品質も！</h2>
+                                <h3 data-animate="fadeInUp text-white" data-delay="200">Not only speed, also Hight
+                                    Quality!</h3>
+                            </div>
+                        </div>
+                        <div class="swiper-slide-bg"
+                             style="background-image: url({% static 'nichiei/canvas/images/sliders/3.jpg' %}); background-position: center top;"></div>
+                    </div>
+                </div>
+                <div class="slider-arrow-left"><i class="icon-angle-left"></i></div>
+                <div class="slider-arrow-right"><i class="icon-angle-right"></i></div>
+                <div class="slide-number">
+                    <div class="slide-number-current"></div>
+                    <span>/</span>
+                    <div class="slide-number-total"></div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <section id="content">
+
+        <div class="content-wrap">
+
+            <div class="section header-stick">
+                <div class="container clearfix">
+                    <div class="row">
+
+                        <div class="col-lg-9">
+                            <div class="heading-block bottommargin-sm">
+                                <h3>輸入専門会社</h3>
+                            </div>
+
+                            <p style="text-indent: 15px;" class="nobottommargin">
+                                お客様のニーズに合わせた商品企画を始めとして、生産地の開発、品質管理まで、独自のネットワークを駆使した一貫管理体制により、リーズナブルで高品質な商品を国内の小売業のお客様にお届けしています。</p>
+                            <p style="text-indent: 15px;">
+                                そればかりでなく、商品の物流、アフターサポートまでワンストップのサービスをご提供し、お客様のビジネスをトータルにご支援しています。</p>
+                        </div>
+
+                        <div class="col-lg-3">
+                            <a href="#" class="button button-3d button-color text-white button-large btn-block center"
+                               style="margin-top: 30px;">Services Go!</a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="container topmargin-sm footer-stick">
+
+                <div class="posts-sm row col-mb-30">
+                    <div class="entry col-md-6">
+                        <div class="grid-inner row no-gutters">
+                            <div class="col-auto">
+                                <div class="entry-image">
+                                    <a href="#"><img src="{% static 'nichiei/canvas/images/news/carepro_tm.png' %}"
+                                                     alt="Image"></a>
+                                </div>
+                            </div>
+                            <div class="col pl-3">
+                                <div class="entry-title">
+                                    <h4><a href="#">CarePro 商標登録</a></h4>
+                                </div>
+                                <div class="entry-meta">
+                                    <ul>
+                                        <li><i class="icon-calendar3"></i> 2020/5/6</li>
+                                        {#															<li><a href="#"><i class="icon-comments"></i> 32</a></li>#}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="entry col-md-6">
+                        <div class="grid-inner row no-gutters">
+                            <div class="col-auto">
+                                <div class="entry-image">
+                                    <a href="#"><img src="{% static 'nichiei/canvas/images/news/handgel.jpg' %}"
+                                                     alt="Image"></a>
+                                </div>
+                            </div>
+                            <div class="col pl-3">
+                                <div class="entry-title">
+                                    <h4><a href="#">ハンドクリアジェル委託生産開始</a></h4>
+                                </div>
+                                <div class="entry-meta">
+                                    <ul>
+                                        <li><i class="icon-calendar3"></i> 2020/4/30</li>
+                                        {#															<li><a href="#"><i class="icon-comments"></i> 11</a></li>#}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="entry col-md-6">
+                        <div class="grid-inner row no-gutters">
+                            <div class="col-auto">
+                                <div class="entry-image">
+                                    <a href="#"><img src="{% static 'nichiei/canvas/images/news/mask-02.png' %}"
+                                                     alt="Image"></a>
+                                </div>
+                            </div>
+                            <div class="col pl-3">
+                                <div class="entry-title">
+                                    <h4><a href="#">OEMマスクサービスの提供開始</a></h4>
+                                </div>
+                                <div class="entry-meta">
+                                    <ul>
+                                        <li><i class="icon-calendar3"></i> 2019/9/14</li>
+                                        {#															<li><a href="#"><i class="icon-comments"></i> 13</a></li>#}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="entry col-md-6">
+                        <div class="grid-inner row no-gutters">
+                            <div class="col-auto">
+                                <div class="entry-image">
+                                    <a href="#"><img src="{% static '/nichiei/canvas/images/news/sportmug_small.jpg' %}"
+                                                     alt="Image"></a>
+                                </div>
+                            </div>
+                            <div class="col pl-3">
+                                <div class="entry-title">
+                                    <h4><a href="#">大阪大手向けタンブラー初入荷</a></h4>
+                                </div>
+                                <div class="entry-meta">
+                                    <ul>
+                                        <li><i class="icon-calendar3"></i> 2019/7/9</li>
+                                        {#															<li><a href="#"><i class="icon-comments"></i> 7</a></li>#}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </section><!-- #content end -->
+
+
+{% endblock content%}
+
+{% block footerscript_last %}
+
+{% endblock footerscript_last%}
