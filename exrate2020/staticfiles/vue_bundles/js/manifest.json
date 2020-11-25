@@ -1,0 +1,8 @@
+{
+  "auth.js": "auth.js",
+  "auth.js.map": "auth.js.map",
+  "main.js": "main.js",
+  "main.js.map": "main.js.map",
+  "vendor.js": "vendor.js",
+  "vendor.js.map": "vendor.js.map"
+}
