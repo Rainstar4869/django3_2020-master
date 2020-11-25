@@ -25,7 +25,7 @@
                             <div class="card-body" style="padding: 40px;">
                                 <form id="login-form" name="login-form" class="mb-0" action="{% url 'web_login' %}"
                                       method="post">
-                                    <h3>Login to your Account</h3>
+                                    <h3>{% trans 'login_title' %}</h3>
 
                                     {% csrf_token %}
 
@@ -45,13 +45,12 @@
 
                                         <div class="col-12 form-group">
                                             <button class="button button-3d button-black m-0" id="login-form-submit"
-                                                    name="login-form-submit" value="login">Login
+                                                    name="login-form-submit" value="login">{% trans 'login' %}
                                             </button>
-                                            <a href="{% url 'web_request-reset-email' %}" class="float-right">Forgot
-                                                Password?</a>
+                                            <a href="{% url 'web_request-reset-email' %}" class="float-right">{% trans 'forget_password' %}</a>
                                         </div>
                                         <div class="col-12 form-group">
-                                            <a href="{% url 'register' %}" class="float-right">Register to be a member?</a>
+                                            <a href="{% url 'register' %}" class="float-right">{% trans 'register' %}</a>
                                         </div>
                                     </div>
                                 </form>

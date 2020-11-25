@@ -1,5 +1,6 @@
 import uuid
 
+import jsonfield
 from allauth.account.signals import user_logged_in
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
@@ -80,7 +81,7 @@ class User(UserTimeZoneSupportMixin,
         app_label = "authentication"
 
     def __str__(self):
-        return self.email
+        return self.username
 
     def tokens(self):
         refresh = RefreshToken.for_user(self)
@@ -125,18 +126,32 @@ def create_user(sender, instance, created, **kwargs):
 
         try:
             parent_profile = Profile.objects.get(user__username=parent.username)
-            user_profile = Profile.objects.create(user=instance, parent=parent_profile)
+            user_profile = Profile.objects.create(user=instance, parent=parent_profile, client=parent_profile.client)
             logger.error("normal use profile created")
             logger.error(user_profile)
         except ObjectDoesNotExist:
-            user_profile = Profile.objects.create(user=instance, parent=None)
+            admin_profile = Profile.objects.get(user__id=settings.ADMIN_ID)
+            user_profile = Profile.objects.create(user=instance, parent=admin_profile, client=admin_profile)
             logger.error("ObjectDoesNotExist use profile created")
             logger.error(user_profile)
+
+
+class Client(models.Model):
+    name = models.CharField(default="", blank=True, null=True, max_length=50)
+    admin = models.OneToOneField(User, on_delete=models.SET_NULL, default=settings.ADMIN_ID, null=True)
+    description = models.CharField(default="", blank=True, null=True, max_length=50)
+    margin = jsonfield.JSONField(blank=True, null=True, default=None)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return "Client {}'s admin: {}".format(self.name, self.admin.username)
 
 
 class Profile(MPTTModel):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     parent = TreeForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='children')
+    client = models.ForeignKey(Client, blank=True, null=True, on_delete=models.SET_NULL)
 
     # class MPTTMeta:
     #     order_insertion_by = ['introcode']

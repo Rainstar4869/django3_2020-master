@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
 from mptt.admin import MPTTModelAdmin
-from .models import User, Profile
+from .models import User, Profile, Client
 
 
 class AccountAdmin(BaseUserAdmin):
@@ -34,3 +34,7 @@ admin.site.register(
     Profile,
     MPTTModelAdmin,
 )
+
+admin.site.register(Client)
+
+

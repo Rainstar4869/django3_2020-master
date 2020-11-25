@@ -34,9 +34,21 @@ msgstr ""
 msgid "hello"
 msgstr "你好！"
 
+
+msgid "login_title"
+msgstr "登录"
+
 msgid "username"
 msgstr "用户名"
 
-
 msgid "password"
 msgstr "密码"
+
+msgid "forget_password"
+msgstr "忘记密码啦？"
+
+msgid "register"
+msgstr "注册"
+
+msgid "login"
+msgstr "登录"

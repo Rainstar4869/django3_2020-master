@@ -34,9 +34,20 @@ msgid "hello"
 msgstr "こんにちは！"
 
 
+msgid "login_title"
+msgstr "ようこそ！"
+
 msgid "username"
 msgstr "ユーザー名"
 
-
 msgid "password"
 msgstr "パスワード"
+
+msgid "forget_password"
+msgstr "パスワードを忘れたか"
+
+msgid "register"
+msgstr "登録"
+
+msgid "login"
+msgstr "ログイン"
