@@ -660,7 +660,7 @@ function sweetalert_toast(msgType, position, message) {
     timer: 3000
   });
   Toast.fire({
-    type: msgType,
+    icon: msgType,
     title: message
   });
 }
