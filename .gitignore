@@ -19,7 +19,6 @@ npmlist.txt
 package_backup.json
 src/app.js
 start.sh
-webpack.config.js
 dist/
 node_modules/.bin/
 node_modules/.cache/
@@ -1048,3 +1047,4 @@ node_modules/querystring/.History.md.un~
 node_modules/querystring/.Readme.md.un~
 node_modules/querystring/.package.json.un~
 node_modules/querystring/test/.index.js.un~
+!/exrate2020/webpack.config.js
