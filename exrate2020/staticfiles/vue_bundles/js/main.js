@@ -1146,6 +1146,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -1154,8 +1156,8 @@ __webpack_require__.r(__webpack_exports__);
     return {};
   },
   components: {
-    "el-rate": element_ui__WEBPACK_IMPORTED_MODULE_0__["Rate"],
-    "pingoitem": _PingoItem_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
+    'el-rate': element_ui__WEBPACK_IMPORTED_MODULE_0__["Rate"],
+    'pingoitem': _PingoItem_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
   computed: {
     products: function products() {
@@ -1164,11 +1166,11 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   mounted: function mounted() {
-    this.$store.dispatch("shoppingcart/load_category_products", 4);
+    this.$store.dispatch('shoppingcart/load_category_products', 4);
   },
   methods: {
     shoppingcart_operation: function shoppingcart_operation(actionType, product_id) {
-      this.$store.dispatch("shoppingcart/update_shoppingcart", {
+      this.$store.dispatch('shoppingcart/update_shoppingcart', {
         actionType: actionType,
         product_id: product_id
       });
@@ -3294,7 +3296,7 @@ var render = function() {
               _c(
                 "a",
                 { attrs: { href: "/store/product/" + product.id + "/" } },
-                [_c("img", { attrs: { src: product.thumbimage } })]
+                [_c("img", { attrs: { src: product.thumbimage, alt: "" } })]
               ),
               _vm._v(" "),
               _c(
@@ -3352,7 +3354,7 @@ var render = function() {
                 : _c(
                     "div",
                     { staticClass: "sale-flash badge badge-success p-2" },
-                    [_vm._v(">" + _vm._s(product.inventory) + "<")]
+                    [_vm._v(_vm._s(product.inventory))]
                   )
             ]),
             _vm._v(" "),
