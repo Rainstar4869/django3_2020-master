@@ -526,7 +526,8 @@ var actions = {
       product_id: product_id,
       action: actionType
     })).then(function (res) {
-      // console.log(res.data);
+      console.log(res.data);
+
       if (res.data.result == "OK") {
         commit("update_cart", res.data.cart);
         Object(_utils_common_js__WEBPACK_IMPORTED_MODULE_0__["sweetalert_toast"])("success", "top-end", "successfully updated!");

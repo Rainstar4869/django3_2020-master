@@ -125,4 +125,5 @@ services:
       - 8080:8080
     tty: true 
     stdin_open: true
+#    command: npm run build:dev 
     command: npm run serve -- --host 0.0.0.0 

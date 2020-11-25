@@ -1143,6 +1143,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -1156,6 +1159,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     products: function products() {
+      console.log(this.$store.state.shoppingcart.products[0]);
       return this.$store.state.shoppingcart.products;
     }
   },
@@ -3281,245 +3285,35 @@ var render = function() {
     "div",
     { staticClass: "row " },
     _vm._l(_vm.products, function(product) {
-      return _c("div", { staticClass: " col-lg-4 col-sm-12" }, [
-        _c("div", { staticClass: "grid-inner" }, [
-          _c("div", { staticClass: "product-image" }, [
-            _c("a", { attrs: { href: "/store/product/" + product.id + "/" } }, [
-              _c("img", { attrs: { src: product.thumbimage } })
-            ]),
-            _vm._v(" "),
-            _c(
-              "div",
-              {
-                staticClass:
-                  "bg-overlay-content align-items-end justify-content-between",
-                staticStyle: {
-                  "margin-top": "-50px",
-                  position: "relative!important",
-                  padding: "0"
-                }
-              },
-              [
-                _c(
-                  "a",
-                  {
-                    staticClass: "btn btn-dark mr-2 ",
-                    attrs: { href: "javascript:void(0);" },
-                    on: {
-                      click: function($event) {
-                        return _vm.shoppingcart_operation(
-                          "add_cartitem",
-                          product.id
-                        )
-                      }
-                    }
-                  },
-                  [_c("i", { staticClass: "icon-shopping-cart " })]
-                ),
-                _vm._v(" "),
-                _c(
-                  "a",
-                  {
-                    staticClass: "btn btn-dark mr-2 ",
-                    attrs: {
-                      href: "javascript:void(0);",
-                      "data-toggle": "modal",
-                      "data-target": "#ProductModal" + product.id
-                    }
-                  },
-                  [_c("i", { staticClass: "icon-line-expand" })]
-                )
-              ]
-            ),
-            _vm._v(" "),
-            product.inventory == 0
-              ? _c(
-                  "div",
-                  { staticClass: "sale-flash badge badge-secondary p-2" },
-                  [_vm._v("Out of Stock")]
-                )
-              : _vm._e()
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "product-desc" }, [
-            _c("div", { staticClass: "product-title" }, [
-              _c("h3", [
-                _c(
-                  "a",
-                  {
-                    attrs: {
-                      href: "javascript:void(0);",
-                      "data-toggle": "modal",
-                      "data-target": "#ProductModal" + product.id
-                    }
-                  },
-                  [_vm._v(_vm._s(product.item_name))]
-                )
-              ])
-            ]),
-            _vm._v(" "),
-            product.discount_price
-              ? _c("div", { staticClass: "product-price" }, [
-                  _c("del", [
-                    _vm._v(_vm._s(_vm._f("currency_jpy")(product.price)))
-                  ]),
-                  _vm._v(" "),
-                  _c("ins", [
-                    _vm._v(
-                      _vm._s(_vm._f("currency_jpy")(product.discount_price))
-                    )
-                  ])
-                ])
-              : _c("div", { staticClass: "product-price" }, [
-                  _c("ins", [
-                    _vm._v(_vm._s(_vm._f("currency_jpy")(product.price)))
-                  ])
-                ]),
-            _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "product-rating" },
-              [
-                _c("el-rate", {
-                  attrs: {
-                    disabled: "",
-                    "show-score": "",
-                    "text-color": "#ff9900",
-                    "score-template": "{value}"
-                  },
-                  model: {
-                    value: product.rate,
-                    callback: function($$v) {
-                      _vm.$set(product, "rate", $$v)
-                    },
-                    expression: "product.rate"
+      return _c(
+        "div",
+        { key: product.id, staticClass: " col-lg-4 col-sm-12" },
+        [
+          _c("div", { staticClass: "grid-inner" }, [
+            _c("div", { staticClass: "product-image" }, [
+              _c(
+                "a",
+                { attrs: { href: "/store/product/" + product.id + "/" } },
+                [_c("img", { attrs: { src: product.thumbimage } })]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass:
+                    "bg-overlay-content align-items-end justify-content-between",
+                  staticStyle: {
+                    "margin-top": "-50px",
+                    position: "relative!important",
+                    padding: "0"
                   }
-                })
-              ],
-              1
-            ),
-            _vm._v(" "),
-            product.pingo_items.length
-              ? _c(
-                  "div",
-                  [
-                    _c("pingoitem", {
-                      attrs: { param_pingoitems: product.pingo_items },
-                      on: { pingoitem_operate: _vm.pingoitem_process }
-                    })
-                  ],
-                  1
-                )
-              : _vm._e()
-          ])
-        ]),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            staticClass: "modal fade",
-            attrs: {
-              id: "ProductModal" + product.id,
-              tabindex: "-1",
-              role: "dialog",
-              "aria-labelledby": "myModalLabel",
-              "aria-hidden": "true"
-            }
-          },
-          [
-            _c(
-              "div",
-              { staticClass: "single-product shop-quick-view-ajax mt-lg-6" },
-              [
-                _c("div", { staticClass: "ajax-modal-title" }, [
-                  _c("h2", { staticClass: "modal-title d-inline-block" }, [
-                    _vm._v(_vm._s(product.item_name))
-                  ]),
-                  _vm._v(" "),
-                  _c(
-                    "button",
-                    {
-                      staticClass: "close",
-                      attrs: {
-                        type: "button",
-                        "data-dismiss": "modal",
-                        "aria-hidden": "true"
-                      }
-                    },
-                    [_vm._v("×")]
-                  )
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "product modal-padding" }, [
-                  _c("div", { staticClass: "row gutter-40 col-mb-50" }, [
-                    _c("div", { staticClass: "col-md-6" }, [
-                      _c("div", { staticClass: "product-image" }, [
-                        _c("img", { attrs: { src: product.thumbimage } }),
-                        _vm._v(" "),
-                        _c(
-                          "div",
-                          { staticClass: "sale-flash badge badge-danger p-2" },
-                          [_vm._v("Sale!")]
-                        )
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "col-md-6 product-desc" }, [
-                      product.discount_price
-                        ? _c("div", { staticClass: "product-price" }, [
-                            _c("del", [
-                              _vm._v(
-                                _vm._s(_vm._f("currency_jpy")(product.price))
-                              )
-                            ]),
-                            _vm._v(" "),
-                            _c("ins", [
-                              _vm._v(
-                                _vm._s(
-                                  _vm._f("currency_jpy")(product.discount_price)
-                                )
-                              )
-                            ])
-                          ])
-                        : _c("div", { staticClass: "product-price" }, [
-                            _c("ins", [
-                              _vm._v(
-                                _vm._s(_vm._f("currency_jpy")(product.price))
-                              )
-                            ])
-                          ]),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        { staticClass: "product-rating" },
-                        [
-                          _c("el-rate", {
-                            attrs: {
-                              disabled: "",
-                              "show-score": "",
-                              "text-color": "#ff9900",
-                              "score-template": "{value}"
-                            },
-                            model: {
-                              value: product.rate,
-                              callback: function($$v) {
-                                _vm.$set(product, "rate", $$v)
-                              },
-                              expression: "product.rate"
-                            }
-                          })
-                        ],
-                        1
-                      ),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "clear" }),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "line" }),
-                      _vm._v(" "),
-                      _c(
+                },
+                [
+                  product.inventory !== 0
+                    ? _c(
                         "a",
                         {
-                          staticClass: "add-to-cart button m-0",
+                          staticClass: "btn btn-dark mr-2 ",
                           attrs: { href: "javascript:void(0);" },
                           on: {
                             click: function($event) {
@@ -3530,31 +3324,258 @@ var render = function() {
                             }
                           }
                         },
-                        [
-                          _c("i", { staticClass: "icon-shopping-cart " }),
-                          _vm._v("Add to cart\n                            ")
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "clear" }),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "line" }),
-                      _vm._v(" "),
-                      _c("p", { attrs: { id: "product_description" } }),
-                      _vm._v(" "),
-                      _vm._m(0, true),
-                      _vm._v(" "),
-                      _vm._m(1, true)
+                        [_c("i", { staticClass: "icon-shopping-cart " })]
+                      )
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _c(
+                    "a",
+                    {
+                      staticClass: "btn btn-dark mr-2 ",
+                      attrs: {
+                        href: "javascript:void(0);",
+                        "data-toggle": "modal",
+                        "data-target": "#ProductModal" + product.id
+                      }
+                    },
+                    [_c("i", { staticClass: "icon-line-expand" })]
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              product.inventory === 0
+                ? _c(
+                    "div",
+                    { staticClass: "sale-flash badge badge-secondary p-2" },
+                    [_vm._v("Out of Stock")]
+                  )
+                : _c(
+                    "div",
+                    { staticClass: "sale-flash badge badge-success p-2" },
+                    [_vm._v(">" + _vm._s(product.inventory) + "<")]
+                  )
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "product-desc" }, [
+              _c("div", { staticClass: "product-title" }, [
+                _c(
+                  "a",
+                  {
+                    attrs: {
+                      href: "javascript:void(0);",
+                      "data-toggle": "modal",
+                      "data-target": "#ProductModal" + product.id
+                    }
+                  },
+                  [_c("h3", [_vm._v(_vm._s(product.item_name))])]
+                )
+              ]),
+              _vm._v(" "),
+              product.discount_price
+                ? _c("div", { staticClass: "product-price" }, [
+                    _c("del", [
+                      _vm._v(_vm._s(_vm._f("currency_jpy")(product.price)))
+                    ]),
+                    _vm._v(" "),
+                    _c("ins", [
+                      _vm._v(
+                        " " +
+                          _vm._s(_vm._f("currency_jpy")(product.discount_price))
+                      )
                     ])
                   ])
-                ])
-              ]
-            ),
-            _vm._v(" "),
-            _c("div", { staticClass: "modal-dialog" })
-          ]
-        )
-      ])
+                : _c("div", { staticClass: "product-price" }, [
+                    _c("ins", [
+                      _vm._v(
+                        " " + _vm._s(_vm._f("currency_jpy")(product.price))
+                      )
+                    ])
+                  ]),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "product-rating" },
+                [
+                  _c("el-rate", {
+                    attrs: {
+                      disabled: "",
+                      "show-score": "",
+                      "text-color": "#ff9900",
+                      "score-template": "{value}"
+                    },
+                    model: {
+                      value: product.rate,
+                      callback: function($$v) {
+                        _vm.$set(product, "rate", $$v)
+                      },
+                      expression: "product.rate"
+                    }
+                  })
+                ],
+                1
+              ),
+              _vm._v(" "),
+              product.pingo_items.length
+                ? _c(
+                    "div",
+                    [
+                      _c("pingoitem", {
+                        attrs: { param_pingoitems: product.pingo_items },
+                        on: { pingoitem_operate: _vm.pingoitem_process }
+                      })
+                    ],
+                    1
+                  )
+                : _vm._e()
+            ])
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass: "modal fade",
+              attrs: {
+                id: "ProductModal" + product.id,
+                tabindex: "-1",
+                role: "dialog",
+                "aria-labelledby": "myModalLabel",
+                "aria-hidden": "true"
+              }
+            },
+            [
+              _c(
+                "div",
+                { staticClass: "single-product shop-quick-view-ajax mt-lg-6" },
+                [
+                  _c("div", { staticClass: "ajax-modal-title" }, [
+                    _c("h2", { staticClass: "modal-title d-inline-block" }, [
+                      _vm._v(_vm._s(product.item_name))
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "close",
+                        attrs: {
+                          type: "button",
+                          "data-dismiss": "modal",
+                          "aria-hidden": "true"
+                        }
+                      },
+                      [_vm._v("×")]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "product modal-padding" }, [
+                    _c("div", { staticClass: "row gutter-40 col-mb-50" }, [
+                      _c("div", { staticClass: "col-md-6" }, [
+                        _c("div", { staticClass: "product-image" }, [
+                          _c("img", { attrs: { src: product.thumbimage } }),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            {
+                              staticClass: "sale-flash badge badge-danger p-2"
+                            },
+                            [_vm._v("Sale!")]
+                          )
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-md-6 product-desc" }, [
+                        product.discount_price
+                          ? _c("div", { staticClass: "product-price" }, [
+                              _c("del", [
+                                _vm._v(
+                                  _vm._s(_vm._f("currency_jpy")(product.price))
+                                )
+                              ]),
+                              _vm._v(" "),
+                              _c("ins", [
+                                _vm._v(
+                                  _vm._s(
+                                    _vm._f("currency_jpy")(
+                                      product.discount_price
+                                    )
+                                  )
+                                )
+                              ])
+                            ])
+                          : _c("div", { staticClass: "product-price" }, [
+                              _c("ins", [
+                                _vm._v(
+                                  _vm._s(_vm._f("currency_jpy")(product.price))
+                                )
+                              ])
+                            ]),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          { staticClass: "product-rating" },
+                          [
+                            _c("el-rate", {
+                              attrs: {
+                                disabled: "",
+                                "show-score": "",
+                                "text-color": "#ff9900",
+                                "score-template": "{value}"
+                              },
+                              model: {
+                                value: product.rate,
+                                callback: function($$v) {
+                                  _vm.$set(product, "rate", $$v)
+                                },
+                                expression: "product.rate"
+                              }
+                            })
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "clear" }),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "line" }),
+                        _vm._v(" "),
+                        _c(
+                          "a",
+                          {
+                            staticClass: "add-to-cart button m-0",
+                            attrs: { href: "javascript:void(0);" },
+                            on: {
+                              click: function($event) {
+                                return _vm.shoppingcart_operation(
+                                  "add_cartitem",
+                                  product.id
+                                )
+                              }
+                            }
+                          },
+                          [
+                            _c("i", { staticClass: "icon-shopping-cart " }),
+                            _vm._v("Add to cart\n                            ")
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "clear" }),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "line" }),
+                        _vm._v(" "),
+                        _c("p", { attrs: { id: "product_description" } }),
+                        _vm._v(" "),
+                        _vm._m(0, true),
+                        _vm._v(" "),
+                        _vm._m(1, true)
+                      ])
+                    ])
+                  ])
+                ]
+              ),
+              _vm._v(" "),
+              _c("div", { staticClass: "modal-dialog" })
+            ]
+          )
+        ]
+      )
     }),
     0
   )
@@ -6149,7 +6170,8 @@ var actions = {
       product_id: product_id,
       action: actionType
     })).then(function (res) {
-      // console.log(res.data);
+      console.log(res.data);
+
       if (res.data.result == "OK") {
         commit("update_cart", res.data.cart);
         Object(_utils_common_js__WEBPACK_IMPORTED_MODULE_0__["sweetalert_toast"])("success", "top-end", "successfully updated!");
