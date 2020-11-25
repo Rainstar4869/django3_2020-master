@@ -3349,7 +3349,7 @@ var render = function() {
                 : _c(
                     "div",
                     { staticClass: "sale-flash badge badge-success p-2" },
-                    [_vm._v(_vm._s(product.inventory))]
+                    [_vm._v("left:" + _vm._s(product.inventory))]
                   )
             ]),
             _vm._v(" "),
