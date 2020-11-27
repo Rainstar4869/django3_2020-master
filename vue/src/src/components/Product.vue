@@ -17,7 +17,7 @@
                         </a>
                     </div>
                     <div class="sale-flash badge badge-secondary p-2" v-if="product.inventory===0">Out of Stock</div>
-                    <div class="sale-flash badge badge-success p-2" v-else>left:{{product.inventory}}</div>
+                    <div class="sale-flash badge badge-success p-2" v-else>{{product.inventory}}</div>
                 </div>
                 <div class="product-desc">
 

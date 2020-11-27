@@ -6,6 +6,7 @@ import moment from 'moment';
 import Cart from './components/Cart.vue';
 import Topmenucart from './components/TopMenuCart.vue';
 import Products from './components/Product.vue';
+import Marginlist from './components/MarginList.vue';
 import Menunavi from './components/MenuNavi.vue';
 import Membertree from './components/MemberTree.vue';
 import Topsocialcart from './components/TopSocialCart';
@@ -31,7 +32,18 @@ const elTopSocialCartComponent = document.getElementById("topsocialcart");
 const elShippingAddressEditComponent = document.getElementById("shippingaddress_edit");
 const elShippingAddressFormComponent = document.getElementById("shippingaddressform");
 const elPingoCheckout = document.getElementById("pingocheckout");
+const elMarginList = document.getElementById("marginlist");
 
+
+if (elMarginList) {
+    const _MarginList = new Vue({
+        el: '#marginlist',
+        store,
+        components: {
+            Marginlist
+        }
+    });
+}
 
 if (elPingoCheckout) {
     const _PingoCheckout = new Vue({

@@ -17,7 +17,8 @@ import datetime
 from django.conf import settings
 from django.core import serializers
 from .forms import CheckoutForm
-from .serializers import OrderSerializer, ItemSerializer, CategorySerializer, ShippingAddressSerializer
+from .serializers import OrderSerializer, ItemSerializer, CategorySerializer, ShippingAddressSerializer, \
+    MarginSerializer
 from authentication.models import User
 from django.core.cache.backends.base import DEFAULT_TIMEOUT
 from django.views.decorators.cache import cache_page
@@ -296,9 +297,6 @@ def Pingo_Checkout(request, pingoitem_id):
     return render(request, "shop/pingo_checkout.html", context)
 
 
-
-
-
 @method_decorator(login_required(login_url='/webauth/login/'), name="dispatch")
 class MarginListView(ListView):
     model = Margin
@@ -313,9 +311,17 @@ class MarginListView(ListView):
 
     def get_context_data(self, *args, object_list=None, **kwargs):
         context = super(MarginListView, self).get_context_data(*args, **kwargs)
+        #
+        # query_kwards = settings.VALID_USER_MARGIN_LOOKUP
+        # margins = Margin.objects.filter(user=self.request.user, **query_kwards).select_related("order")
+        # if margins:
+        #     margins_serializer = MarginSerializer(instance=margins, many=True)
+        #     context["margins_json"] = margins_serializer.data
+
         margin_summary = Margin.objects.filter(is_valid=True).aggregate(total_amount=Sum("amount"),
                                                                         total_count=Count("id"))
         context["margin_summary"] = margin_summary
+        logger.error(context)
         return context
 
 

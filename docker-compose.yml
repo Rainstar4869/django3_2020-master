@@ -28,6 +28,7 @@ services:
       - ./exrate2020/system/certs:/etc/nginx/certs
       - ./exrate2020/system/supervisord.conf:/etc/supervisor/conf.d/supervisord.conf
       - ./system/fonts:/usr/share/fonts
+#      - ./vue/src/dist:/home/app/web/staticfiles/vue_bundles
     expose:
       - 8000
     ports:
@@ -121,9 +122,10 @@ services:
     volumes:
       - ./vue/src:/src
       - ./exrate2020/staticfiles/vue_bundles:/src/dist
+#      - ./vue/src/dist:/src/dist
     ports:
       - 8080:8080
     tty: true 
     stdin_open: true
-    command: npm run build:dev 
-#    command: npm run serve -- --host 0.0.0.0 
+#    command: npm run build:dev 
+    command: npm run serve -- --host 0.0.0.0 
