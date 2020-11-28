@@ -120,11 +120,11 @@ services:
     hostname: vue_app
     container_name: vue_app
     volumes:
-      - ./vue/src:/src
-      - ./exrate2020/staticfiles/vue_bundles:/src/dist
+      - ./vue/app:/src
+#      - ./exrate2020/staticfiles/vue_bundles:/src/dist
 #      - ./vue/src/dist:/src/dist
     ports:
-      - 8080:8080
+      - 2080:2080
     tty: true 
     stdin_open: true
 #    command: npm run build:dev 
