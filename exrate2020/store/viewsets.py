@@ -1,11 +1,13 @@
 from django.forms import model_to_dict
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
+from rest_framework.parsers import MultiPartParser
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from .serializers import ShippingAddressSerializer, OrderSerializer, MarginSerializer, ItemSerializer, \
-    PingoOrderSerializer, PingoItemSerializer
-from .models import ShippingAddress, Order, OrderItem, Margin, Item, Category, PingoItem, PingoOrder
+    PingoOrderSerializer, PingoItemSerializer, ProductSerializer
+from .models import ShippingAddress, Order, OrderItem, Margin, Item, Category, \
+    PingoItem, PingoOrder, Product
 from .cart import Cart as _Cart
 from authentication.models import User
 import logging
@@ -16,6 +18,7 @@ from django.core.exceptions import ObjectDoesNotExist
 import json
 from django.conf import settings
 from django.db.models import Count, Sum
+from datetime import datetime
 
 logger = logging.getLevelName("error_logger")
 CACHE_TTL = getattr(settings, 'CACHE_TTL', DEFAULT_TIMEOUT)
@@ -418,3 +421,25 @@ class PingoItemViewSet(GenericViewSet):
                 "result": "NG",
                 "operation": "not pingo item",
             }, status=status.HTTP_200_OK)
+
+
+class NewProductViewSet(GenericViewSet):
+    parser_classes = (MultiPartParser,)
+    serializer_class = ProductSerializer
+    permission_classes = (IsAuthenticated,)
+
+    def list(self, request):
+        queryset = Product.objects.all()
+        serializer = ProductSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+    def create(self, request):
+        context = {
+            "request": self.request,
+        }
+        serializer = ProductSerializer(data=request.data, context=context)
+
+        if serializer.is_valid():
+            serializer.save(updated_at=datetime.now())
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

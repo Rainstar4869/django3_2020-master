@@ -1,7 +1,8 @@
 from rest_framework import serializers
 from rest_framework.fields import SerializerMethodField
 
-from .models import Order, OrderItem, Item, Category, ShippingAddress, Margin, PingoOrder, PingoItem
+from .models import Order, OrderItem, Item, Category, ShippingAddress, \
+    Margin, PingoOrder, PingoItem, Product
 
 
 class PingoOrderSerializer(serializers.ModelSerializer):
@@ -48,6 +49,13 @@ class ItemSerializer(serializers.ModelSerializer):
         result = super().to_representation(instance)
         result["thumbimage"] = instance.thumbimage.url
         return result
+
+
+class ProductSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Product
+        fields = "__all__"
 
 
 class ShippingAddressSerializer(serializers.ModelSerializer):

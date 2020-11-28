@@ -51,6 +51,23 @@ def image_path(instance, filename):
     return os.path.join("product", filename)
 
 
+class Product(models.Model):
+    name = models.CharField(max_length=100)
+    file = models.FileField(blank=False, null=False)
+    image = models.ImageField(null=True, upload_to=image_path)
+    thumbimage = ImageSpecField(  # 注意：ImageSpecField 不会生成数据库表的字段
+        source='image',
+        processors=[ResizeToFill(256, 256)],  # 处理成一寸照片的大小
+        format='JPEG',  # 处理后的图片格式
+        options={'quality': 95}  # 处理后的图片质量
+    )
+    created_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(blank=True, null=True)
+
+    def __str__(self):
+        return self.name
+
+
 class Item(models.Model):
     item_name = models.CharField(max_length=100)
     manufacturer = models.CharField(null=True,blank=True, max_length=50)
