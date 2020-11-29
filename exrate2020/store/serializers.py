@@ -60,6 +60,8 @@ class ProductSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
     def create(self, validated_data):
+        logger.error("print validated_data within serializer")
+        logger.error(validated_data)
         return Product.objects.create(**validated_data)
 
 

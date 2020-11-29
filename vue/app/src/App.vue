@@ -55,7 +55,7 @@
 
                 uploadParams.append('id', file.id);
 
-                API.remove('back/store/api/newproducts/'+file.id+'/').then(response => {
+                API.remove('back/store/api/newproducts/' + file.id + '/').then(response => {
                     console.log(response)
                     // if (response.payload.status === 200) {
                     //     this.fileName = '';
@@ -76,14 +76,14 @@
             handleAvatarSuccess(res, file) {
                 console.log(res)
                 console.log(file)
-				var newProduct={
-                    "id":res.id,
-					"name":res.name,
-					"status":"success",
-					"uid":file.uid,
-					"url":res.image
-				}
-				this.fileList.push(newProduct);
+                var newProduct = {
+                    "id": res.id,
+                    "name": res.name,
+                    "status": "success",
+                    "uid": file.uid,
+                    "url": res.image
+                }
+                this.fileList.push(newProduct);
             },
             beforeAvatarUpload(file) {
                 const isJPG = file.type === 'image/jpeg';
@@ -111,17 +111,17 @@
                     // console.log(sessionStorage.getItem("accessToken"));
                 }
             });
-
+            this.fileList = [];
             API.get('back/store/api/newproducts/')
                 .then(response => {
                     console.log(response);
-                    const files=response.payload.data;
+                    const files = response.payload.data;
                     var jsonData = [];
                     files.forEach(function (file) {
-                        jsonData.push({'id':file.id,'name':file.name,'url':"http://localhost:8000"+file.image});
+                        jsonData.push({'id': file.id, 'name': file.name, 'url': "http://localhost:8000" + file.image});
                     });
                     // console.log(jsonData);
-                    this.fileList=jsonData;
+                    this.fileList = jsonData;
                 });
 
 
