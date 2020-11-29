@@ -125,7 +125,7 @@ services:
       - ./vue/app:/app/:cached
       - ./vue/app/node_modules:/app/node_modules
     ports:
-      - 2080:2080
+      - 8080:8080
     tty: true 
     stdin_open: true
 #    command: npm run build 
