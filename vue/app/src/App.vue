@@ -1,7 +1,7 @@
 <template>
 	<div id="app">
 		<img alt="Vue logo" src="./assets/logo.png">
-		<HelloWorld msg="Welcome to Your Vue.js App"/>
+		<HelloWorld msg="Welcome to HU"/>
 		<!--<input type="file" @change="onFileChange" />-->
 		<el-upload
 				class="upload-demo"
@@ -116,11 +116,11 @@
 
             API.get('/store/api/newproducts/')
                 .then(response => {
-                    console.log(response.payload.data);
+                    console.log(response);
                     const files=response.payload.data;
                     var jsonData = [];
                     files.forEach(function (file) {
-                        jsonData.push({'name':file.name,'url':"http://localhost/"+file.file});
+                        jsonData.push({'name':file.name,'url':"http://localhost:8000"+file.file});
                     });
                     console.log(jsonData);
                     this.fileList=jsonData;
