@@ -9,7 +9,8 @@ services:
       - ./exrate2020/staticfiles:/home/app/web/staticfiles
       - ./exrate2020/mediafiles:/home/app/web/mediafiles
       - ./exrate2020/logs/nginx:/var/log/nginx
-      - ./system/nginx/nginx.conf:/etc/nginx/conf.d/nginx.conf
+      - ./system/nginx/config/conf.d:/etc/nginx/conf.d
+      - ./system/nginx/config/nginx.conf:/etc/nginx/nginx.conf
     ports:
       - 80:80
     depends_on:
