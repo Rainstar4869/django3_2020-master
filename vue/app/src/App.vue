@@ -75,11 +75,14 @@
             handleAvatarSuccess(res, file) {
                 console.log(res)
                 console.log(file)
-                // this.imageUrl = URL.createObjectURL(file.raw);
-                // if(res.result=='OK'){
-                // this.sync_lastest_product(res.product);
-                // this.imageUrl=''
-                // }
+				var newProduct={
+                    "id":res.id,
+					"name":res.name,
+					"status":"success",
+					"uid":file.uid,
+					"url":res.file
+				}
+				this.fileList.push(newProduct);
             },
             beforeAvatarUpload(file) {
                 const isJPG = file.type === 'image/jpeg';
@@ -93,28 +96,6 @@
                 }
                 return isJPG && isLt2M;
             },
-
-
-            onFileChange(e) {
-                const files = e.target.files || e.dataTransfer.files;
-                this.img_name = files[0];
-                const uploadParams = new FormData();
-
-                uploadParams.append('name', "huhaiguang");
-                uploadParams.append('file', this.img_name);
-
-                API.fileUpload('back/store/api/newproducts/', uploadParams).then(response => {
-                    console.log(response)
-                    // if (response.payload.status === 200) {
-                    //     this.fileName = '';
-                    //     this.previewSrc = '';
-                    //     this.comment = '';
-                    //     this.$refs.fileInput.lazyValue = '';
-                    // }
-                });
-
-
-            },
         },
         mounted() {
             const params = new FormData();
@@ -122,23 +103,23 @@
             params.append('username', "admin");
             params.append('password', "lionhu");
             API.post('/apiauth/login/', params).then(response => {
-                console.log(response.payload);
+                // console.log(response.payload);
                 if (response.payload.status === 200) {
                     sessionStorage.removeItem("accessToken");
                     sessionStorage.setItem('accessToken', `Bearer ${response.payload.data.tokens.access}`);
-                    console.log(sessionStorage.getItem("accessToken"));
+                    // console.log(sessionStorage.getItem("accessToken"));
                 }
             });
 
             API.get('back/store/api/newproducts/')
                 .then(response => {
-                    console.log(response);
+                    // console.log(response);
                     const files=response.payload.data;
                     var jsonData = [];
                     files.forEach(function (file) {
                         jsonData.push({'id':file.id,'name':file.name,'url':"http://localhost:8000"+file.file});
                     });
-                    console.log(jsonData);
+                    // console.log(jsonData);
                     this.fileList=jsonData;
                 });
 
