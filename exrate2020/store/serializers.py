@@ -1,5 +1,8 @@
 from rest_framework import serializers
 from rest_framework.fields import SerializerMethodField
+import logging
+
+logger = logging.getLogger("error_logger")
 
 from .models import Order, OrderItem, Item, Category, ShippingAddress, \
     Margin, PingoOrder, PingoItem, Product
@@ -52,10 +55,12 @@ class ItemSerializer(serializers.ModelSerializer):
 
 
 class ProductSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Product
         fields = "__all__"
+
+    def create(self, validated_data):
+        return Product.objects.create(**validated_data)
 
 
 class ShippingAddressSerializer(serializers.ModelSerializer):

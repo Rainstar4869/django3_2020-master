@@ -22,8 +22,7 @@ from django.conf import settings
 from django.db.models import Count, Sum
 from datetime import datetime
 
-
-logger = logging.getLevelName("error_logger")
+logger = logging.getLogger("error_logger")
 CACHE_TTL = getattr(settings, 'CACHE_TTL', DEFAULT_TIMEOUT)
 
 
@@ -440,9 +439,9 @@ class NewProductViewSet(GenericViewSet):
 
         try:
             product = get_object_or_404(Product, pk=pk)
-            filepath = '{}/{}'.format(settings.MEDIA_ROOT,product.file)
+            filepath = '{}/{}'.format(settings.MEDIA_ROOT, product.image)
 
-            if product.file and default_storage.exists(filepath):
+            if product.image and default_storage.exists(filepath):
                 default_storage.delete(filepath)
 
             product.delete()
@@ -461,9 +460,14 @@ class NewProductViewSet(GenericViewSet):
         context = {
             "request": self.request,
         }
-        serializer = ProductSerializer(data=request.data, context=context)
+        data = request.data
+        # data["image"] = request.data['file']
+        # data.pop('file')
+
+        serializer = ProductSerializer(data=data, context=context)
 
         if serializer.is_valid():
             serializer.save(updated_at=datetime.now())
+            logger.error(serializer.data)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
