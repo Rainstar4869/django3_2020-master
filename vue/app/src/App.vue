@@ -1,7 +1,7 @@
 <template>
 	<div id="app">
 		<img alt="Vue logo" src="./assets/logo.png">
-		<HelloWorld msg="Welcome to HU"/>
+		<HelloWorld msg="Welcome to wang"/>
 		<!--<input type="file" @change="onFileChange" />-->
 		<el-upload
 				class="upload-demo"

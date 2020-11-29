@@ -129,5 +129,5 @@ services:
       - 2080:2080
     tty: true 
     stdin_open: true
-#    command: npm run build --watch 
+#    command: npm run build 
     command: npm run serve -- --host 0.0.0.0 
