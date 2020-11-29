@@ -22,7 +22,7 @@ urlpatterns = [
     path("webauth/", include("web_auth.urls")),
     path('accounts/', include('allauth.urls')),
 
-    path('store/', include('store.urls')),
+    path('back/store/', include('store.urls')),
     path('chat/', include('chat.urls')),
 
     path('qr_code/', include('qr_code.urls', namespace="qr_code")),

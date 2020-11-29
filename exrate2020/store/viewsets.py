@@ -1,4 +1,5 @@
 from django.forms import model_to_dict
+from django.shortcuts import get_object_or_404
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
 from rest_framework.parsers import MultiPartParser
@@ -15,10 +16,12 @@ from rest_framework import status
 from django.core.cache import cache
 from django.core.cache.backends.base import DEFAULT_TIMEOUT
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.files.storage import default_storage
 import json
 from django.conf import settings
 from django.db.models import Count, Sum
 from datetime import datetime
+
 
 logger = logging.getLevelName("error_logger")
 CACHE_TTL = getattr(settings, 'CACHE_TTL', DEFAULT_TIMEOUT)
@@ -432,6 +435,27 @@ class NewProductViewSet(GenericViewSet):
         queryset = Product.objects.all()
         serializer = ProductSerializer(queryset, many=True)
         return Response(serializer.data)
+
+    def destroy(self, request, pk=None, *args, **kwargs):
+
+        try:
+            product = get_object_or_404(Product, pk=pk)
+            filepath = '{}/{}'.format(settings.MEDIA_ROOT,product.file)
+
+            if product.file and default_storage.exists(filepath):
+                default_storage.delete(filepath)
+
+            product.delete()
+            return Response({
+                'result': "OK",
+                'self request': pk,
+            }, status=status.HTTP_200_OK)
+
+        except ObjectDoesNotExist:
+            return Response({
+                'result': "NG",
+                'self request': pk,
+            }, status=status.HTTP_200_OK)
 
     def create(self, request):
         context = {

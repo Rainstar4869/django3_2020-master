@@ -1,13 +1,14 @@
 <template>
 	<div id="app">
 		<img alt="Vue logo" src="./assets/logo.png">
-		<HelloWorld msg="Welcome to wang"/>
+		<HelloWorld msg="Welcome to hu"/>
 		<!--<input type="file" @change="onFileChange" />-->
 		<el-upload
 				class="upload-demo"
-				action="http://localhost/store/api/newproducts/"
+				action="http://localhost:8000/back/store/api/newproducts/"
 				:on-preview="handlePreview"
 				:on-remove="handleRemove"
+				:on-success="handleAvatarSuccess"
 				:headers="{'Authorization':accessToken}"
 				:data="{'name':'lionhu'}"
 				:file-list="fileList"
@@ -47,7 +48,22 @@
         },
         methods: {
             handleRemove(file, fileList) {
-                console.log(file, fileList);
+                // console.log(file, fileList);
+                console.log(file.id);
+                const uploadParams = new FormData();
+
+                uploadParams.append('id', file.id);
+
+                API.remove('back/store/api/newproducts/'+file.id+'/').then(response => {
+                    console.log(response)
+                    // if (response.payload.status === 200) {
+                    //     this.fileName = '';
+                    //     this.previewSrc = '';
+                    //     this.comment = '';
+                    //     this.$refs.fileInput.lazyValue = '';
+                    // }
+                });
+
             },
             handlePreview(file) {
                 console.log(file);
@@ -87,7 +103,7 @@
                 uploadParams.append('name', "huhaiguang");
                 uploadParams.append('file', this.img_name);
 
-                API.fileUpload('/store/api/newproducts/', uploadParams).then(response => {
+                API.fileUpload('back/store/api/newproducts/', uploadParams).then(response => {
                     console.log(response)
                     // if (response.payload.status === 200) {
                     //     this.fileName = '';
@@ -114,13 +130,13 @@
                 }
             });
 
-            API.get('/store/api/newproducts/')
+            API.get('back/store/api/newproducts/')
                 .then(response => {
                     console.log(response);
                     const files=response.payload.data;
                     var jsonData = [];
                     files.forEach(function (file) {
-                        jsonData.push({'name':file.name,'url':"http://localhost:8000"+file.file});
+                        jsonData.push({'id':file.id,'name':file.name,'url':"http://localhost:8000"+file.file});
                     });
                     console.log(jsonData);
                     this.fileList=jsonData;

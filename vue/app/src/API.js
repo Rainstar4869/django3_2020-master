@@ -79,3 +79,22 @@ export function post(repository, params) {
     resolve(payload);
   });
 }
+
+export function remove(repository, params) {
+  return new Promise(resolve => {
+    const payload = axios
+      .delete(`${repository}`, params, {
+        headers: {
+          'content-type': 'application/json',
+          'Authorization': accessToken?accessToken:''
+        },
+      })
+      .then(response => {
+        return { payload: response };
+      })
+      .catch(error => {
+        return { error };
+      });
+    resolve(payload);
+  });
+}
