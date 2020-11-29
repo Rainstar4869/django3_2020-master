@@ -33,7 +33,6 @@ services:
       - ./exrate2020/system/supervisord.conf:/etc/supervisor/conf.d/supervisord.conf
       - ./system/fonts:/usr/share/fonts
     ports:
-      - 8001:8001
       - 8000:8000
     env_file:
       - ./.env.prod
