@@ -1,0 +1,10 @@
+{
+  "auth.js": "auth.js",
+  "auth.js.map": "auth.js.map",
+  "main.css": "css/vue_style.css",
+  "main.js": "main.js",
+  "main.css.map": "css/vue_style.css.map",
+  "main.js.map": "main.js.map",
+  "vendor.js": "vendor.js",
+  "vendor.js.map": "vendor.js.map"
+}

@@ -19,7 +19,6 @@ npmlist.txt
 package_backup.json
 src/app.js
 start.sh
-dist/
 node_modules/.bin/
 node_modules/.cache/
 node_modules/@babel/
