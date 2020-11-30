@@ -130,3 +130,13 @@ services:
     stdin_open: true
 #    command: npm run build 
     command: npm run serve -- --host 0.0.0.0 
+
+  nuxt:
+    container_name: nuxt_app
+    build:
+      context: ./nuxtjs
+    volumes:
+      - ./nuxtjs:/app
+    tty: true
+    ports:
+    - "9000:9000"

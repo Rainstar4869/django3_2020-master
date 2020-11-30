@@ -1,8 +1,4 @@
 .idea/
-/system/postgres/pgdata/
-/system/pgadmin4/
-system/postgres/init.d/
-system/redis/redis_data/
 
 /exrate2020/logs/
 /exrate2020/node_modules/
