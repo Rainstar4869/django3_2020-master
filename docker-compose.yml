@@ -15,10 +15,10 @@ services:
 #      - ./vue/app/dist:/var/www/front
     ports:
       - 80:80
-#    depends_on:
-#      - web
-#      - nuxt
-#      - vue_app
+    depends_on:
+      - web
+      - nuxt
+      - vue_app
 
   web:
     container_name: web
