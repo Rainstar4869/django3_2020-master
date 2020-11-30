@@ -17,6 +17,7 @@ services:
       - 80:80
     depends_on:
       - web
+      - nuxt
       - vue_app
 
   web:
@@ -136,7 +137,8 @@ services:
     build:
       context: ./nuxtjs
     volumes:
-      - ./nuxtjs:/app
+      - ./nuxtjs/nuxt_app:/app
     tty: true
     ports:
     - "9000:9000"
+#    command: npm run dev
