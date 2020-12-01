@@ -1,50 +1,80 @@
-module.exports = {
- server: {
+
+export default {
+   server: {
  port: 9000,
  host: '0.0.0.0'
  },
-  plugins: [
-    { src: '~/plugins/localStorage.js', ssr: false },
-    '~/plugins/api.js'
-  ],
-    publicRuntimeConfig: {
-    axios: {
-      baseURL: 'http://localhost:8000'
-    }
-  },
-  modules: ['@nuxtjs/axios'],
+  mode: 'spa',
+  subdirectory: '/',
+  /*
+  ** Headers of the page
+  */
   head: {
-    title: 'nuxt_app',
+    title: 'Multikart Ecommerce | Vuejs shopping theme',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: 'Nuxt.js project' }
+      { hid: 'description', name: 'description', content: process.env.npm_package_description || '' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+      { rel: 'icon', type: 'image/x-icon', href: '/multikartvue/favicon.png' },
+      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Lato:300,400,700,900' }
+    ],
+    script: [
+      { src: 'https://checkout.stripe.com/checkout.js'}
     ]
   },
+
+  router: {
+    base: '/'
+  },
   /*
-  ** Customize the progress bar color
+  ** Customize the progress-bar color
   */
-  loading: { color: '#3B8070' },
+  loading: { color: '#ff4c3b', throttle: 200, height: '3px', css: true },
+  /*
+  ** Global CSS
+  */
+  css: [
+    '@/assets/scss/app.scss',
+    'swiper/dist/css/swiper.css'
+  ],
+  /*
+  ** Plugins to load before mounting the App
+  */
+  plugins: [
+     { src: '~/plugins/plugin.js', ssr:false },
+     { src: '~/plugins/localStorage.js', ssr:false },
+  ],
+  /*
+  ** Nuxt.js modules
+  */
+  modules: [
+    // Doc: https://axios.nuxtjs.org/usage
+    'bootstrap-vue/nuxt',
+    '@nuxtjs/axios',
+    'vue-scrollto/nuxt'
+  ],
+  /*
+  ** Axios module configuration
+  ** See https://axios.nuxtjs.org/options
+  */
+  axios: {
+  },
+  generate: {
+    fallback: true
+  },
   /*
   ** Build configuration
   */
   build: {
+    transpile: [
+      "vee-validate/dist/rules"
+    ],
     /*
-    ** Run ESLint on save
+    ** You can extend webpack config here
     */
-    extend (config, { isDev, isClient }) {
-      if (isDev && isClient) {
-        config.module.rules.push({
-          enforce: 'pre',
-          test: /\.(js|vue)$/,
-          loader: 'eslint-loader',
-          exclude: /(node_modules)/
-        })
-      }
+    extend(config, ctx) {
     }
   }
 }
-
