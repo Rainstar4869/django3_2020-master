@@ -1,11 +1,11 @@
 from abc import ABC
-
+import json
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.utils.encoding import force_str
 from django.utils.http import urlsafe_base64_decode
 from rest_framework import serializers
 from rest_framework_simplejwt.tokens import RefreshToken
-
+from rolepermissions.roles import get_user_roles
 from .models import User, Profile
 from django.contrib import auth
 from rest_framework.exceptions import AuthenticationFailed
@@ -125,6 +125,19 @@ class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
         fields = ('user_id', 'username', 'children')
+
+    def to_representation(self, instance):
+        result = super().to_representation(instance)
+        roles = get_user_roles(instance.user)
+        roles_json = []
+        for role in roles:
+            roles_json.append(role.role_name)
+
+        if len(roles_json):
+            result["roles"] = roles_json
+        else:
+            result["roles"] = []
+        return result
 
 
 ProfileSerializer._declared_fields['children'] = ProfileSerializer(many=True, source='get_children', )

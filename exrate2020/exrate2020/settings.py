@@ -303,10 +303,10 @@ SOCIALACCOUNT_PROVIDERS = {
 
 EMAIL_HOST = 'nichiei09.sakura.ne.jp'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'crs@nichiei09.sakura.ne.jp'
-EMAIL_HOST_PASSWORD = 'Hisshghu3500'
+EMAIL_HOST_USER = 'shop@nichiei09.sakura.ne.jp'
+EMAIL_HOST_PASSWORD = 'nichiei2020'
 EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = 'crs@nichiei.services'
+DEFAULT_FROM_EMAIL = 'shop@nichiei.services'
 
 MESSAGE_TAGS = {
     messages.ERROR: "danger"

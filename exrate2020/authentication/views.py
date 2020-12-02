@@ -90,16 +90,33 @@ class RequestPasswordResetEmail(generics.GenericAPIView):
             data = {'email_body': email_body, 'to_email': user.email,
                     'email_subject': 'Reset your passsword'}
             Util.send_email(data)
-        return Response({'success': 'We have sent you a link to reset your password'}, status=status.HTTP_200_OK)
+            return Response({
+                'result': "OK",
+                'success': 'We have sent you a link to reset your password'
+            }, status=status.HTTP_200_OK)
+
+        return Response({
+            'result': "NG",
+            'success': 'We have sent you a link to reset your password'
+        }, status=status.HTTP_200_OK)
 
 
 class SetNewPasswordAPIView(generics.GenericAPIView):
     serializer_class = SetNewPasswordSerializer
 
     def patch(self, request):
-        serializer = self.serializer_class(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        return Response({'success': True, 'message': 'Password reset success'}, status=status.HTTP_200_OK)
+        try:
+            serializer = self.serializer_class(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            return Response({
+                'result': "OK",
+                'message': 'Password reset success'
+            }, status=status.HTTP_200_OK)
+        except Exception:
+            return Response({
+                'result': "NG",
+                'message': 'Something wrong when Password reset'
+            }, status=status.HTTP_200_OK)
 
 
 class PasswordTokenCheckAPI(generics.GenericAPIView):
