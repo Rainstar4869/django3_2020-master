@@ -7,3 +7,4 @@ exrate2020/supervisord.pid
 /exrate2020/celerybeat.pid
 /venv/
 /nuxtjs/nuxt_app/node_modules/
+/vue/app_backup/node_modules/
