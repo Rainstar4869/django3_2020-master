@@ -33,15 +33,14 @@ services:
       - ./exrate2020/system/certs:/etc/nginx/certs
       - ./exrate2020/system/supervisord.conf:/etc/supervisor/conf.d/supervisord.conf
       - ./system/fonts:/usr/share/fonts
-      - ./django:/usr/local/lib/python3.8/site-packages/django
     ports:
       - 8000:8000
     env_file:
       - ./.env.prod
-    depends_on:
-      - postgres
-      - redis
-      - rabbitmq
+#    depends_on:
+#      - postgres
+#      - redis
+#      - rabbitmq
 
   postgres:
     hostname: postgres

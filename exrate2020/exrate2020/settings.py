@@ -60,16 +60,11 @@ INSTALLED_APPS = [
     'crispy_forms',
     'mptt',
     'django_extensions',
-    'debug_toolbar',
+    # 'debug_toolbar',
     'treewidget',
     'qr_code',
     'user_g11n',
 
-    # "expenses",
-    # "income",
-    # "userstats",
-    # "upload",
-    # "studydjango",
     "store",
 
     "chat",
@@ -90,7 +85,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'middlewares.setAccessToken.SimpleMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
+    # 'debug_toolbar.middleware.DebugToolbarMiddleware',
     'user_g11n.middleware.UserLanguageMiddleware',  # Add
     'user_g11n.middleware.UserTimeZoneMiddleware',  # Add
     # 'leapin.libs.multitenancy.SetCurrentTenantFromUser',
